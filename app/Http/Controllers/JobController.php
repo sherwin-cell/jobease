@@ -36,13 +36,13 @@ class JobController extends Controller
 
         $jobs = $query->latest()->paginate(10);
 
-        return view('jobs.index', compact('jobs'));
+        return view('jobseeker.jobs.index', compact('jobs'));
     }
 
     // Job Seeker: View single job details
     public function show(Job $job)
     {
-        return view('jobs.show', compact('job'));
+        return view('jobseeker.jobs.show', compact('job'));
     }
 
     // -----------------------------
@@ -50,7 +50,7 @@ class JobController extends Controller
     // -----------------------------
     public function employerIndex()
     {
-        $jobs = Job::where('company_id', Auth::id())->latest()->get();
+        $jobs = Job::where('employer_id', Auth::id())->latest()->get();
         return view('employer.jobs.index', compact('jobs'));
     }
 
@@ -77,7 +77,7 @@ class JobController extends Controller
             'location' => $request->location,
             'salary' => $request->salary,
             'experience_level' => $request->experience_level,
-            'company_id' => Auth::id(),
+            'employer_id' => Auth::id(),
         ]);
 
         return redirect()->route('employer.jobs.index')->with('success', 'Job posted successfully.');

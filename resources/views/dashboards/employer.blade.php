@@ -8,8 +8,8 @@
 <p>This is your Employer Dashboard.</p>
 
 <ul>
-    <li><a href="{{ route('profile.edit') }}">Edit Profile</a></li>
-    <li><a href="{{ route('jobs.index') }}">Browse Jobs</a></li>
-    <li><a href="{{ route('applications.index') }}">My Applications</a></li>
+    <li><a href="{{ route('employer.profile.edit') }}">Edit Profile</a></li>
+    <li><a href="{{ route('employer.jobs.index') }}">My Jobs</a></li>
+    <li><a href="{{ route('employer.applications.index') }}">Applications</a></li>
 </ul>
 @endsection

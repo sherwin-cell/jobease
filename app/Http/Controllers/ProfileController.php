@@ -21,7 +21,7 @@ class ProfileController extends Controller
 
         $skills = Skill::all(); // pre-defined skills list
 
-        return view('profile.edit', compact('profile', 'skills'));
+        return view('jobseeker.profile.edit', compact('profile', 'skills'));
     }
 
     // Update the profile

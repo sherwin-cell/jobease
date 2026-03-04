@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Application::class);
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(Job::class, 'employer_id');
+    }
+
 
     // -----------------------------
     // Helper methods
@@ -81,7 +86,7 @@ class User extends Authenticatable
 
     public function dashboardRoute()
     {
-        return match ($this->role) {
+        return match ($this->role->name ?? '') {
             'job_seeker' => 'jobseeker.dashboard',
             'employer' => 'employer.dashboard',
             'admin' => 'admin.dashboard',

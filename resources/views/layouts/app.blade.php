@@ -13,8 +13,11 @@
             <a href="{{ url('/') }}">Home</a>
 
             @auth
-                <a href="{{ route('profile.edit') }}">Profile</a>
-
+                @if(Auth::user()->isJobSeeker())
+                    <a href="{{ route('profile.edit') }}">Profile</a>
+                @elseif(Auth::user()->isEmployer())
+                    <a href="{{ route('employer.profile.edit') }}">Company Profile</a>
+                @endif
                 @if(Auth::user()->isJobSeeker())
                     <a href="{{ route('jobseeker.dashboard') }}">Job Seeker Dashboard</a>
                 @elseif(Auth::user()->isEmployer())
