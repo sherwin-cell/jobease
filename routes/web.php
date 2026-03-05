@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\EmployerController;
+use App\Http\Controllers\CandidateController;
 
 // ---------- Public Routes ----------
 // Public routes
@@ -47,6 +48,27 @@ Route::middleware(['auth', 'role:job_seeker'])->group(function () {
     Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show'); // view application
 });
 
+Route::middleware(['auth', 'role:job_seeker'])->group(function () {
+
+    // ---------- Show Notifications Page ----------
+    Route::get('/notifications', function () {
+        // This loads resources/views/jobseeker/notifications/index.blade.php
+        return view('jobseeker.notifications.index');
+    })->name('job_seeker.notifications');
+
+    // ---------- Mark a Notification as Read ----------
+    Route::post('/notifications/{id}/read', function ($id) {
+        // Find the notification for the authenticated user
+        $notification = auth()->user()->notifications()->findOrFail($id);
+
+        // Mark it as read
+        $notification->markAsRead();
+
+        // Redirect back to the notifications page
+        return back()->with('success', 'Notification marked as read.');
+    })->name('job_seeker.notifications.read');
+
+});
 // EMPLOYER ROUTES ----------
 
 Route::middleware(['auth', 'role:employer'])->group(function () {
@@ -81,4 +103,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         return view('dashboards.admin');
     })->name('admin.dashboard');
 });
+
+//candidate routes
+Route::get('/candidates', [CandidateController::class, 'index'])->name('candidates.index');
+Route::post('/candidates/{candidate}/status', [CandidateController::class, 'updateStatus'])
+     ->name('candidates.updateStatus');
 

@@ -13,11 +13,21 @@ return new class extends Migration {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            // General profile info
             $table->string('headline')->nullable();
             $table->text('bio')->nullable();
             $table->string('location')->nullable();
             $table->string('phone')->nullable();
             $table->string('website')->nullable();
+
+            // Job seeker-specific info
+            $table->json('skills')->nullable();
+            $table->json('experience')->nullable();
+            $table->json('education')->nullable();
+            $table->json('certifications')->nullable();
+            $table->json('interests')->nullable();
+
             $table->timestamps();
         });
     }
