@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Application;
 use App\Models\Job;
+use App\Notifications\ApplicationStatusNotification;
+use App\Notifications\InterviewInvitationNotification;
 
 class ApplicationController extends Controller
 {
@@ -75,8 +77,15 @@ class ApplicationController extends Controller
         if ($application->job->employer_id !== $user->id) {
             abort(403);
         }
-        $request->validate(['status' => 'required|in:pending,shortlisted,rejected,hired']);
+        $request->validate(['status' => 'required|in:pending,shortlisted,rejected,hired,interview']);
         $application->update(['status' => $request->status]);
+
+        // Notify job seeker (database notification)
+        $application->user->notify(new ApplicationStatusNotification($application));
+        if ($request->status === 'interview') {
+            $application->user->notify(new InterviewInvitationNotification($application));
+        }
+
         return back()->with('success', 'Application status updated.');
     }
 }

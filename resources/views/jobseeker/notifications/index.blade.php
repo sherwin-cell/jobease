@@ -7,10 +7,19 @@
 
     @forelse(auth()->user()->notifications as $notification)
         <div class="border p-3 mb-2 rounded {{ $notification->read_at ? 'bg-gray-100' : 'bg-green-100' }}">
-            {{ $notification->data['message'] }}
+            {{ $notification->data['message'] ?? 'Notification' }}
             <span class="text-sm text-gray-500 block">
-                Job ID: {{ $notification->data['job_id'] }}
+                @if(!empty($notification->data['job_id']))
+                    Job ID: {{ $notification->data['job_id'] }}
+                @endif
             </span>
+
+            @if(!empty($notification->data['application_id']))
+                <a class="text-blue-600 text-sm hover:underline"
+                   href="{{ route('applications.show', $notification->data['application_id']) }}">
+                    View application
+                </a>
+            @endif
 
             <!-- Mark as Read button -->
             @if(!$notification->read_at)

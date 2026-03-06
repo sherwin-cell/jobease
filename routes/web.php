@@ -9,7 +9,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\EmployerController;
-use App\Http\Controllers\CandidateController;
 
 // ---------- Public Routes ----------
 // Public routes
@@ -36,7 +35,8 @@ Route::middleware(['auth', 'role:job_seeker'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:job_seeker'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
@@ -94,6 +94,10 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::put('/employer/jobs/{job}', [JobController::class, 'update'])->name('employer.jobs.update');
     Route::delete('/employer/jobs/{job}', [JobController::class, 'destroy'])->name('employer.jobs.destroy');
 
+    // Candidates (employer-only)
+    Route::get('/candidates', [\App\Http\Controllers\CandidateController::class, 'index'])->name('candidates.index');
+    Route::post('/candidates/{candidate}/status', [\App\Http\Controllers\CandidateController::class, 'updateStatus'])
+        ->name('candidates.updateStatus');
 });
 
 // ADMIN ROUTES ----------
@@ -103,9 +107,4 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         return view('dashboards.admin');
     })->name('admin.dashboard');
 });
-
-//candidate routes
-Route::get('/candidates', [CandidateController::class, 'index'])->name('candidates.index');
-Route::post('/candidates/{candidate}/status', [CandidateController::class, 'updateStatus'])
-     ->name('candidates.updateStatus');
 

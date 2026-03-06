@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Certification extends Model
 {
+    protected $fillable = ['profile_id', 'name'];
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);

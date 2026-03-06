@@ -8,8 +8,8 @@ class Skill extends Model
 {
     protected $fillable = ['name'];
 
-    public function candidates()
+    public function profiles()
     {
-        return $this->belongsToMany(Candidate::class);
+        return $this->belongsToMany(Profile::class, 'profile_skill');
     }
 }

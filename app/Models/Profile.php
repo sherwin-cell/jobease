@@ -9,7 +9,9 @@ class Profile extends Model
 {
     use HasFactory;
 
-    // Allow mass assignment for these fields
+    /**
+     * Mass assignable fields
+     */
     protected $fillable = [
         'user_id',
         'headline',
@@ -21,10 +23,12 @@ class Profile extends Model
         'experience',
         'education',
         'certifications',
-        'interests'
+        'interests',
     ];
 
-    // Cast JSON columns to arrays automatically
+    /**
+     * Automatically cast JSON columns to arrays
+     */
     protected $casts = [
         'skills' => 'array',
         'experience' => 'array',
@@ -33,9 +37,48 @@ class Profile extends Model
         'interests' => 'array',
     ];
 
-    // Define relationship to User
+    /**
+     * Relationship: Profile belongs to a User
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Helper methods to safely access array fields
+     */
+
+    public function getSkillsList(): array
+    {
+        return $this->skills ?? [];
+    }
+
+    public function getExperienceList(): array
+    {
+        return $this->experience ?? [];
+    }
+
+    public function getEducationList(): array
+    {
+        return $this->education ?? [];
+    }
+
+    public function getCertificationsList(): array
+    {
+        return $this->certifications ?? [];
+    }
+
+    public function getInterestsList(): array
+    {
+        return $this->interests ?? [];
+    }
+    
+        /**
+         * Relationship: Profile belongs to many Skills
+         */
+        public function skills()
+        {
+            return $this->belongsToMany(Skill::class);
+        }
 }
