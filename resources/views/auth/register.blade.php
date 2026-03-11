@@ -38,7 +38,7 @@
         </div>
 
         <div>
-            <select name="role_id" class="w-full border p-2 rounded" required>
+            <select name="role_id" id="role_id" class="w-full border p-2 rounded" required>
                 <option value="">Select Role</option>
                 @foreach($roles as $role)
                     <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
@@ -47,6 +47,15 @@
                 @endforeach
             </select>
             @error('role_id')
+                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Company name — only shown when Employer is selected -->
+        <div id="company_name_field" class="hidden">
+            <input type="text" name="company_name" placeholder="Company Name" value="{{ old('company_name') }}"
+                class="w-full border p-2 rounded">
+            @error('company_name')
                 <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
             @enderror
         </div>
@@ -60,4 +69,22 @@
         Already have an account? <a href="{{ route('login') }}" class="text-blue-500 hover:underline">Login</a>
     </p>
 </div>
+
+<!-- Show company name field only when Employer role is selected -->
+<script>
+    const roleSelect = document.getElementById('role_id');
+    const companyField = document.getElementById('company_name_field');
+
+    function toggleCompanyField() {
+        const selectedText = roleSelect.options[roleSelect.selectedIndex].text.toLowerCase();
+        if (selectedText.includes('employer')) {
+            companyField.classList.remove('hidden');
+        } else {
+            companyField.classList.add('hidden');
+        }
+    }
+
+    roleSelect.addEventListener('change', toggleCompanyField);
+    toggleCompanyField(); // run on page load for old() repopulation
+</script>
 @endsection

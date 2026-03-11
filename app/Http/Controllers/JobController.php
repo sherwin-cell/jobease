@@ -8,14 +8,11 @@ use App\Models\Job;
 
 class JobController extends Controller
 {
-    // -----------------------------
     // Job Seeker: Browse & Search Jobs
-    // -----------------------------
     public function index(Request $request)
     {
         $query = Job::query();
 
-        // Filters for job seekers
         if ($request->filled('location')) {
             $query->where('location', 'like', '%' . $request->location . '%');
         }
@@ -25,31 +22,31 @@ class JobController extends Controller
         }
 
         if ($request->filled('skills')) {
-            $skills = explode(',', $request->skills);
-            $query->where(function ($q) use ($skills) {
-                foreach ($skills as $skill) {
-                    $q->orWhere('skills_required', 'like', '%' . $skill . '%');
+            $skillNames = array_map('trim', explode(',', $request->skills));
+            $query->where(function ($q) use ($skillNames) {
+                foreach ($skillNames as $skill) {
+                    $q->orWhereJsonContains('skills_required', $skill);
                 }
             });
         }
 
         $jobs = $query->latest()->paginate(10);
-
         return view('jobseeker.jobs.index', compact('jobs'));
     }
 
-    // Job Seeker: View single job details
+    // Job Seeker: View single job
     public function show(Job $job)
     {
         return view('jobseeker.jobs.show', compact('job'));
     }
 
-    // -----------------------------
     // Employer: List my jobs
-    // -----------------------------
     public function employerIndex()
     {
-        $jobs = Job::where('employer_id', Auth::id())->latest()->get();
+        $jobs = Job::where('employer_id', Auth::id())
+            ->latest()
+            ->get();
+
         return view('employer.jobs.index', compact('jobs'));
     }
 
@@ -62,27 +59,26 @@ class JobController extends Controller
     // Employer: Store new job
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'salary' => 'nullable|numeric',
             'experience_level' => 'nullable|string|max:100',
+            'skills_required' => 'required|string', // REQUIRED
         ]);
 
-        Job::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'location' => $request->location,
-            'salary' => $request->salary,
-            'experience_level' => $request->experience_level,
-            'employer_id' => Auth::id(),
-        ]);
+        // Convert comma-separated string to array
+        $validated['skills_required'] = array_map('trim', explode(',', $request->skills_required));
+        $validated['employer_id'] = Auth::id();
 
-        return redirect()->route('employer.jobs.index')->with('success', 'Job posted successfully.');
+        Job::create($validated);
+
+        return redirect()->route('employer.jobs.index')
+            ->with('success', 'Job created successfully.');
     }
 
-    // Employer: Edit job
+    // Employer: Show edit form
     public function edit(Job $job)
     {
         $this->authorize('update', $job);
@@ -94,16 +90,22 @@ class JobController extends Controller
     {
         $this->authorize('update', $job);
 
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'salary' => 'nullable|numeric',
             'experience_level' => 'nullable|string|max:100',
+            'skills_required' => 'required|string', // REQUIRED
         ]);
 
-        $job->update($request->only('title','description','location','salary','experience_level'));
-        return redirect()->route('employer.jobs.index')->with('success', 'Job updated successfully.');
+        // Convert comma-separated string to array
+        $validated['skills_required'] = array_map('trim', explode(',', $request->skills_required));
+
+        $job->update($validated);
+
+        return redirect()->route('employer.jobs.index')
+            ->with('success', 'Job updated successfully.');
     }
 
     // Employer: Delete job
@@ -111,6 +113,13 @@ class JobController extends Controller
     {
         $this->authorize('delete', $job);
         $job->delete();
-        return redirect()->route('employer.jobs.index')->with('success', 'Job deleted successfully.');
+
+        return redirect()->route('employer.jobs.index')
+            ->with('success', 'Job deleted successfully.');
+    }
+    // Job Seeker: Show apply form
+    public function applyForm(Job $job)
+    {
+        return view('jobseeker.jobs.apply', compact('job'));
     }
 }

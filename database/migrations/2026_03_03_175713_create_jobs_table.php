@@ -12,13 +12,13 @@ return new class extends Migration {
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employer_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
-            $table->string('location')->nullable();
-            $table->string('skills_required')->nullable(); // comma-separated
-            $table->string('experience_level')->nullable(); // e.g., Junior, Mid, Senior
-            $table->decimal('salary', 12, 2)->nullable();
-            $table->foreignId('employer_id')->constrained('users')->onDelete('cascade'); // job posted by employer
+            $table->string('location');
+            $table->string('salary');
+            $table->string('experience_level');
+            $table->json('skills_required')->nullable();   // ← Add this
             $table->timestamps();
         });
     }

@@ -6,52 +6,68 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Application;
 use App\Models\Job;
-use App\Notifications\ApplicationStatusNotification;
-use App\Notifications\InterviewInvitationNotification;
 
 class ApplicationController extends Controller
 {
-    // Apply to a job
-    public function apply(Job $job)
+    // Show apply form
+    public function applyForm(Job $job)
+    {
+        return view('jobseeker.jobs.apply', compact('job'));
+    }
+
+    // Submit application
+    public function apply(Request $request, Job $job)
     {
         $user = Auth::user();
 
-        // Prevent duplicate applications
+        // Check if already applied
         if ($user->applications()->where('job_id', $job->id)->exists()) {
             return back()->with('error', 'You have already applied to this job.');
         }
 
+        // Validate input
+        $validated = $request->validate([
+            'cover_letter' => 'nullable|string|max:1000',
+            'resume' => 'required|file|mimes:pdf,doc,docx|max:5120',
+        ]);
+
+        // Upload resume if provided
+        $resumePath = null;
+        if ($request->hasFile('resume')) {
+            $resumePath = $request->file('resume')->store('resumes', 'public');
+        }
+
+        // Create application
         $user->applications()->create([
             'job_id' => $job->id,
+            'cover_letter' => $validated['cover_letter'] ?? null,
+            'resume' => $resumePath,
             'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Application submitted successfully.');
+        return redirect()->route('jobseeker.applications.index')
+            ->with('success', 'Application submitted successfully!');
     }
 
-    // Show all applications of logged-in user
+    // Show all applications
     public function index()
     {
         $user = Auth::user();
         $applications = $user->applications()->with('job')->latest()->get();
-
         return view('jobseeker.applications.index', compact('applications'));
     }
 
-    // Show a single application (job seeker)
+    // Show single application
     public function show(Application $application)
     {
-        $user = Auth::user();
-
-        // Make sure the user owns the application
-        if ($application->user_id !== $user->id) {
+        if ($application->user_id !== Auth::id()) {
             abort(403);
         }
-
+        $application->load('job');
         return view('jobseeker.applications.show', compact('application'));
     }
 
-    // ---------- Employer: List applications for my jobs ----------
+    // Employer: List applications
     public function employerIndex()
     {
         $jobIds = Auth::user()->jobs()->pluck('id');
@@ -62,30 +78,10 @@ class ApplicationController extends Controller
     // Employer: Show single application
     public function employerShow(Application $application)
     {
-        $user = Auth::user();
-        if ($application->job->employer_id !== $user->id) {
+        if ($application->job->employer_id !== Auth::id()) {
             abort(403);
         }
         $application->load(['job', 'user']);
         return view('employer.applications.show', compact('application'));
-    }
-
-    // Employer: Update application status
-    public function updateStatus(Request $request, Application $application)
-    {
-        $user = Auth::user();
-        if ($application->job->employer_id !== $user->id) {
-            abort(403);
-        }
-        $request->validate(['status' => 'required|in:pending,shortlisted,rejected,hired,interview']);
-        $application->update(['status' => $request->status]);
-
-        // Notify job seeker (database notification)
-        $application->user->notify(new ApplicationStatusNotification($application));
-        if ($request->status === 'interview') {
-            $application->user->notify(new InterviewInvitationNotification($application));
-        }
-
-        return back()->with('success', 'Application status updated.');
     }
 }

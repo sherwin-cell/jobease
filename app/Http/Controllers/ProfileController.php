@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
-use App\Models\Skill;
 
 class ProfileController extends Controller
 {
@@ -15,80 +14,85 @@ class ProfileController extends Controller
         $profile = $user->profile;
 
         if (!$profile) {
-            return redirect()->route('profile.edit')->with('info', 'Please complete your profile first.');
+            return redirect()->route('jobseeker.profile.create')
+                ->with('info', 'Please complete your profile first.');
         }
 
         return view('jobseeker.profile.show', compact('profile'));
     }
 
-    public function edit()
+    // DELETE edit() method — no longer needed
+
+    public function create()
     {
         $user = Auth::user();
         $profile = $user->profile ?? new Profile();
 
-        // Predefined skills (if you have a skills table)
-        $skills = Skill::all();
-
-        return view('jobseeker.profile.edit', compact('profile', 'skills'));
+        return view('jobseeker.profile.create', compact('profile'));
     }
 
-    public function update(Request $request)
+    public function store(Request $request)
     {
         $user = Auth::user();
 
         $request->validate([
-            'headline' => 'nullable|string|max:255',
-            'bio' => 'nullable|string',
-            'location' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:50',
-            'website' => 'nullable|url|max:255',
-            'skills' => 'nullable|array',
-            'skills.*' => 'integer|exists:skills,id',
-            'experience' => 'nullable|array',
-            'education' => 'nullable|array',
-            'certifications' => 'nullable|array',
-            'interests' => 'nullable|array',
+            'headline'                => 'nullable|string|max:255',
+            'bio'                     => 'nullable|string',
+            'location'                => 'nullable|string|max:255',
+            'phone'                   => 'nullable|string|max:50',
+            'website'                 => 'nullable|url|max:255',
+            'skills'                  => 'nullable',
+            'certifications'          => 'nullable',
+            'interests'               => 'nullable',
+            'experience'              => 'nullable|array',
+            'experience.*.title'      => 'nullable|string|max:255',
+            'experience.*.company'    => 'nullable|string|max:255',
+            'experience.*.start_date' => 'nullable|date',
+            'experience.*.end_date'   => 'nullable|date',
+            'education'               => 'nullable|array',
+            'education.*.degree'      => 'nullable|string|max:255',
+            'education.*.institution' => 'nullable|string|max:255',
+            'education.*.start_date'  => 'nullable|date',
+            'education.*.end_date'    => 'nullable|date',
         ]);
 
-        $profile = $user->profile()->updateOrCreate(
+        $skills = $request->skills;
+        if (is_string($skills)) {
+            $skills = array_values(array_filter(array_map('trim', explode(',', $skills))));
+        }
+
+        $certifications = $request->certifications;
+        if (is_string($certifications)) {
+            $certifications = array_values(array_filter(array_map('trim', explode(',', $certifications))));
+        }
+
+        $interests = $request->interests;
+        if (is_string($interests)) {
+            $interests = array_values(array_filter(array_map('trim', explode(',', $interests))));
+        }
+
+        Profile::updateOrCreate(
             ['user_id' => $user->id],
-            $request->only(['headline', 'bio', 'location', 'phone', 'website'])
+            [
+                'headline'       => $request->headline,
+                'bio'            => $request->bio,
+                'location'       => $request->location,
+                'phone'          => $request->phone,
+                'website'        => $request->website,
+                'skills'         => $skills ?? [],
+                'experience'     => $request->experience ?? [],
+                'education'      => $request->education ?? [],
+                'certifications' => $certifications ?? [],
+                'interests'      => $interests ?? [],
+            ]
         );
 
-        // Sync skills (many-to-many pivot)
-        $skillIds = collect($request->input('skills', []))
-            ->filter(fn ($id) => is_numeric($id))
-            ->map(fn ($id) => (int) $id)
-            ->filter(fn ($id) => $id > 0)
-            ->unique()
-            ->values()
-            ->all();
+        return redirect()->route('jobseeker.dashboard')
+            ->with('success', 'Profile saved successfully!');
+    }
 
-        $profile->skills()->sync($skillIds);
-
-        // Handle Experiences (one-to-many)
-        $profile->experiences()->delete();
-        foreach ($request->experience ?? [] as $exp) {
-            $profile->experiences()->create($exp);
-        }
-
-        // Handle Education (one-to-many)
-        $profile->educations()->delete();
-        foreach ($request->education ?? [] as $edu) {
-            $profile->educations()->create($edu);
-        }
-
-        // Handle Certifications (one-to-many)
-        $profile->certifications()->delete();
-        foreach ($request->certifications ?? [] as $cert) {
-            $profile->certifications()->create(['name' => $cert]);
-        }
-
-        // Handle Interests (one-to-many)
-        $profile->interests()->delete();
-        foreach ($request->interests ?? [] as $interest) {
-            $profile->interests()->create(['name' => $interest]);
-        }
-        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
+    public function update(Request $request)
+    {
+        return $this->store($request);
     }
 }

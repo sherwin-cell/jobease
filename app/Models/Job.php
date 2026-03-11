@@ -13,19 +13,27 @@ class Job extends Model
         'title',
         'description',
         'location',
-        'skills_required',
         'experience_level',
         'salary',
         'employer_id',
+        'skills_required', // ← KEEP this
     ];
 
-    public function employer()
-    {
-        return $this->belongsTo(User::class, 'employer_id');
-    }
+    protected $casts = [
+        'skills_required' => 'array', // ← KEEP this
+    ];
 
     public function applications()
     {
         return $this->hasMany(Application::class);
     }
+
+    // DELETE skills() relationship
+    // public function skills() ← REMOVE THIS
+
+    public function employer()
+    {
+        return $this->belongsTo(User::class, 'employer_id'); // ← correct
+    }
+
 }

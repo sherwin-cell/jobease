@@ -18,7 +18,8 @@ class RegisterController extends Controller
         return view('auth.register', compact('roles'));
     }
 
-    // Handle registration
+    // Handle registration form submission
+    // Handle registration form submission
     public function register(Request $request)
     {
         $request->validate([
@@ -26,9 +27,9 @@ class RegisterController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'role_id' => 'required|exists:roles,id',
+            'company_name' => 'nullable|string|max:255',
         ]);
 
-        // Create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -36,12 +37,18 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Auto-login
+        // If employer, create employer profile
+        if ($user->isEmployer()) {
+            $user->employer()->create([
+                'company_name' => $request->company_name,
+            ]);
+        }
+
         Auth::login($user);
 
-        // Redirect based on role
         if ($user->isJobSeeker()) {
-            return redirect()->route('jobseeker.dashboard');
+            return redirect()->route('jobseeker.profile.create')
+                ->with('info', 'Please complete your profile first.');
         } elseif ($user->isEmployer()) {
             return redirect()->route('employer.dashboard');
         } else {
