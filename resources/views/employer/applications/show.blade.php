@@ -5,14 +5,26 @@
         <h1 class="text-2xl font-bold mb-6">Application Details</h1>
 
         @if(session('success'))
-            <div class="text-green-600 mb-4">{{ session('success') }}</div>
+            <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4">
+                {{ session('success') }}
+            </div>
         @endif
 
         <!-- Applicant Info -->
         <div class="bg-gray-50 p-4 rounded mb-6 border">
             <p><strong>Job:</strong> {{ $application->job->title }}</p>
             <p><strong>Applicant:</strong> {{ $application->user->name }} ({{ $application->user->email }})</p>
-            <p><strong>Status:</strong> {{ ucfirst($application->status) }}</p>
+            <p><strong>Status:</strong> 
+                <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                    @if($application->status == 'pending') bg-yellow-100 text-yellow-800
+                    @elseif($application->status == 'shortlisted') bg-blue-100 text-blue-800
+                    @elseif($application->status == 'rejected') bg-red-100 text-red-800
+                    @elseif($application->status == 'hired') bg-green-100 text-green-800
+                    @endif
+                ">
+                    {{ ucfirst($application->status) }}
+                </span>
+            </p>
             <p><strong>Applied:</strong> {{ $application->created_at->format('M j, Y H:i') }}</p>
         </div>
 
@@ -42,22 +54,23 @@
             <form method="POST" action="{{ route('employer.applications.updateStatus', $application->id) }}">
                 @csrf
                 <div class="flex gap-2">
-                    <select name="status" class="border rounded px-3 py-2">
+                    <select name="status" class="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="shortlisted" {{ $application->status == 'shortlisted' ? 'selected' : '' }}>Shortlisted
-                        </option>
+                        <option value="shortlisted" {{ $application->status == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
                         <option value="rejected" {{ $application->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
                         <option value="hired" {{ $application->status == 'hired' ? 'selected' : '' }}>Hired</option>
                     </select>
-                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-2 rounded">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-2 rounded transition">
                         Update
                     </button>
                 </div>
+                @error('status')
+                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                @enderror
             </form>
         </div>
 
         <!-- Back Link -->
-        <p><a href="{{ route('employer.applications.index') }}" class="text-blue-600 hover:underline">← Back to
-                applications</a></p>
+        <p><a href="{{ route('employer.applications.index') }}" class="text-blue-600 hover:underline">← Back to applications</a></p>
     </div>
 @endsection

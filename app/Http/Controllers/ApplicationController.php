@@ -84,4 +84,33 @@ class ApplicationController extends Controller
         $application->load(['job', 'user']);
         return view('employer.applications.show', compact('application'));
     }
+
+    // Employer: Update application status
+    public function updateStatus(Request $request, Application $application)
+    {
+        // Only allow employer to update status
+        if ($application->job->employer_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,shortlisted,rejected,hired',
+        ]);
+
+        $application->status = $validated['status'];
+        $application->save();
+
+        // Check if it's an AJAX request
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'status' => $application->status,
+                'message' => 'Application status updated to ' . ucfirst($application->status) . '.',
+            ]);
+        }
+
+        // Otherwise redirect with success message
+        return redirect()->route('employer.applications.show', $application->id)
+            ->with('success', 'Application status updated to ' . ucfirst($application->status) . '.');
+    }
 }
