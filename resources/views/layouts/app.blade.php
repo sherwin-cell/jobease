@@ -11,7 +11,7 @@
 
 <body class="bg-gray-50 text-gray-800">
 
-    @unless(request()->routeIs('login', 'register'))
+    @unless(request()->routeIs('login', 'register', 'jobseeker.dashboard'))
         <header class="bg-white shadow">
             <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
 
@@ -63,34 +63,36 @@
         </header>
     @endunless
 
-    <!-- Flash Messages -->
-    <main class="container mx-auto px-6 py-6">
-        @if(session('success'))
-            <div class="mb-4 rounded border border-green-200 bg-green-50 p-3 text-green-800">
-                {{ session('success') }}
-            </div>
-        @endif
+    <!-- Flash Messages & Content -->
+    <main class="@if(request()->routeIs('jobseeker.dashboard')) w-full p-0 m-0 @else container mx-auto px-6 py-6 @endif">
+        @if(!request()->routeIs('jobseeker.dashboard'))
+            @if(session('success'))
+                <div class="mb-4 rounded border border-green-200 bg-green-50 p-3 text-green-800">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-        @if(session('error'))
-            <div class="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800">
-                {{ session('error') }}
-            </div>
-        @endif
+            @if(session('error'))
+                <div class="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-        @if(session('info'))
-            <div class="mb-4 rounded border border-blue-200 bg-blue-50 p-3 text-blue-800">
-                {{ session('info') }}
-            </div>
-        @endif
+            @if(session('info'))
+                <div class="mb-4 rounded border border-blue-200 bg-blue-50 p-3 text-blue-800">
+                    {{ session('info') }}
+                </div>
+            @endif
 
-        @if($errors->any())
-            <div class="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800">
-                <ul class="list-disc pl-5">
-                    @foreach($errors->all() as $message)
-                        <li>{{ $message }}</li>
-                    @endforeach
-                </ul>
-            </div>
+            @if($errors->any())
+                <div class="mb-4 rounded border border-red-200 bg-red-50 p-3 text-red-800">
+                    <ul class="list-disc pl-5">
+                        @foreach($errors->all() as $message)
+                            <li>{{ $message }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         @endif
 
         @yield('content')
