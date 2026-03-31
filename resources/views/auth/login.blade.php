@@ -16,7 +16,6 @@
             <div class="branding-bg branding-circle-2"></div>
             
             <div class="branding-content">
-                <div class="branding-logo">🚀</div>
                 <h2 class="branding-title">JobEase</h2>
                 <p class="branding-subtitle">
                     Find opportunities that match your skills and passion
