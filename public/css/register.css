@@ -1,5 +1,5 @@
 /* Register Page Styles - Redesigned */
-/* Luxury Minimalist with Geometric Depth - Mirrored Layout */
+/* Luxury Minimalist with Geometric Depth - Mirrored Layout with Enhanced Animations */
 
 * {
     --color-bg: #ffffff;
@@ -16,6 +16,8 @@
     --color-border: rgba(0, 0, 0, 0.08);
     --color-accent-blue: #2563eb;
     --color-accent-blue-light: #dbeafe;
+    --animation-duration: 0.6s;
+    --animation-timing: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -69,6 +71,7 @@ body::before {
         radial-gradient(circle at 40% 40%, rgba(15, 15, 15, 0.02) 0%, transparent 40%);
     pointer-events: none;
     z-index: -1;
+    animation: backgroundShift 20s ease-in-out infinite;
 }
 
 /* Animated geometric shapes */
@@ -87,6 +90,19 @@ body::after {
     animation: shiftGradient 15s ease-in-out infinite;
 }
 
+/* Background shift animation */
+@keyframes backgroundShift {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Gradient shift animation */
 @keyframes shiftGradient {
     0%, 100% {
         transform: translate(0, 0) rotate(0deg);
@@ -103,6 +119,17 @@ body::after {
     min-height: 100vh;
     background: transparent;
     gap: 2rem;
+    animation: containerFadeIn 0.8s ease-out;
+}
+
+/* Container entrance animation */
+@keyframes containerFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Left side form - Auth form wrapper */
@@ -116,6 +143,18 @@ body::after {
     position: relative;
     z-index: 1;
     order: -1;
+    animation: slideInLeft 0.8s var(--animation-timing);
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .gradient-bg {
@@ -134,7 +173,7 @@ body::after {
         0 20px 60px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(20px);
-    animation: slideUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: slideUp 0.7s var(--animation-timing);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -155,6 +194,19 @@ body::after {
         var(--color-accent-blue),
         transparent);
     opacity: 0.6;
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Shimmer animation for accent line */
+@keyframes shimmer {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translateX(-100%);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(100%);
+    }
 }
 
 .auth-card:hover {
@@ -200,6 +252,31 @@ body::after {
     text-align: center;
     margin-bottom: 1.25rem;
     animation: fadeIn 0.8s ease-out 0.1s both;
+    position: relative;
+}
+
+.auth-header::after {
+    content: '';
+    position: absolute;
+    bottom: -0.625rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-blue), transparent);
+    border-radius: 2px;
+    animation: expandWidth 0.8s ease-out 0.2s both;
+}
+
+@keyframes expandWidth {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: 30px;
+        opacity: 1;
+    }
 }
 
 .auth-logo {
@@ -207,6 +284,17 @@ body::after {
     margin-bottom: 0.75rem;
     display: block;
     letter-spacing: -0.05em;
+    animation: logoFloat 3s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
 }
 
 .auth-header h1 {
@@ -215,18 +303,32 @@ body::after {
     margin-bottom: 0.25rem;
     color: var(--color-text);
     letter-spacing: -0.02em;
+    animation: titleSlideIn 0.8s var(--animation-timing) 0.15s both;
+}
+
+@keyframes titleSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .auth-header p {
     font-size: 0.8rem;
     color: var(--color-text-light);
     font-weight: 400;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
 /* Form group styles */
 .form-group {
     margin-bottom: 1rem;
     animation: fadeInUp 0.6s ease-out both;
+    position: relative;
 }
 
 .form-group:nth-child(1) {
@@ -249,6 +351,44 @@ body::after {
     animation-delay: 0.4s;
 }
 
+/* Form group visible class for transitions */
+.form-group.hidden.transition-show {
+    animation: slideDownIn 0.4s var(--animation-timing) forwards;
+}
+
+.form-group.hidden:not(.transition-show) {
+    animation: slideUpOut 0.3s var(--animation-timing) forwards;
+}
+
+@keyframes slideDownIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+        max-height: 0;
+        overflow: hidden;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 500px;
+        overflow: visible;
+    }
+}
+
+@keyframes slideUpOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 500px;
+        overflow: hidden;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+        max-height: 0;
+    }
+}
+
 label {
     display: block;
     font-size: 0.7rem;
@@ -257,6 +397,7 @@ label {
     color: var(--color-text);
     letter-spacing: 0.3px;
     text-transform: uppercase;
+    animation: fadeIn 0.5s ease-out;
 }
 
 /* Input wrapper for icons */
@@ -277,9 +418,10 @@ select {
     background: var(--color-bg);
     color: var(--color-text);
     font-size: 0.875rem;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s var(--animation-timing);
     font-family: inherit;
     font-weight: 500;
+    position: relative;
 }
 
 input[type="email"]::placeholder,
@@ -289,14 +431,40 @@ input[type="text"]::placeholder {
     font-weight: 400;
 }
 
+/* Input focus animations */
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="text"]:focus,
 select:focus {
     outline: none;
     border-color: var(--color-accent-blue);
-    box-shadow: 0 0 0 4px var(--color-accent-blue-light);
+    box-shadow: 
+        0 0 0 4px var(--color-accent-blue-light),
+        0 0 20px rgba(37, 99, 235, 0.2);
     background: var(--color-bg);
+    animation: inputPulse 0.4s ease-out;
+}
+
+@keyframes inputPulse {
+    0% {
+        box-shadow: 
+            0 0 0 8px rgba(37, 99, 235, 0.3),
+            0 0 20px rgba(37, 99, 235, 0.2);
+    }
+    100% {
+        box-shadow: 
+            0 0 0 4px var(--color-accent-blue-light),
+            0 0 20px rgba(37, 99, 235, 0.2);
+    }
+}
+
+/* Input hover animation */
+input[type="email"]:hover:not(:focus),
+input[type="password"]:hover:not(:focus),
+input[type="text"]:hover:not(:focus),
+select:hover:not(:focus) {
+    border-color: var(--color-accent-blue);
+    transition: all 0.3s ease;
 }
 
 select {
@@ -312,6 +480,19 @@ select {
 input.error,
 select.error {
     border-color: var(--color-error);
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-8px);
+    }
+    75% {
+        transform: translateX(8px);
+    }
 }
 
 input.error:focus,
@@ -331,8 +512,9 @@ select.error:focus {
     border-left: 3px solid var(--color-error);
     font-size: 0.75rem;
     color: var(--color-error);
-    animation: slideDown 0.3s ease-out;
+    animation: slideDown 0.3s ease-out, errorBounce 0.6s var(--animation-timing);
     font-weight: 500;
+    position: relative;
 }
 
 @keyframes slideDown {
@@ -346,8 +528,33 @@ select.error:focus {
     }
 }
 
+@keyframes errorBounce {
+    0% {
+        transform: scaleY(0);
+        transform-origin: top;
+    }
+    50% {
+        transform: scaleY(1.1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
 .error-message span:first-child {
     font-weight: 700;
+    animation: iconSpin 0.5s ease-out;
+}
+
+@keyframes iconSpin {
+    from {
+        transform: rotate(-180deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
 }
 
 /* Password requirements */
@@ -360,6 +567,21 @@ select.error:focus {
     font-size: 0.75rem;
     color: var(--color-text-light);
     font-weight: 500;
+    animation: requirementsFadeIn 0.4s ease-out;
+    transition: all 0.3s ease;
+}
+
+@keyframes requirementsFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 200px;
+    }
 }
 
 .password-requirements strong {
@@ -380,6 +602,30 @@ select.error:focus {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    animation: listItemFadeIn 0.4s ease-out both;
+}
+
+.password-requirements li:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.password-requirements li:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.password-requirements li:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes listItemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .password-requirements li::before {
@@ -387,6 +633,18 @@ select.error:focus {
     color: var(--color-accent-blue);
     font-weight: 600;
     font-size: 0.8rem;
+    animation: checkmark 0.5s var(--animation-timing);
+}
+
+@keyframes checkmark {
+    from {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
 }
 
 /* Checkbox */
@@ -400,6 +658,7 @@ select.error:focus {
     color: var(--color-text);
     user-select: none;
     margin-bottom: 1rem;
+    animation: fadeInUp 0.6s ease-out 0.45s both;
 }
 
 input[type="checkbox"] {
@@ -409,12 +668,30 @@ input[type="checkbox"] {
     accent-color: var(--color-accent-blue);
     border-radius: 0.375rem;
     border: 1.5px solid var(--color-border);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s var(--animation-timing);
+    position: relative;
 }
 
 input[type="checkbox"]:hover {
     border-color: var(--color-accent-blue);
     transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+input[type="checkbox"]:checked {
+    animation: checkboxCheck 0.4s var(--animation-timing);
+}
+
+@keyframes checkboxCheck {
+    0% {
+        transform: scale(0.8) rotate(-10deg);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Submit button - Refined */
@@ -429,7 +706,7 @@ input[type="checkbox"]:hover {
     font-weight: 600;
     letter-spacing: 0.3px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s var(--animation-timing);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     animation: fadeInUp 0.6s ease-out 0.5s both;
     position: relative;
@@ -463,6 +740,19 @@ input[type="checkbox"]:hover {
 .btn-submit:active:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    animation: buttonClick 0.3s ease-out;
+}
+
+@keyframes buttonClick {
+    0% {
+        transform: translateY(-3px) scale(1);
+    }
+    50% {
+        transform: translateY(0) scale(1.02);
+    }
+    100% {
+        transform: translateY(-1px) scale(1);
+    }
 }
 
 .btn-submit:disabled {
@@ -486,6 +776,18 @@ input[type="checkbox"]:hover {
     right: 0;
     height: 1px;
     background: var(--color-border);
+    animation: expandLine 0.6s ease-out 0.65s both;
+}
+
+@keyframes expandLine {
+    from {
+        width: 0;
+        left: 50%;
+    }
+    to {
+        width: 100%;
+        left: 0;
+    }
 }
 
 .divider span {
@@ -497,6 +799,7 @@ input[type="checkbox"]:hover {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    animation: fadeIn 0.6s ease-out 0.7s both;
 }
 
 /* Footer link */
@@ -514,6 +817,18 @@ input[type="checkbox"]:hover {
     font-size: 0.8rem;
     transition: all 0.3s ease;
     position: relative;
+    animation: linkBounce 0.6s var(--animation-timing) 0.75s both;
+}
+
+@keyframes linkBounce {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .footer-link a::after {
@@ -526,12 +841,16 @@ input[type="checkbox"]:hover {
     background: var(--color-accent-blue);
     transform: scaleX(0);
     transform-origin: right;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.3s var(--animation-timing);
 }
 
 .footer-link a:hover::after {
     transform: scaleX(1);
     transform-origin: left;
+}
+
+.footer-link a:hover {
+    transform: translateY(-2px);
 }
 
 /* Right side branding - with photo */
@@ -547,6 +866,18 @@ input[type="checkbox"]:hover {
     position: relative;
     overflow: hidden;
     order: 1;
+    animation: slideInRight 0.8s var(--animation-timing);
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @media (min-width: 1024px) {
@@ -576,7 +907,28 @@ input[type="checkbox"]:hover {
 .branding-logo {
     font-size: 3.5rem;
     margin-bottom: 2rem;
-    animation: fadeIn 0.8s ease-out;
+    animation: logoFade 1s ease-out, logoPulse 2s ease-in-out infinite;
+    animation-delay: 0s, 0.8s;
+}
+
+@keyframes logoFade {
+    from {
+        opacity: 0;
+        transform: scale(0.5) rotate(-180deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes logoPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 .branding-title {
@@ -613,11 +965,65 @@ input[type="checkbox"]:hover {
     color: white;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     opacity: 0.95;
+    animation: slideInFeature 0.6s var(--animation-timing) both;
+    transition: all 0.3s ease;
+}
+
+.feature-item:nth-child(1) {
+    animation-delay: 0.4s;
+}
+
+.feature-item:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.feature-item:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes slideInFeature {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.feature-item:hover {
+    transform: translateX(10px);
 }
 
 .feature-icon {
     font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.9);
+    animation: iconRotate 0.6s var(--animation-timing);
+}
+
+.feature-item:hover .feature-icon {
+    animation: iconBounce 0.5s var(--animation-timing);
+}
+
+@keyframes iconRotate {
+    from {
+        transform: rotate(-90deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes iconBounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2) rotate(10deg);
+    }
 }
 
 .hidden {
@@ -639,6 +1045,7 @@ input[type="checkbox"]:hover {
         padding: 1.5rem;
         height: 100%;
         order: 0;
+        animation: slideUp 0.8s var(--animation-timing);
     }
 
     .auth-branding {

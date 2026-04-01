@@ -16,7 +16,7 @@
                 <p>Create your account</p>
             </div>
 
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" id="registerForm">
                 @csrf
 
                 <div class="form-group">
@@ -160,7 +160,7 @@
                     <label for="terms">I agree to the Terms & Conditions</label>
                 </div>
 
-                <button type="submit" class="btn-submit">Create Account</button>
+                <button type="submit" class="btn-submit" id="submitBtn">Create Account</button>
             </form>
 
             <div class="divider">
@@ -198,27 +198,122 @@
 </div>
 
 <script>
-    // Toggle company name field based on selected role
+    // Toggle company name field based on selected role with animations
     const roleSelect = document.getElementById('role_id');
     const companyField = document.getElementById('company_name_field');
     const companyInput = document.getElementById('company_name');
+    const registerForm = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
 
     function toggleCompanyField() {
         const selectedText = roleSelect.options[roleSelect.selectedIndex].text.toLowerCase();
         
         if (selectedText.includes('employer')) {
-            companyField.classList.remove('hidden');
-            companyField.classList.add('transition-show');
+            if (companyField.classList.contains('hidden')) {
+                companyField.classList.remove('hidden');
+                companyField.classList.add('transition-show');
+                // Remove transition-show after animation completes
+                setTimeout(() => {
+                    companyField.classList.remove('transition-show');
+                }, 400);
+            }
             companyInput.required = true;
         } else {
-            companyField.classList.add('hidden');
-            companyField.classList.remove('transition-show');
-            companyInput.required = false;
-            companyInput.value = '';
+            if (!companyField.classList.contains('hidden')) {
+                companyField.classList.add('hidden');
+                companyInput.required = false;
+                companyInput.value = '';
+            }
         }
     }
 
     roleSelect.addEventListener('change', toggleCompanyField);
     toggleCompanyField(); // Run on page load for old() repopulation
+
+    // Add input animations
+    const inputs = document.querySelectorAll('input[type="email"], input[type="password"], input[type="text"], select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.closest('.form-group')?.style.setProperty('--input-focus', 'true');
+        });
+
+        input.addEventListener('blur', function() {
+            this.parentElement.closest('.form-group')?.style.removeProperty('--input-focus');
+        });
+
+        // Ripple effect on input
+        input.addEventListener('focus', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const ripple = document.createElement('span');
+            ripple.style.position = 'absolute';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.width = '0';
+            ripple.style.height = '0';
+            ripple.style.borderRadius = '50%';
+            ripple.style.backgroundColor = 'rgba(37, 99, 235, 0.3)';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.animation = 'rippleEffect 0.6s ease-out';
+        });
+    });
+
+    // Submit button loading state
+    registerForm.addEventListener('submit', function(e) {
+        // Note: Only add visual feedback, don't prevent submission
+        submitBtn.style.opacity = '0.8';
+        submitBtn.style.pointerEvents = 'none';
+        submitBtn.innerHTML = '<span style="opacity: 0.7;">Creating account...</span>';
+        
+        // Reset after 3 seconds if there are no errors
+        setTimeout(() => {
+            submitBtn.style.opacity = '1';
+            submitBtn.style.pointerEvents = 'auto';
+            submitBtn.innerHTML = 'Create Account';
+        }, 3000);
+    });
+
+    // Add staggered animation to form errors on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach((msg, index) => {
+            msg.style.animationDelay = (index * 0.1) + 's';
+        });
+
+        // Animate form groups on load
+        const formGroups = document.querySelectorAll('.form-group');
+        formGroups.forEach((group, index) => {
+            if (!group.classList.contains('hidden')) {
+                group.style.opacity = '0';
+                group.style.transform = 'translateY(15px)';
+                setTimeout(() => {
+                    group.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    group.style.opacity = '1';
+                    group.style.transform = 'translateY(0)';
+                }, index * 50);
+            }
+        });
+    });
+
+    // Checkbox animation enhancement
+    const checkbox = document.getElementById('terms');
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            this.style.animation = 'checkboxCheck 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        }
+    });
 </script>
+
+<style>
+    @keyframes rippleEffect {
+        to {
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+        }
+    }
+</style>
 @endsection

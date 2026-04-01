@@ -63,7 +63,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
+    background:
         radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(15, 15, 15, 0.02) 0%, transparent 40%);
@@ -88,9 +88,12 @@ body::after {
 }
 
 @keyframes shiftGradient {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translate(0, 0) rotate(0deg);
     }
+
     50% {
         transform: translate(50px, -50px) rotate(5deg);
     }
@@ -123,6 +126,8 @@ body::after {
         url('/images/login_bg.jpg') center center / cover no-repeat;
     position: relative;
     overflow: hidden;
+
+    animation: fadeSlideLeft 1s ease-out forwards;
 }
 
 @media (min-width: 1024px) {
@@ -179,6 +184,19 @@ body::after {
     flex-direction: column;
     gap: 1.5rem;
     animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+/* Branding/photo animation: fade + slide from left */
+@keyframes fadeSlideLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .feature-item {
@@ -238,10 +256,10 @@ body::after {
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, 
-        transparent,
-        var(--color-accent-blue),
-        transparent);
+    background: linear-gradient(90deg,
+            transparent,
+            var(--color-accent-blue),
+            transparent);
     opacity: 0.6;
 }
 
@@ -257,6 +275,7 @@ body::after {
         opacity: 0;
         transform: translateY(60px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -267,6 +286,7 @@ body::after {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -277,6 +297,7 @@ body::after {
         opacity: 0;
         transform: translateY(15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -434,6 +455,7 @@ input.error:focus {
         opacity: 0;
         transform: translateY(-15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -748,5 +770,5 @@ input[type="checkbox"]:hover {
     input[type="text"] {
         font-size: 1rem;
     }
-    
+
 }

@@ -3,99 +3,89 @@
 @section('title', 'My Applications')
 
 @section('content')
-<div class="max-w-5xl mx-auto mt-8">
-    <h1 class="text-3xl font-bold mb-6">My Job Applications</h1>
-
-    <!-- Success Message -->
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            {{ session('success') }}
+    <div class="flex items-start justify-between gap-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Applications</h1>
+            <p class="mt-1 text-sm text-gray-500">Track your job applications and their current status.</p>
         </div>
-    @endif
-
-    <!-- Error Message -->
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            {{ session('error') }}
-        </div>
-    @endif
+        <a href="{{ route('jobseeker.jobs.index') }}"
+            class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition">
+            Browse Jobs
+        </a>
+    </div>
 
     @if($applications->isEmpty())
-        <!-- No Applications Message -->
-        <div class="bg-blue-50 border border-blue-200 p-6 rounded text-center">
-            <p class="text-gray-600 mb-4">You haven't applied to any jobs yet.</p>
-            <a href="{{ route('jobseeker.jobs.index') }}" 
-                class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded inline-block">
-                Browse Jobs
+        <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-10 text-center">
+            <div class="text-lg font-semibold text-gray-900">No applications yet</div>
+            <p class="mt-1 text-sm text-gray-600">When you apply for jobs, they’ll show up here.</p>
+            <a href="{{ route('jobseeker.jobs.index') }}"
+                class="mt-5 inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition">
+                Browse jobs
             </a>
         </div>
     @else
-        <!-- Applications Table -->
-        <div class="bg-white rounded shadow overflow-hidden">
-            <table class="w-full">
-                <thead class="bg-gray-100 border-b">
-                    <tr>
-                        <th class="text-left px-6 py-4 font-bold text-gray-700">Job Title</th>
-                        <th class="text-left px-6 py-4 font-bold text-gray-700">Location</th>
-                        <th class="text-left px-6 py-4 font-bold text-gray-700">Applied Date</th>
-                        <th class="text-left px-6 py-4 font-bold text-gray-700">Status</th>
-                        <th class="text-center px-6 py-4 font-bold text-gray-700">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($applications as $application)
-                    <tr class="border-b hover:bg-gray-50 transition">
-                        <!-- Job Title -->
-                        <td class="px-6 py-4">
-                            <a href="{{ route('jobseeker.jobs.show', $application->job) }}" 
-                                class="text-blue-500 hover:underline font-semibold">
-                                {{ $application->job->title }}
-                            </a>
-                        </td>
-
-                        <!-- Location -->
-                        <td class="px-6 py-4 text-gray-600">
-                            {{ $application->job->location ?? 'N/A' }}
-                        </td>
-
-                        <!-- Applied Date -->
-                        <td class="px-6 py-4 text-gray-600">
-                            {{ $application->created_at->format('M d, Y') }}
-                        </td>
-
-                        <!-- Status Badge -->
-                        <td class="px-6 py-4">
-                            @if($application->status === 'pending')
-                                <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded text-sm font-semibold">
-                                    Pending
-                                </span>
-                            @elseif($application->status === 'accepted')
-                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded text-sm font-semibold">
-                                    Accepted
-                                </span>
-                            @elseif($application->status === 'rejected')
-                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded text-sm font-semibold">
-                                    Rejected
-                                </span>
-                            @else
-                                <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded text-sm font-semibold">
-                                    {{ ucfirst($application->status) }}
-                                </span>
-                            @endif
-                        </td>
-
-                        <!-- Actions -->
-                        <td class="px-6 py-4 text-center">
-                            <a href="{{ route('jobseeker.applications.show', $application) }}" 
-                                class="text-blue-500 hover:text-blue-700 font-semibold text-sm">
-                                View Details
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <div class="mt-6 overflow-hidden rounded-2xl border border-gray-200 bg-white">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                Job
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                Location
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                Applied
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                Status
+                            </th>
+                            <th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach($applications as $application)
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4">
+                                    <a href="{{ route('jobseeker.jobs.show', $application->job) }}"
+                                        class="font-semibold text-gray-900 hover:text-blue-700">
+                                        {{ $application->job->title }}
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-600">
+                                    {{ $application->job->location ?? 'N/A' }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-600">
+                                    {{ $application->created_at->format('M d, Y') }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @php
+                                        $status = $application->status;
+                                        $badge = match ($status) {
+                                            'pending' => 'bg-yellow-50 text-yellow-800 border-yellow-200',
+                                            'accepted' => 'bg-green-50 text-green-800 border-green-200',
+                                            'rejected' => 'bg-red-50 text-red-800 border-red-200',
+                                            default => 'bg-gray-50 text-gray-800 border-gray-200',
+                                        };
+                                    @endphp
+                                    <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $badge }}">
+                                        {{ ucfirst($status) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{{ route('jobseeker.applications.show', $application) }}"
+                                        class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition">
+                                        View details
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     @endif
-</div>
 @endsection
