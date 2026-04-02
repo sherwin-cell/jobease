@@ -27,17 +27,12 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            // Redirect based on role
-            if ($user->isJobSeeker()) {
-                return redirect()->route('jobseeker.dashboard');
-            } elseif ($user->isEmployer()) {
-                return redirect()->route('employer.dashboard');
-            } elseif ($user->isAdmin()) {
-                return redirect()->route('admin.dashboard');
+            $target = $user->dashboardRoute();
+            if ($target === '/') {
+                return redirect('/');
             }
 
-            // Default fallback
-            return redirect('/');
+            return redirect()->route($target);
         }
 
         return back()->withErrors([

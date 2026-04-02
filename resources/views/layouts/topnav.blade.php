@@ -13,8 +13,9 @@
         <!-- Navigation / User Info -->
         <div class="flex items-center gap-6">
             <nav class="flex items-center gap-4">
-                <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-blue-600 font-semibold">
-                    Dashboard
+                <a href="{{ route('employer.dashboard') }}"
+                   class="text-gray-700 hover:text-blue-600 font-semibold">
+                    Employer Dashboard
                 </a>
                 <!-- Add more links if needed -->
             </nav>

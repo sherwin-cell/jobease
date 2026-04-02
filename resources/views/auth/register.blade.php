@@ -1,5 +1,5 @@
 {{-- resources/views/auth/register.blade.php --}}
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('head')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">

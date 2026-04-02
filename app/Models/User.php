@@ -70,14 +70,24 @@ class User extends Authenticatable
     // -----------------------------
     // Helper methods
     // -----------------------------
+    private function roleName(): ?string
+    {
+        if ($this->relationLoaded('role')) {
+            return $this->role?->name;
+        }
+
+        // Fallback to querying role name using role_id.
+        return $this->role?->name ?? $this->role()->value('name');
+    }
+
     public function isAdmin(): bool
     {
-        return $this->role && $this->role->name === 'admin';
+        return $this->roleName() === 'admin';
     }
 
     public function isEmployer(): bool
     {
-        return $this->role && $this->role->name === 'employer';
+        return $this->roleName() === 'employer';
     }
     public function employer()
     {
@@ -86,12 +96,12 @@ class User extends Authenticatable
 
     public function isJobSeeker(): bool
     {
-        return $this->role && $this->role->name === 'job_seeker';
+        return $this->roleName() === 'job_seeker';
     }
 
     public function dashboardRoute()
     {
-        return match ($this->role->name ?? '') {
+        return match ($this->roleName() ?? '') {
             'job_seeker' => 'jobseeker.dashboard',
             'employer' => 'employer.dashboard',
             'admin' => 'admin.dashboard',
