@@ -30,10 +30,6 @@
             <div class="rounded-2xl border border-gray-200 bg-white p-6">
                 <div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Experience</div>
                 <div class="mt-3 space-y-4">
-                    @php
-                        $experiences = $profile->experience ?? [];
-                        usort($experiences, fn($a, $b) => strcmp($b['start_date'] ?? '', $a['start_date'] ?? ''));
-                    @endphp
                     @forelse($experiences as $exp)
                         <div class="rounded-xl border border-gray-200 p-4">
                             <div class="flex items-start justify-between gap-2">
@@ -70,10 +66,6 @@
             <div class="rounded-2xl border border-gray-200 bg-white p-6">
                 <div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Education</div>
                 <div class="mt-3 space-y-4">
-                    @php
-                        $educations = $profile->education ?? [];
-                        usort($educations, fn($a, $b) => strcmp($b['start_date'] ?? '', $a['start_date'] ?? ''));
-                    @endphp
                     @forelse($educations as $edu)
                         <div class="rounded-xl border border-gray-200 p-4">
                             <div class="font-semibold text-gray-900">{{ $edu['degree'] ?? '-' }}</div>

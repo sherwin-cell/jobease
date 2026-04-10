@@ -307,9 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.current-job-checkbox').forEach(bindCurrentJobCheckbox);
 
     // ── Counters (avoid index collision after removes) ──
-    let expCount  = {{ count($experiences ?? []) }};
-    let eduCount  = {{ count($educations ?? []) }};
-    let certCount = {{ count($certs ?? []) }};
+    let expCount  = {{ (int) count($experiences ?? []) }};
+    let eduCount  = {{ (int) count($educations ?? []) }};
+    let certCount = {{ (int) count($certs ?? []) }};
 
     // ── Add Skill ──
     document.getElementById('add-skill').addEventListener('click', () => {

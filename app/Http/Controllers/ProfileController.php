@@ -18,7 +18,14 @@ class ProfileController extends Controller
                 ->with('info', 'Please complete your profile first.');
         }
 
-        return view('jobseeker.profile.show', compact('profile'));
+        // Sort experience and education most-recent-first before passing to the view
+        $experiences = $profile->experience ?? [];
+        usort($experiences, fn($a, $b) => strcmp($b['start_date'] ?? '', $a['start_date'] ?? ''));
+
+        $educations = $profile->education ?? [];
+        usort($educations, fn($a, $b) => strcmp($b['start_date'] ?? '', $a['start_date'] ?? ''));
+
+        return view('jobseeker.profile.show', compact('profile', 'experiences', 'educations'));
     }
 
     public function create()
@@ -49,7 +56,7 @@ class ProfileController extends Controller
             'experience.*.company'            => 'required_with:experience|string|max:255',
             'experience.*.start_date'         => 'required_with:experience|date',
             'experience.*.current_job'        => 'nullable|boolean',
-            'experience.*.end_date'           => 'nullable|date|after_or_equal:experience.*.start_date',
+            'experience.*.end_date'           => 'nullable|date',
             'experience.*.description'        => 'nullable|string|max:2000',
 
             'education'                       => 'nullable|array',
@@ -57,13 +64,13 @@ class ProfileController extends Controller
             'education.*.school'              => 'required_with:education|string|max:255',
             'education.*.field_of_study'      => 'nullable|string|max:255',
             'education.*.start_date'          => 'required_with:education|date',
-            'education.*.end_date'            => 'nullable|date|after_or_equal:education.*.start_date',
+            'education.*.end_date'            => 'nullable|date',
 
             'certifications'                  => 'nullable|array',
             'certifications.*.name'           => 'required_with:certifications|string|max:255',
             'certifications.*.issuing_org'    => 'nullable|string|max:255',
             'certifications.*.issue_date'     => 'nullable|date',
-            'certifications.*.expiration_date'=> 'nullable|date|after_or_equal:certifications.*.issue_date',
+            'certifications.*.expiration_date'=> 'nullable|date',
         ]);
 
         // Clean up simple string arrays
