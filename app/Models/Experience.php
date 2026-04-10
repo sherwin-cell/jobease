@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
-    protected $fillable = ['profile_id', 'title', 'company', 'start_date', 'end_date', 'description'];
+    protected $fillable = ['profile_id', 'title', 'company', 'start_date', 'end_date', 'current_job', 'description'];
 
     public function profile()
     {
