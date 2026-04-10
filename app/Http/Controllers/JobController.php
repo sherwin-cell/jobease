@@ -73,12 +73,7 @@ class JobController extends Controller
         // Convert comma-separated string to array
         $validated['skills_required'] = array_map('trim', explode(',', $request->skills_required));
         $validated['employer_id'] = Auth::id();
-
-        // Filter out empty Q&A questions
-        $validated['qa_questions'] = array_values(array_filter(
-            $request->input('qa_questions', []),
-            fn($q) => !empty(trim($q))
-        ));
+        $validated['qa_questions'] = $this->filterQaQuestions($request->input('qa_questions', []));
 
         Job::create($validated);
 
@@ -111,12 +106,7 @@ class JobController extends Controller
 
         // Convert comma-separated string to array
         $validated['skills_required'] = array_map('trim', explode(',', $request->skills_required));
-
-        // Filter out empty Q&A questions
-        $validated['qa_questions'] = array_values(array_filter(
-            $request->input('qa_questions', []),
-            fn($q) => !empty(trim($q))
-        ));
+        $validated['qa_questions'] = $this->filterQaQuestions($request->input('qa_questions', []));
 
         $job->update($validated);
 
@@ -137,5 +127,10 @@ class JobController extends Controller
     public function applyForm(Job $job)
     {
         return view('jobseeker.jobs.apply', compact('job'));
+    }
+
+    private function filterQaQuestions(array $questions): array
+    {
+        return array_values(array_filter($questions, fn($q) => !empty(trim($q))));
     }
 }
