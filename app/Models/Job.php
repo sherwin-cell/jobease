@@ -16,11 +16,13 @@ class Job extends Model
         'experience_level',
         'salary',
         'employer_id',
-        'skills_required', // ← KEEP this
+        'skills_required',
+        'qa_questions',
     ];
 
     protected $casts = [
-        'skills_required' => 'array', // ← KEEP this
+        'skills_required' => 'array',
+        'qa_questions' => 'array',
     ];
 
     public function applications()

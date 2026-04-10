@@ -66,11 +66,19 @@ class JobController extends Controller
             'salary' => 'nullable|numeric',
             'experience_level' => 'nullable|string|max:100',
             'skills_required' => 'required|string', // REQUIRED
+            'qa_questions' => 'nullable|array',
+            'qa_questions.*' => 'nullable|string|max:500',
         ]);
 
         // Convert comma-separated string to array
         $validated['skills_required'] = array_map('trim', explode(',', $request->skills_required));
         $validated['employer_id'] = Auth::id();
+
+        // Filter out empty Q&A questions
+        $validated['qa_questions'] = array_values(array_filter(
+            $request->input('qa_questions', []),
+            fn($q) => !empty(trim($q))
+        ));
 
         Job::create($validated);
 
@@ -97,10 +105,18 @@ class JobController extends Controller
             'salary' => 'nullable|numeric',
             'experience_level' => 'nullable|string|max:100',
             'skills_required' => 'required|string', // REQUIRED
+            'qa_questions' => 'nullable|array',
+            'qa_questions.*' => 'nullable|string|max:500',
         ]);
 
         // Convert comma-separated string to array
         $validated['skills_required'] = array_map('trim', explode(',', $request->skills_required));
+
+        // Filter out empty Q&A questions
+        $validated['qa_questions'] = array_values(array_filter(
+            $request->input('qa_questions', []),
+            fn($q) => !empty(trim($q))
+        ));
 
         $job->update($validated);
 

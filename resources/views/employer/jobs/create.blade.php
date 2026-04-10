@@ -74,6 +74,34 @@
                 <p class="text-gray-400 text-xs mt-1">Separate skills with commas</p>
             </div>
 
+            <!-- Q&A Questions -->
+            <div>
+                <label class="block font-medium mb-2">Application Questions (Q&A)</label>
+                <p class="text-gray-400 text-xs mb-2">Add questions that applicants must answer when applying.</p>
+                <div id="qa-questions-container" class="space-y-2">
+                    @php
+                        $existingQuestions = old('qa_questions', $job->qa_questions ?? []);
+                    @endphp
+                    @forelse($existingQuestions as $index => $question)
+                        <div class="flex gap-2 qa-question-row">
+                            <input type="text" name="qa_questions[]" value="{{ $question }}"
+                                class="w-full border rounded p-2" placeholder="Enter a question">
+                            <button type="button" onclick="this.closest('.qa-question-row').remove()"
+                                class="text-red-500 font-bold px-2">✕</button>
+                        </div>
+                    @empty
+                        <div class="flex gap-2 qa-question-row">
+                            <input type="text" name="qa_questions[]"
+                                class="w-full border rounded p-2" placeholder="Enter a question">
+                            <button type="button" onclick="this.closest('.qa-question-row').remove()"
+                                class="text-red-500 font-bold px-2">✕</button>
+                        </div>
+                    @endforelse
+                </div>
+                <button type="button" onclick="addQuestion()"
+                    class="mt-2 text-sm text-blue-600 hover:underline">+ Add another question</button>
+            </div>
+
             <!-- Submit Button -->
             <div class="text-center">
                 <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-2 rounded">
@@ -81,5 +109,18 @@
                 </button>
             </div>
         </form>
+
+        <script>
+            function addQuestion() {
+                const container = document.getElementById('qa-questions-container');
+                const row = document.createElement('div');
+                row.className = 'flex gap-2 qa-question-row';
+                row.innerHTML = `
+                    <input type="text" name="qa_questions[]" class="w-full border rounded p-2" placeholder="Enter a question">
+                    <button type="button" onclick="this.closest('.qa-question-row').remove()" class="text-red-500 font-bold px-2">✕</button>
+                `;
+                container.appendChild(row);
+            }
+        </script>
     </div>
 @endsection

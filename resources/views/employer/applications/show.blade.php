@@ -48,6 +48,19 @@
             </div>
         @endif
 
+        <!-- Q&A Answers -->
+        @if($application->qa_answers && count($application->qa_answers) > 0)
+            <div class="mb-6 border p-4 rounded bg-gray-50">
+                <h3 class="font-semibold mb-4">Application Questions & Answers</h3>
+                @foreach($application->qa_answers as $index => $qa)
+                    <div class="mb-4">
+                        <p class="font-medium text-gray-700">{{ $index + 1 }}. {{ $qa['question'] }}</p>
+                        <p class="text-gray-600 mt-1 pl-4">{{ $qa['answer'] ?: 'No answer provided.' }}</p>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <!-- Update Status Form -->
         <div class="border p-4 rounded bg-gray-50 mb-6">
             <h3 class="font-semibold mb-4">Update Status</h3>

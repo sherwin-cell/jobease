@@ -38,6 +38,17 @@
                     @endif
                 </p>
             </div>
+
+            @if($job->qa_questions && count($job->qa_questions) > 0)
+            <div>
+                <strong class="block text-gray-600">Application Questions:</strong>
+                <ol class="mt-1 list-decimal list-inside space-y-1">
+                    @foreach($job->qa_questions as $question)
+                        <li>{{ $question }}</li>
+                    @endforeach
+                </ol>
+            </div>
+            @endif
         </div>
 
         <!-- Apply Button -->

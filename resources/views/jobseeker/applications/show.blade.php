@@ -85,6 +85,19 @@
             @endif
         </div>
 
+        <!-- Q&A Answers -->
+        @if($application->qa_answers && count($application->qa_answers) > 0)
+        <div class="mb-8 pb-8 border-b">
+            <h2 class="text-xl font-bold mb-4">Your Application Answers</h2>
+            @foreach($application->qa_answers as $index => $qa)
+                <div class="mb-4 bg-gray-50 p-4 rounded border">
+                    <p class="font-medium text-gray-700">{{ $index + 1 }}. {{ $qa['question'] }}</p>
+                    <p class="text-gray-600 mt-1">{{ $qa['answer'] ?: 'No answer provided.' }}</p>
+                </div>
+            @endforeach
+        </div>
+        @endif
+
         <!-- Job Description -->
         <div class="mb-8">
             <h2 class="text-xl font-bold mb-4">Job Description</h2>

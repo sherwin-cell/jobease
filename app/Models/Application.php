@@ -12,6 +12,11 @@ class Application extends Model
         'cover_letter',
         'resume',
         'status',
+        'qa_answers',
+    ];
+
+    protected $casts = [
+        'qa_answers' => 'array',
     ];
 
     public function user()

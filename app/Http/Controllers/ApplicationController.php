@@ -25,16 +25,38 @@ class ApplicationController extends Controller
             return back()->with('error', 'You have already applied to this job.');
         }
 
-        // Validate input
-        $validated = $request->validate([
+        // Build validation rules
+        $rules = [
             'cover_letter' => 'nullable|string|max:1000',
             'resume' => 'required|file|mimes:pdf,doc,docx|max:5120',
-        ]);
+        ];
+
+        // Add Q&A validation if job has questions
+        if ($job->qa_questions && count($job->qa_questions) > 0) {
+            foreach ($job->qa_questions as $index => $question) {
+                $rules['qa_answers.' . $index] = 'nullable|string|max:1000';
+            }
+        }
+
+        $validated = $request->validate($rules);
 
         // Upload resume if provided
         $resumePath = null;
         if ($request->hasFile('resume')) {
             $resumePath = $request->file('resume')->store('resumes', 'public');
+        }
+
+        // Build Q&A answers keyed by question
+        $qaAnswers = null;
+        if ($job->qa_questions && count($job->qa_questions) > 0) {
+            $rawAnswers = $request->input('qa_answers', []);
+            $qaAnswers = [];
+            foreach ($job->qa_questions as $index => $question) {
+                $qaAnswers[] = [
+                    'question' => $question,
+                    'answer' => $rawAnswers[$index] ?? '',
+                ];
+            }
         }
 
         // Create application
@@ -43,6 +65,7 @@ class ApplicationController extends Controller
             'cover_letter' => $validated['cover_letter'] ?? null,
             'resume' => $resumePath,
             'status' => 'pending',
+            'qa_answers' => $qaAnswers,
         ]);
 
         return redirect()->route('jobseeker.applications.index')
