@@ -2,11 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
-    protected $fillable = ['profile_id', 'title', 'company', 'start_date', 'end_date', 'description'];
+    use HasFactory;
+
+    protected $fillable = [
+        'profile_id',
+        'title',
+        'company',
+        'start_date',
+        'end_date',
+        'description',
+    ];
 
     public function profile()
     {

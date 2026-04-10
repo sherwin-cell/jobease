@@ -24,4 +24,9 @@ class Employer extends Model
     {
         return $this->hasMany(Job::class);
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 }

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Jobease') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -63,6 +64,12 @@
                             💼 <span>Browse Jobs</span>
                         </a>
 
+                        <a href="{{ route('skill-qa.index') }}"
+                            class="flex items-center gap-3 px-4 py-2 rounded-lg transition
+                    {{ request()->routeIs('skill-qa.*') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            ❓ <span>Skill Q&amp;A</span>
+                        </a>
+
                         <a href="{{ route('jobseeker.applications.index') }}"
                             class="flex items-center gap-3 px-4 py-2 rounded-lg transition
                     {{ request()->routeIs('jobseeker.applications.*') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
@@ -82,7 +89,8 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition">
+                                class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition"
+                                onclick="return confirm('Are you sure you want to log out?');">
                                 🚪 <span>Logout</span>
                             </button>
                         </form>
@@ -190,7 +198,8 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition">
+                                class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition"
+                                onclick="return confirm('Are you sure you want to log out?');">
                                 🚪 <span>Logout</span>
                             </button>
                         </form>
@@ -285,6 +294,12 @@
                             💼 <span>My Jobs</span>
                         </a>
 
+                        <a href="{{ route('employer.live-skill-qa.index') }}"
+                            class="flex items-center gap-3 px-4 py-2 rounded-lg transition
+                    {{ request()->routeIs('employer.live-skill-qa.*') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            ❓ <span>Live Skill Q&amp;A</span>
+                        </a>
+
                         <a href="{{ route('employer.applications.index') }}"
                             class="flex items-center gap-3 px-4 py-2 rounded-lg transition
                     {{ request()->routeIs('employer.applications.*') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
@@ -304,7 +319,8 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition">
+                                class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition"
+                                onclick="return confirm('Are you sure you want to log out?');">
                                 🚪 <span>Logout</span>
                             </button>
                         </form>

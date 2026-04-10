@@ -2,11 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
-    protected $fillable = ['profile_id', 'degree', 'school', 'start_date', 'end_date'];
+    use HasFactory;
+
+    protected $fillable = [
+        'profile_id',
+        'institution',
+        'degree',
+        'field_of_study',
+        'start_date',
+        'end_date',
+        'description',
+    ];
 
     public function profile()
     {

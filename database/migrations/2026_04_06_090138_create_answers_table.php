@@ -10,14 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('educations', function (Blueprint $table) {
+        Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('profile_id')->constrained()->onDelete('cascade');
-            $table->string('school');
-            $table->string('degree');
-            $table->string('field_of_study');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
+            $table->foreignId('question_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->text('answer');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('education');
+        Schema::dropIfExists('answers');
     }
 };

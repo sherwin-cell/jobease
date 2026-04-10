@@ -9,6 +9,7 @@ class Profile extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'user_id',
         'headline',
@@ -17,18 +18,12 @@ class Profile extends Model
         'phone',
         'website',
         'skills',
-        'experience',
-        'education',
-        'certifications',
         'interests',
     ];
 
     protected $casts = [
-        'skills'         => 'array',
-        'experience'     => 'array',
-        'education'      => 'array',
-        'certifications' => 'array',
-        'interests'      => 'array',
+        'skills'    => 'array',
+        'interests' => 'array',
     ];
 
     public function user()
@@ -36,11 +31,19 @@ class Profile extends Model
         return $this->belongsTo(User::class);
     }
 
-    // DELETE all of these — no longer needed:
-    // public function getSkillsList()
-    // public function getExperienceList()
-    // public function getEducationList()
-    // public function getCertificationsList()
-    // public function getInterestsList()
-    // public function skills() ← ESPECIALLY THIS — conflicts with skills JSON field
+
+    public function experiences()
+    {
+        return $this->hasMany(Experience::class);
+    }
+
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
+    }
+
+    public function certifications()
+    {
+        return $this->hasMany(Certification::class);
+    }
 }

@@ -4,6 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\LiveSkillQaCallController;
+
+// Allow authenticated users (job seekers, employers, admins) to view job details
+Route::middleware(['auth', 'role:job_seeker,employer,admin'])
+    ->prefix('jobseeker')
+    ->name('jobseeker.')
+    ->group(function () {
+        Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+    });
 
 Route::middleware(['auth', 'role:job_seeker'])
     ->prefix('jobseeker')
@@ -28,7 +37,6 @@ Route::middleware(['auth', 'role:job_seeker'])
 
         // Jobs
         Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
-        Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
         Route::get('/jobs/{job}/apply', [JobController::class, 'applyForm'])->name('jobs.apply.form')->middleware('auth');
         Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply.submit')->middleware('auth');
 
@@ -36,4 +44,7 @@ Route::middleware(['auth', 'role:job_seeker'])
         // Applications
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
         Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
+
+        // Live Skill Q&A call join
+        Route::get('/live-skill-qa/sessions/{session}/join', [LiveSkillQaCallController::class, 'jobseekerJoin'])->name('live-skill-qa.join');
     });

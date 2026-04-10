@@ -36,4 +36,9 @@ class Job extends Model
         return $this->belongsTo(User::class, 'employer_id'); // ← correct
     }
 
+    public function liveSkillQa()
+    {
+        return $this->hasOne(JobLiveSkillQa::class);
+    }
+
 }

@@ -38,7 +38,7 @@
                             <tr class="hover:bg-gray-50 transition border-b">
                                 <!-- Title -->
                                 <td class="border p-3 w-1/4">
-                                    <a href="{{ route('jobseeker.jobs.show', $job) }}" 
+                                    <a href="{{ route('employer.jobs.show', $job) }}"
                                         class="text-blue-600 hover:underline font-semibold break-words"
                                         title="{{ $job->title }}">
                                         {{ Str::limit($job->title, 25, '...') }}

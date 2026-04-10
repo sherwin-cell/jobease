@@ -48,6 +48,20 @@
             </div>
         </a>
 
+        <a href="{{ route('employer.live-skill-qa.index') }}"
+            class="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-blue-200 hover:shadow-sm transition">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-semibold text-gray-900">Live Skill Q&amp;A</div>
+                <div class="text-lg">❓</div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+                View and manage scheduled Q&amp;A sessions for your jobs.
+            </p>
+            <div class="mt-4 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
+                Manage sessions →
+            </div>
+        </a>
+
         <a href="{{ route('employer.applications.index') }}"
             class="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-blue-200 hover:shadow-sm transition">
             <div class="flex items-center justify-between">
