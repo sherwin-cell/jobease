@@ -21,8 +21,6 @@ class ProfileController extends Controller
         return view('jobseeker.profile.show', compact('profile'));
     }
 
-    // DELETE edit() method — no longer needed
-
     public function create()
     {
         $user = Auth::user();
@@ -36,39 +34,95 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'headline'                => 'nullable|string|max:255',
-            'bio'                     => 'nullable|string',
-            'location'                => 'nullable|string|max:255',
-            'phone'                   => 'nullable|string|max:50',
-            'website'                 => 'nullable|url|max:255',
-            'skills'                  => 'nullable',
-            'certifications'          => 'nullable',
-            'interests'               => 'nullable',
-            'experience'              => 'nullable|array',
-            'experience.*.title'      => 'nullable|string|max:255',
-            'experience.*.company'    => 'nullable|string|max:255',
-            'experience.*.start_date' => 'nullable|date',
-            'experience.*.end_date'   => 'nullable|date',
-            'education'               => 'nullable|array',
-            'education.*.degree'      => 'nullable|string|max:255',
-            'education.*.institution' => 'nullable|string|max:255',
-            'education.*.start_date'  => 'nullable|date',
-            'education.*.end_date'    => 'nullable|date',
+            'headline'                        => 'nullable|string|max:255',
+            'bio'                             => 'nullable|string',
+            'location'                        => 'nullable|string|max:255',
+            'phone'                           => 'nullable|string|max:50',
+            'website'                         => 'nullable|url|max:255',
+            'skills'                          => 'nullable|array',
+            'skills.*'                        => 'nullable|string|max:100',
+            'interests'                       => 'nullable|array',
+            'interests.*'                     => 'nullable|string|max:100',
+
+            'experience'                      => 'nullable|array',
+            'experience.*.title'              => 'required_with:experience|string|max:255',
+            'experience.*.company'            => 'required_with:experience|string|max:255',
+            'experience.*.start_date'         => 'required_with:experience|date',
+            'experience.*.current_job'        => 'nullable|boolean',
+            'experience.*.end_date'           => 'nullable|date|after_or_equal:experience.*.start_date',
+            'experience.*.description'        => 'nullable|string|max:2000',
+
+            'education'                       => 'nullable|array',
+            'education.*.degree'              => 'required_with:education|string|max:255',
+            'education.*.school'              => 'required_with:education|string|max:255',
+            'education.*.field_of_study'      => 'nullable|string|max:255',
+            'education.*.start_date'          => 'required_with:education|date',
+            'education.*.end_date'            => 'nullable|date|after_or_equal:education.*.start_date',
+
+            'certifications'                  => 'nullable|array',
+            'certifications.*.name'           => 'required_with:certifications|string|max:255',
+            'certifications.*.issuing_org'    => 'nullable|string|max:255',
+            'certifications.*.issue_date'     => 'nullable|date',
+            'certifications.*.expiration_date'=> 'nullable|date|after_or_equal:certifications.*.issue_date',
         ]);
 
-        $skills = $request->skills;
-        if (is_string($skills)) {
-            $skills = array_values(array_filter(array_map('trim', explode(',', $skills))));
-        }
+        // Clean up simple string arrays
+        $skills = array_values(array_filter(
+            array_map('trim', $request->input('skills', [])),
+            fn($v) => $v !== ''
+        ));
 
-        $certifications = $request->certifications;
-        if (is_string($certifications)) {
-            $certifications = array_values(array_filter(array_map('trim', explode(',', $certifications))));
-        }
+        $interests = array_values(array_filter(
+            array_map('trim', $request->input('interests', [])),
+            fn($v) => $v !== ''
+        ));
 
-        $interests = $request->interests;
-        if (is_string($interests)) {
-            $interests = array_values(array_filter(array_map('trim', explode(',', $interests))));
+        // Process experience: clear end_date when current_job is checked, then sort most recent first
+        $experience = [];
+        foreach ($request->input('experience', []) as $exp) {
+            if (empty($exp['title']) && empty($exp['company'])) {
+                continue;
+            }
+            $isCurrentJob = !empty($exp['current_job']);
+            $experience[] = [
+                'title'       => trim($exp['title'] ?? ''),
+                'company'     => trim($exp['company'] ?? ''),
+                'start_date'  => $exp['start_date'] ?? null,
+                'end_date'    => $isCurrentJob ? null : ($exp['end_date'] ?? null),
+                'current_job' => $isCurrentJob,
+                'description' => trim($exp['description'] ?? ''),
+            ];
+        }
+        usort($experience, fn($a, $b) => strcmp($b['start_date'] ?? '', $a['start_date'] ?? ''));
+
+        // Process education, sort most recent first
+        $education = [];
+        foreach ($request->input('education', []) as $edu) {
+            if (empty($edu['degree']) && empty($edu['school'])) {
+                continue;
+            }
+            $education[] = [
+                'degree'         => trim($edu['degree'] ?? ''),
+                'school'         => trim($edu['school'] ?? ''),
+                'field_of_study' => trim($edu['field_of_study'] ?? ''),
+                'start_date'     => $edu['start_date'] ?? null,
+                'end_date'       => $edu['end_date'] ?? null,
+            ];
+        }
+        usort($education, fn($a, $b) => strcmp($b['start_date'] ?? '', $a['start_date'] ?? ''));
+
+        // Process certifications
+        $certifications = [];
+        foreach ($request->input('certifications', []) as $cert) {
+            if (empty($cert['name'])) {
+                continue;
+            }
+            $certifications[] = [
+                'name'            => trim($cert['name']),
+                'issuing_org'     => trim($cert['issuing_org'] ?? ''),
+                'issue_date'      => $cert['issue_date'] ?? null,
+                'expiration_date' => $cert['expiration_date'] ?? null,
+            ];
         }
 
         Profile::updateOrCreate(
@@ -79,15 +133,15 @@ class ProfileController extends Controller
                 'location'       => $request->location,
                 'phone'          => $request->phone,
                 'website'        => $request->website,
-                'skills'         => $skills ?? [],
-                'experience'     => $request->experience ?? [],
-                'education'      => $request->education ?? [],
-                'certifications' => $certifications ?? [],
-                'interests'      => $interests ?? [],
+                'skills'         => $skills,
+                'experience'     => $experience,
+                'education'      => $education,
+                'certifications' => $certifications,
+                'interests'      => $interests,
             ]
         );
 
-        return redirect()->route('jobseeker.dashboard')
+        return redirect()->route('jobseeker.profile.show')
             ->with('success', 'Profile saved successfully!');
     }
 
