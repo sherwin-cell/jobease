@@ -41,7 +41,7 @@
                 <div class="text-lg">💼</div>
             </div>
             <p class="mt-2 text-sm text-gray-600">
-                Discover roles that match your skills and goals.
+                Discover roles that match your goals.
             </p>
             <div class="mt-4 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
                 View jobs →
@@ -69,7 +69,7 @@
                 <div class="text-lg">✏️</div>
             </div>
             <p class="mt-2 text-sm text-gray-600">
-                Update your headline, skills, and experience.
+                Update your headline and experience.
             </p>
             <div class="mt-4 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
                 Edit now →

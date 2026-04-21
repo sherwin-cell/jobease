@@ -1,19 +1,18 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SkillTag extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'name',
     ];
 
+    // Many-to-many with questions
     public function questions()
     {
-        return $this->belongsToMany(SkillQuestion::class, 'skill_question_tag');
+        return $this->belongsToMany(SkillQuestion::class);
     }
 }

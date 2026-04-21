@@ -7,7 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Employer;
 
-class User extends Authenticatable
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -75,19 +77,17 @@ class User extends Authenticatable
         if ($this->relationLoaded('role')) {
             return $this->role?->name;
         }
-
-        // Fallback to querying role name using role_id.
         return $this->role?->name ?? $this->role()->value('name');
     }
 
     public function isAdmin(): bool
     {
-        return $this->roleName() === 'admin';
+        return (int) $this->role_id === 3;
     }
 
     public function isEmployer(): bool
     {
-        return $this->roleName() === 'employer';
+        return (int) $this->role_id === 2;
     }
     public function employer()
     {
@@ -96,7 +96,7 @@ class User extends Authenticatable
 
     public function isJobSeeker(): bool
     {
-        return $this->roleName() === 'job_seeker';
+        return (int) $this->role_id === 1;
     }
 
     public function dashboardRoute()

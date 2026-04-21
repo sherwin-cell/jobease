@@ -14,12 +14,9 @@ class JobLiveSkillQaSession extends Model
         'created_by',
         'slot_start_at',
         'slot_end_at',
-        'agora_channel',
         'status',
         'started_at',
         'ended_at',
-        'agora_channel_name',
-        'agora_token',
     ];
 
     protected $casts = [

@@ -4,44 +4,26 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Role;
 
 class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        // Check if user is logged in
-        if (!Auth::check()) {
+        if (!auth()->check()) {
             return redirect('/login');
         }
 
-        $user = Auth::user();
-        $userRoleId = (int) ($user->role_id ?? 0);
+        $user = auth()->user();
 
-        // Roles can be passed either as role_ids (e.g. 3) or role names (e.g. job_seeker).
-        $roleIds = [];
-        foreach ($roles as $roleParam) {
-            $roleParam = trim((string) $roleParam);
-
-            if ($roleParam === '') {
-                continue;
+        $roleIds = collect($roles)->map(function ($role) {
+            if (is_numeric($role)) {
+                return (int) $role;
             }
 
-            if (is_numeric($roleParam)) {
-                $roleIds[] = (int) $roleParam;
-                continue;
-            }
+            return \App\Models\Role::where('name', $role)->value('id');
+        })->filter()->toArray();
 
-            $matchedRoleId = Role::where('name', $roleParam)->value('id');
-            if ($matchedRoleId !== null) {
-                $roleIds[] = (int) $matchedRoleId;
-            }
-        }
-
-        $roleIds = array_values(array_unique($roleIds));
-
-        if (empty($roleIds) || !in_array($userRoleId, $roleIds, true)) {
+        if (!in_array($user->role_id, $roleIds)) {
             abort(403, 'Unauthorized access');
         }
 

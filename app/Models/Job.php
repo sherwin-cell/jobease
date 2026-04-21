@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SkillQuestion;
+use App\Models\Application;
+use App\Models\JobLiveSkillQa;
+use App\Models\User;
 
 class Job extends Model
 {
@@ -16,29 +20,31 @@ class Job extends Model
         'experience_level',
         'salary',
         'employer_id',
-        'skills_required', // ← KEEP this
+        'skills_required',
     ];
 
     protected $casts = [
-        'skills_required' => 'array', // ← KEEP this
+        'skills_required' => 'array',
     ];
+
+    // Skill Questions for this job
+    public function skillQuestions()
+    {
+        return $this->hasMany(SkillQuestion::class);
+    }
 
     public function applications()
     {
         return $this->hasMany(Application::class);
     }
 
-    // DELETE skills() relationship
-    // public function skills() ← REMOVE THIS
-
     public function employer()
     {
-        return $this->belongsTo(User::class, 'employer_id'); // ← correct
+        return $this->belongsTo(User::class, 'employer_id');
     }
 
     public function liveSkillQa()
     {
-        return $this->hasOne(JobLiveSkillQa::class);
+        return $this->hasOne(JobLiveSkillQa::class, 'job_id');
     }
-
 }

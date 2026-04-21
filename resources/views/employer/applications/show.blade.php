@@ -70,6 +70,16 @@
             </form>
         </div>
 
+        <!-- Schedule Interview Form -->
+        @if($application->status === 'shortlisted')
+            <form method="POST" action="{{ route('employer.interviews.schedule', $application->id) }}">
+                @csrf
+                <label for="scheduled_at">Interview Date & Time:</label>
+                <input type="datetime-local" name="scheduled_at" required>
+                <button type="submit" class="btn btn-primary">Schedule Interview</button>
+            </form>
+        @endif
+
         <!-- Back Link -->
         <p><a href="{{ route('employer.applications.index') }}" class="text-blue-600 hover:underline">← Back to applications</a></p>
     </div>

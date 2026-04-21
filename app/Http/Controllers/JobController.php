@@ -9,6 +9,8 @@ use App\Models\JobLiveSkillQa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use App\Models\Application;
+use App\Models\Answer;
 
 class JobController extends Controller
 {
@@ -34,11 +36,19 @@ class JobController extends Controller
             });
         }
 
+        // Exclude jobs already applied to by the authenticated user
+        if (Auth::check()) {
+            $appliedJobIds = Auth::user()->applications()->pluck('job_id')->toArray();
+            if (!empty($appliedJobIds)) {
+                $query->whereNotIn('id', $appliedJobIds);
+            }
+        }
+
         $jobs = $query->latest()->paginate(10);
         return view('jobseeker.jobs.index', compact('jobs'));
     }
 
-    // Job Seeker: View single job
+    // Job Seeker: View single job7/vvvvvvvvcvd
     public function show(Job $job)
     {
         return view('jobseeker.jobs.show', compact('job'));
@@ -282,6 +292,23 @@ class JobController extends Controller
     // Job Seeker: Show apply form
     public function applyForm(Job $job)
     {
-        return view('jobseeker.jobs.apply', compact('job'));
+        // Fetch required skills from the job (array)
+        $skills = $job->skills_required ?? [];
+
+        // Fetch Q&A from JobLiveSkillQa (if enabled)
+        $qa = $job->liveSkillQa;
+        $questions = [];
+        if ($qa && $qa->enabled && is_array($qa->questions)) {
+            // Each question should have an id and question text
+            foreach ($qa->questions as $idx => $q) {
+                $questions[] = [
+                    'id' => $q['id'] ?? $idx, // fallback to index if no id
+                    'question' => $q['question'] ?? ''
+                ];
+            }
+        }
+
+        return view('jobseeker.jobs.apply', compact('job', 'skills', 'questions'));
     }
+
 }

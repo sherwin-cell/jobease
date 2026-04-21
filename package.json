@@ -24,7 +24,7 @@
         "test": "tests"
     },
     "dependencies": {
-        "agora-rtc-sdk-ng": "^4.24.3",
+        "@zegocloud/zego-uikit-prebuilt": "^2.17.3",
         "ansi-regex": "^5.0.1",
         "ansi-styles": "^4.3.0",
         "asynckit": "^0.4.0",

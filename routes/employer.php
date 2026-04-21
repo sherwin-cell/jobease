@@ -4,18 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\EmployerController;
-use App\Http\Controllers\EmployerLiveSkillQaController;
-use App\Http\Controllers\LiveSkillQaCallController;
 
-Route::middleware(['auth', 'role:employer'])
+Route::middleware(['auth', 'role:employer', 'verified'])
     ->prefix('employer')
     ->name('employer.')
     ->group(function () {
 
-        // Dashboard
-        Route::get('/dashboard', function () {
-            return view('dashboards.employer');
-        })->name('dashboard');
 
         // Profile
         Route::get('/profile/edit', [EmployerController::class, 'editProfile'])->name('profile.edit');
@@ -34,10 +28,9 @@ Route::middleware(['auth', 'role:employer'])
         Route::get('/applications', [ApplicationController::class, 'employerIndex'])->name('applications.index');
         Route::get('/applications/{application}', [ApplicationController::class, 'employerShow'])->name('applications.show');
         Route::post('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+        Route::post('/applications/{application}/schedule-interview', [ApplicationController::class, 'scheduleInterview'])->name('employer.interviews.schedule');
 
-        // Live Skill Q&A sessions
-        Route::get('/live-skill-qa', [EmployerLiveSkillQaController::class, 'index'])->name('live-skill-qa.index');
-        Route::get('/live-skill-qa/jobs/{job}', [EmployerLiveSkillQaController::class, 'show'])->name('live-skill-qa.show');
-        Route::post('/live-skill-qa/jobs/{job}/start', [LiveSkillQaCallController::class, 'employerStart'])->name('live-skill-qa.start');
-        Route::get('/live-skill-qa/sessions/{session}/call', [LiveSkillQaCallController::class, 'employerCall'])->name('live-skill-qa.call');
+        // Dashboard
+        Route::get('/dashboard', [EmployerController::class, 'dashboard'])->name('dashboard');
+
     });

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\LiveSkillQaCallController;
+use App\Http\Controllers\InterviewSessionController;
 
 // Allow authenticated users (job seekers, employers, admins) to view job details
 Route::middleware(['auth', 'role:job_seeker,employer,admin'])
@@ -14,7 +14,7 @@ Route::middleware(['auth', 'role:job_seeker,employer,admin'])
         Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
     });
 
-Route::middleware(['auth', 'role:job_seeker'])
+Route::middleware(['auth', 'role:job_seeker', 'verified'])
     ->prefix('jobseeker')
     ->name('jobseeker.')
     ->group(function () {
@@ -45,6 +45,7 @@ Route::middleware(['auth', 'role:job_seeker'])
         Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
         Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
 
-        // Live Skill Q&A call join
-        Route::get('/live-skill-qa/sessions/{session}/join', [LiveSkillQaCallController::class, 'jobseekerJoin'])->name('live-skill-qa.join');
+        Route::get('/interviews/{session}/join', [InterviewSessionController::class, 'join'])
+            ->name('interviews.join');
+
     });

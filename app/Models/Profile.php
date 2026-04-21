@@ -22,8 +22,11 @@ class Profile extends Model
     ];
 
     protected $casts = [
-        'skills'    => 'array',
+        'skills' => 'array',
         'interests' => 'array',
+        'experience' => 'array',
+        'education' => 'array',
+        'certifications' => 'array',
     ];
 
     public function user()
@@ -45,5 +48,11 @@ class Profile extends Model
     public function certifications()
     {
         return $this->hasMany(Certification::class);
+    }
+
+    public function isCompanyProfileComplete()
+    {
+        // Example logic: Check if required fields for company profile are filled
+        return $this->headline && $this->bio && $this->location && $this->phone;
     }
 }

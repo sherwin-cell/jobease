@@ -19,7 +19,17 @@ class EmployerRegisterController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    if (!preg_match('/@gmail\.com$/i', $value)) {
+                        $fail('Only @gmail.com emails are allowed to register.');
+                    }
+                },
+            ],
             'password' => 'required|string|min:8|confirmed',
             'company_name' => 'required|string|max:255',
         ]);
@@ -37,7 +47,6 @@ class EmployerRegisterController extends Controller
         ]);
 
         auth()->login($user);
-
         return redirect()->route('employer.dashboard');
     }
 }

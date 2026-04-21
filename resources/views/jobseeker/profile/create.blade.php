@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.standalone')
 
 @section('content')
 <div class="container mx-auto p-6">
@@ -18,6 +18,7 @@
         </div>
     @endif
 
+    {{-- No sign-in form duplication here --}}
     <form method="POST" action="{{ $profile->exists ? route('jobseeker.profile.update') : route('jobseeker.profile.store') }}">
         @csrf
         @if($profile->exists) @method('PUT') @endif

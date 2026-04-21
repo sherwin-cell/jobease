@@ -1,26 +1,26 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SkillAnswer extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'question_id',
         'user_id',
-        'body',
+        'skill_question_id',
+        'answer',
     ];
 
-    public function question()
-    {
-        return $this->belongsTo(SkillQuestion::class, 'question_id');
-    }
-
+    // 👤 Who answered
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // ❓ Which question
+    public function question()
+    {
+        return $this->belongsTo(SkillQuestion::class, 'skill_question_id');
     }
 }

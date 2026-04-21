@@ -50,4 +50,16 @@ class LoginController extends Controller
 
         return redirect('/login');
     }
+
+    protected function authenticated($request, $user)
+    {
+        if ($user->isJobSeeker()) {
+            return redirect()->route('jobseeker.dashboard');
+        } elseif ($user->isEmployer()) {
+            return redirect()->route('employer.dashboard');
+        } elseif ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+        abort(403, 'Unauthorized');
+    }
 }
