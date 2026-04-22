@@ -3,7 +3,12 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\EnsureEmployerProfileComplete;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
-        then: function () {                                                    // ← ADD THIS
+        then: function () {
             Route::middleware('web')
                 ->group(base_path('routes/jobseeker.php'));
 
@@ -27,9 +32,15 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
+            'auth' => Authenticate::class,
             'role' => RoleMiddleware::class,
+            'verified' => EnsureEmailIsVerified::class,
+
+            // ✅ FIX FOR YOUR ERROR
+            'employer.profile.complete' => EnsureEmployerProfileComplete::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->create();

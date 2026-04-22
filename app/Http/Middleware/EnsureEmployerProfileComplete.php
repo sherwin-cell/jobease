@@ -10,18 +10,23 @@ class EnsureEmployerProfileComplete
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
 
-        // Check if the user is an employer and their company profile is incomplete
-        if ($user && $user->role === 'employer' && !$user->profile->isCompanyProfileComplete()) {
-            return redirect()->route('employer.complete-profile');
+        // Only check for authenticated employers
+        if ($user && $user->isEmployer()) {
+
+            // If profile doesn't exist OR is not complete
+            if (!$user->employerProfile || !$user->employerProfile->is_complete) {
+                return redirect()->route('employer.complete-profile');
+            }
+
+            // If profile is not approved
+            if (!$user->employerProfile->isApproved()) {
+                return redirect()->route('employer.profile-pending');
+            }
         }
 
         return $next($request);

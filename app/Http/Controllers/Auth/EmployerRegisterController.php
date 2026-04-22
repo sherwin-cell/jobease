@@ -41,12 +41,13 @@ class EmployerRegisterController extends Controller
             'role_id' => Role::where('name', 'employer')->firstOrFail()->id,
         ]);
 
-        // Create employer profile (use Profile: headline = company name)
-        $user->profile()->create([
-            'headline' => $request->company_name,
+        // Create employer profile
+        $user->employerProfile()->create([
+            'company_name' => $request->company_name,
+            'approval_status' => 'pending',
         ]);
 
         auth()->login($user);
-        return redirect()->route('employer.dashboard');
+        return redirect()->route('employer.complete-profile');
     }
 }

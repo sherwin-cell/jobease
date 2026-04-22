@@ -31,11 +31,14 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
+
+    // ✅ ONLY USE THIS (Laravel 11+)
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
-    ];
-    protected $routeMiddleware = [
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
+        // ✅ your custom middleware
         'employer.profile.complete' => \App\Http\Middleware\EnsureEmployerProfileComplete::class,
     ];
 }

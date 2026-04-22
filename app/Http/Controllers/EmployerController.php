@@ -13,7 +13,7 @@ class EmployerController extends Controller
 
     public function editProfile()
     {
-        $company = auth()->user()->profile ?? new \App\Models\Profile(['user_id' => auth()->id()]);
+        $company = auth()->user()->employerProfile ?? new \App\Models\EmployerProfile(['user_id' => auth()->id()]);
         return view('employer.edit_profile', compact('company'));
     }
 
@@ -22,18 +22,34 @@ class EmployerController extends Controller
         $request->validate([
             'company_name' => 'required|string|max:255',
             'website' => 'nullable|url',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'business_permit' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        auth()->user()->profile()->updateOrCreate(
+        $data = [
+            'company_name' => $request->company_name,
+            'website' => $request->website,
+            'description' => $request->description,
+            'location' => $request->location,
+            'phone' => $request->phone,
+        ];
+
+        if ($request->hasFile('business_permit')) {
+            $data['business_permit'] = $request->file('business_permit')->store('business_permits', 'public');
+        }
+
+        $profile = auth()->user()->employerProfile()->updateOrCreate(
             ['user_id' => auth()->id()],
-            [
-                'headline' => $request->company_name,
-                'website' => $request->website,
-                'bio' => $request->description,
-            ]
+            $data
         );
 
-        return redirect()->route('employer.dashboard')->with('success', 'Profile updated.');
+        if ($profile->is_complete) {
+            return redirect()->route('employer.dashboard')
+                ->with('success', 'Profile completed successfully!');
+        }
+
+        return redirect()->back()->with('info', 'Please complete all required fields to access the dashboard.');
     }
 }

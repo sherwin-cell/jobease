@@ -51,7 +51,7 @@ class RegisterController extends Controller
 
         // If employer, create employer profile
         if ($user->isEmployer()) {
-            $user->employer()->create([
+            $user->employerProfile()->create([
                 'company_name' => $request->company_name,
             ]);
         }

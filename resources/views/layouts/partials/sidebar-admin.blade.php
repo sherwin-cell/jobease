@@ -30,6 +30,11 @@
             class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('admin.reports*') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
             📊 <span>View Reports</span>
         </a>
+        <a href="{{ route('admin.employer-profiles.index') }}"
+            class="flex items-center gap-3 px-4 py-2 rounded-lg transition
+    {{ request()->routeIs('admin.employer-profiles.*') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+            🏢 <span>Employer Profiles</span>
+        </a>
     </nav>
     <div class="p-4 border-t">
         <form method="POST" action="{{ route('logout') }}">

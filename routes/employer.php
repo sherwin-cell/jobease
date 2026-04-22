@@ -10,10 +10,35 @@ Route::middleware(['auth', 'role:employer', 'verified'])
     ->name('employer.')
     ->group(function () {
 
+        // Profile completion (accessible even if profile incomplete)
+        Route::get('/profile/complete', function () {
+            $user = auth()->user();
+            // If profile exists and is complete, redirect to dashboard
+            if ($user->employerProfile && $user->employerProfile->is_complete) {
+                return redirect()->route('employer.dashboard');
+            }
+            $company = $user->employerProfile ?? new \App\Models\EmployerProfile(['user_id' => $user->id]);
+            return view('employer.complete-profile', compact('company'));
+        })->name('complete-profile');
 
-        // Profile
+        // Profile edit (accessible even if profile incomplete)
         Route::get('/profile/edit', [EmployerController::class, 'editProfile'])->name('profile.edit');
         Route::put('/profile', [EmployerController::class, 'updateProfile'])->name('profile.update');
+
+        // Profile pending approval (accessible even if profile not approved)
+        Route::get('/profile/pending', function () {
+            return view('employer.profile-pending');
+        })->name('profile-pending');
+    });
+
+Route::middleware(['auth', 'role:employer', 'verified', 'employer.profile.complete'])
+    ->prefix('employer')
+    ->name('employer.')
+    ->group(function () {
+
+        // Dashboard (NOW FULLY PROTECTED)
+        Route::get('/dashboard', [EmployerController::class, 'dashboard'])
+            ->name('dashboard');
 
         // Jobs
         Route::get('/jobs', [JobController::class, 'employerIndex'])->name('jobs.index');
@@ -28,7 +53,8 @@ Route::middleware(['auth', 'role:employer', 'verified'])
         Route::get('/applications', [ApplicationController::class, 'employerIndex'])->name('applications.index');
         Route::get('/applications/{application}', [ApplicationController::class, 'employerShow'])->name('applications.show');
         Route::post('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
-        Route::post('/applications/{application}/schedule-interview', [ApplicationController::class, 'scheduleInterview'])->name('employer.interviews.schedule');
+        Route::post('/applications/{application}/schedule-interview', [ApplicationController::class, 'scheduleInterview'])->name('interviews.schedule');
+
 
         // Dashboard
         Route::get('/dashboard', [EmployerController::class, 'dashboard'])->name('dashboard');

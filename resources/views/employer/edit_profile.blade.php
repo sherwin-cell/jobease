@@ -22,9 +22,21 @@
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label class="block mb-1 font-semibold">Company Name</label>
-                <input type="text" name="company_name" value="{{ old('company_name', $company->company_name ?? '') }}"
+                <label class="block mb-1 font-semibold">Company Name *</label>
+                <input type="text" name="company_name" value="{{ old('company_name', $company->headline ?? '') }}"
                     placeholder="Company Name" required class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-1 font-semibold">Location *</label>
+                <input type="text" name="location" value="{{ old('location', $company->location ?? '') }}"
+                    placeholder="Company Location" required class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-1 font-semibold">Phone *</label>
+                <input type="tel" name="phone" value="{{ old('phone', $company->phone ?? '') }}"
+                    placeholder="Company Phone" required class="w-full border border-gray-300 rounded px-3 py-2">
             </div>
 
             <div class="mb-4">
@@ -34,10 +46,10 @@
             </div>
 
             <div class="mb-4">
-                <label class="block mb-1 font-semibold">Company Description</label>
+                <label class="block mb-1 font-semibold">Company Description *</label>
                 <textarea name="description" placeholder="Company Description"
                     class="w-full border border-gray-300 rounded px-3 py-2"
-                    rows="5">{{ old('description', $company->description ?? '') }}</textarea>
+                    rows="5" required>{{ old('description', $company->bio ?? '') }}</textarea>
             </div>
 
             <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">

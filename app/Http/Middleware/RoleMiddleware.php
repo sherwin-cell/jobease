@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\Role;
 
 class RoleMiddleware
 {
@@ -15,14 +16,22 @@ class RoleMiddleware
 
         $user = auth()->user();
 
-        $roleIds = collect($roles)->map(function ($role) {
-            if (is_numeric($role)) {
-                return (int) $role;
-            }
+        // Convert role names → role IDs
+        $roleIds = collect($roles)
+            ->map(function ($role) {
+                // If numeric (like 1,2,3)
+                if (is_numeric($role)) {
+                    return (int) $role;
+                }
 
-            return \App\Models\Role::where('name', $role)->value('id');
-        })->filter()->toArray();
+                // If string role (job_seeker, employer, admin)
+                return Role::where('name', $role)->value('id');
+            })
+            ->filter()
+            ->values()
+            ->toArray();
 
+        // Check access
         if (!in_array($user->role_id, $roleIds)) {
             abort(403, 'Unauthorized access');
         }
