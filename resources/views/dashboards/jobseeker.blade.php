@@ -65,7 +65,7 @@
         <a href="{{ route('jobseeker.profile.create') }}"
             class="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-blue-200 hover:shadow-sm transition">
             <div class="flex items-center justify-between">
-                <div class="text-sm font-semibold text-gray-900">Edit Profile</div>
+                <div class="text-sm font-semibold text-gray-900">EditProfile</div>
                 <div class="text-lg">✏️</div>
             </div>
             <p class="mt-2 text-sm text-gray-600">

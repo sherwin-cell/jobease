@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\InterviewSessionController;
+use App\Http\Controllers\JobseekerProfileController;
 
 // Allow authenticated users (job seekers, employers, admins) to view job details
 Route::middleware(['auth', 'role:job_seeker,employer,admin'])
@@ -22,7 +23,7 @@ Route::middleware(['auth', 'role:job_seeker', 'verified'])
         // Dashboard
         Route::get('/dashboard', function () {
             $user = auth()->user();
-            if (!$user->profile) {
+            if (!$user->jobseekerProfile) {
                 return redirect()->route('jobseeker.profile.create')
                     ->with('info', 'Please complete your profile first.');
             }
@@ -30,10 +31,11 @@ Route::middleware(['auth', 'role:job_seeker', 'verified'])
         })->name('dashboard');
 
         // Profile
-        Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
-        Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
-        Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('/profile/create', [JobseekerProfileController::class, 'create'])->name('profile.create');
+        Route::post('/profile', [JobseekerProfileController::class, 'store'])->name('profile.store');
+        Route::get('/profile', [JobseekerProfileController::class, 'show'])->name('profile.show');
+        Route::get('/profile/edit', [JobseekerProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [JobseekerProfileController::class, 'update'])->name('profile.update');
 
         // Jobs
         Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');

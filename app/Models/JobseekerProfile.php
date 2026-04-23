@@ -26,19 +26,8 @@ class JobseekerProfile extends Model
         'interests' => 'array',
     ];
 
-    /**
-     * Relationship: JobseekerProfile belongs to User
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Check if jobseeker profile is complete
-     */
-    public function isComplete()
-    {
-        return $this->skills && $this->experience && $this->education;
     }
 }
