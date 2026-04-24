@@ -10,7 +10,9 @@ class JobseekerProfileController extends Controller
 {
     public function show()
     {
-        $profile = Auth::user()->jobseekerProfile;
+        $profile = Auth::user()->jobseekerProfile()
+            ->with('user')
+            ->first();
         if (!$profile) {
             return redirect()->route('jobseeker.profile.create')
                 ->with('info', 'Please complete your profile first.');
@@ -21,6 +23,10 @@ class JobseekerProfileController extends Controller
     public function create()
     {
         $profile = Auth::user()->jobseekerProfile ?? new JobseekerProfile();
+        // Ensure education is an array for form binding
+        if (empty($profile->education)) {
+            $profile->education = [['degree' => '', 'institution' => '', 'field_of_study' => '', 'start_date' => '', 'end_date' => '', 'description' => '']];
+        }
         return view('jobseeker.profile.create', compact('profile'));
     }
 
@@ -40,6 +46,10 @@ class JobseekerProfileController extends Controller
     public function edit()
     {
         $profile = Auth::user()->jobseekerProfile;
+        // Ensure education is an array for form binding
+        if (empty($profile->education)) {
+            $profile->education = [['degree' => '', 'institution' => '', 'field_of_study' => '', 'start_date' => '', 'end_date' => '', 'description' => '']];
+        }
         return view('jobseeker.profile.edit', compact('profile'));
     }
 
@@ -59,6 +69,8 @@ class JobseekerProfileController extends Controller
     private function validateData(Request $request)
     {
         return $request->validate([
+            'headline' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
             'skills' => 'nullable|array',
             'skills.*' => 'nullable|string|max:255',
             'experience' => 'nullable|array',
@@ -70,12 +82,17 @@ class JobseekerProfileController extends Controller
             'education' => 'nullable|array',
             'education.*.degree' => 'nullable|string|max:255',
             'education.*.institution' => 'nullable|string|max:255',
+            'education.*.field_of_study' => 'nullable|string|max:255',
             'education.*.start_date' => 'nullable|date',
             'education.*.end_date' => 'nullable|date',
+            'education.*.description' => 'nullable|string',
             'certifications' => 'nullable|array',
             'certifications.*' => 'nullable|string|max:255',
             'interests' => 'nullable|array',
             'interests.*' => 'nullable|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'phone' => 'nullable|regex:/^09[0-9]{9}$/',
+            'website' => 'nullable|string|max:255',
         ]);
     }
 }

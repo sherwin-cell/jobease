@@ -4,9 +4,20 @@
 @section('content')
 
 @php
+    use Carbon\Carbon;
     $experience = $profile->experience ?? [];
     $education = $profile->education ?? [];
     $skills = $profile->skills ?? [];
+    
+    // Format date helper
+    $formatDate = function($date) {
+        if (empty($date)) return null;
+        try {
+            return Carbon::parse($date)->format('M Y');
+        } catch (\Exception $e) {
+            return $date;
+        }
+    };
 @endphp
 
 <div class="w-full max-w-5xl mx-auto">
@@ -52,7 +63,10 @@
                     <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
                         <div class="flex items-center justify-between">
                             <div class="font-semibold text-gray-900 text-base">{{ $exp['title'] ?? '-' }}</div>
-                            <div class="text-xs text-gray-500">{{ $exp['start_date'] ?? '-' }} – {{ $exp['end_date'] ?? 'Present' }}</div>
+                            <div class="text-xs text-gray-500">
+                                {{ $formatDate($exp['start_date'] ?? null) ?? '-' }} – 
+                                {{ $formatDate($exp['end_date'] ?? null) ?? 'Present' }}
+                            </div>
                         </div>
                         <div class="text-sm text-gray-600 mb-1">{{ $exp['company'] ?? '-' }}</div>
                         @if(!empty($exp['description']))
@@ -76,7 +90,16 @@
                     <div class="rounded-xl border border-gray-200 bg-gray-50 p-5">
                         <div class="font-semibold text-gray-900 text-base">{{ $edu['degree'] ?? '-' }}</div>
                         <div class="text-sm text-gray-600 mb-1">{{ $edu['institution'] ?? '-' }}</div>
-                        <div class="text-xs text-gray-500">{{ $edu['start_date'] ?? '-' }} – {{ $edu['end_date'] ?? '-' }}</div>
+                        <div class="text-xs text-gray-500">
+                            {{ $formatDate($edu['start_date'] ?? null) ?? '-' }} – 
+                            {{ $formatDate($edu['end_date'] ?? null) ?? 'Present' }}
+                        </div>
+                        @if(!empty($edu['field_of_study']))
+                            <div class="text-sm text-gray-600 mt-1">{{ $edu['field_of_study'] }}</div>
+                        @endif
+                        @if(!empty($edu['description']))
+                            <div class="text-gray-700 text-sm mt-2">{{ $edu['description'] }}</div>
+                        @endif
                     </div>
                 @empty
                     <div class="text-gray-400 italic">No education listed.</div>

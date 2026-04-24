@@ -216,19 +216,23 @@
                 {{-- Education --}}
                 <div id="education" class="profile-section">
                     <div class="profile-section-title">Education</div>
-                    @foreach(old('education', $profile->education ?? [['degree' => '', 'institution' => '', 'start_date' => '', 'end_date' => '']]) as $i => $edu)
-                        <div class="mb-3"
+                    @foreach(old('education', $profile->education ?? [['degree' => '', 'institution' => '', 'field_of_study' => '', 'start_date' => '', 'end_date' => '', 'description' => '']]) as $i => $edu)
+                        <div class="mb-3" data-education
                             style="background:#f3f4f6; border-radius:10px; padding:1rem 1.2rem; margin-bottom:1.2rem;">
                             <input type="text" name="education[{{ $i }}][degree]" value="{{ $edu['degree'] ?? '' }}"
                                 placeholder="Degree" class="profile-input">
                             <input type="text" name="education[{{ $i }}][institution]" value="{{ $edu['institution'] ?? '' }}"
                                 placeholder="Institution" class="profile-input">
+                            <input type="text" name="education[{{ $i }}][field_of_study]" value="{{ $edu['field_of_study'] ?? '' }}"
+                                placeholder="Field of Study" class="profile-input">
                             <div class="profile-flex-row">
                                 <input type="date" name="education[{{ $i }}][start_date]" value="{{ $edu['start_date'] ?? '' }}"
                                     class="profile-input">
                                 <input type="date" name="education[{{ $i }}][end_date]" value="{{ $edu['end_date'] ?? '' }}"
                                     class="profile-input">
                             </div>
+                            <textarea name="education[{{ $i }}][description]" placeholder="Description"
+                                class="profile-textarea" rows="2">{{ $edu['description'] ?? '' }}</textarea>
                             <button type="button" class="remove-education profile-btn-remove"
                                 style="margin-top:0.5rem;">Remove</button>
                         </div>
@@ -311,7 +315,7 @@
             // Experience
             document.getElementById('add-experience')?.addEventListener('click', () => {
                 const wrapper = document.getElementById('experiences');
-                const count = wrapper.querySelectorAll('div.mb-2').length;
+                const count = wrapper.querySelectorAll('#experiences > div').length;
                 const div = document.createElement('div');
                 div.classList.add('mb-2', 'border', 'p-2', 'rounded');
                 div.innerHTML = `
@@ -328,16 +332,22 @@
             // Education
             document.getElementById('add-education')?.addEventListener('click', () => {
                 const wrapper = document.getElementById('education');
-                const count = wrapper.querySelectorAll('div.mb-2').length;
+                const count = wrapper.querySelectorAll('[data-education]').length;
                 const div = document.createElement('div');
-                div.classList.add('mb-2', 'border', 'p-2', 'rounded');
+                div.setAttribute('data-education', '');
+                div.classList.add('mb-3');
+                div.style.cssText = 'background:#f3f4f6; border-radius:10px; padding:1rem 1.2rem; margin-bottom:1.2rem;';
                 div.innerHTML = `
-                    <input type="text" name="education[${count}][degree]" placeholder="Degree" class="border p-1 w-full mb-1 rounded">
-                    <input type="text" name="education[${count}][institution]" placeholder="Institution" class="border p-1 w-full mb-1 rounded">
-                    <input type="date" name="education[${count}][start_date]" class="border p-1 w-full mb-1 rounded">
-                    <input type="date" name="education[${count}][end_date]" class="border p-1 w-full mb-1 rounded">
-                    <button type="button" class="remove-education bg-red-500 text-white px-2 py-1 mt-1 rounded">Remove</button>`;
-                wrapper.appendChild(div);
+                    <input type="text" name="education[${count}][degree]" placeholder="Degree" class="profile-input">
+                    <input type="text" name="education[${count}][institution]" placeholder="Institution" class="profile-input">
+                    <input type="text" name="education[${count}][field_of_study]" placeholder="Field of Study" class="profile-input">
+                    <div class="profile-flex-row">
+                        <input type="date" name="education[${count}][start_date]" class="profile-input">
+                        <input type="date" name="education[${count}][end_date]" class="profile-input">
+                    </div>
+                    <textarea name="education[${count}][description]" placeholder="Description" class="profile-textarea" rows="2"></textarea>
+                    <button type="button" class="remove-education profile-btn-remove" style="margin-top:0.5rem;">Remove</button>`;
+                wrapper.insertBefore(div, document.getElementById('add-education'));
                 div.querySelector('.remove-education').addEventListener('click', () => div.remove());
             });
 

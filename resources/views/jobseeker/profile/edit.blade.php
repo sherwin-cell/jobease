@@ -123,7 +123,7 @@
             <h3 class="font-semibold mb-2">Education</h3>
 
             <div id="education-list">
-                @foreach(old('education', $profile->education ?? []) as $i => $edu)
+                @foreach(old('education', $profile->education ?? [['degree' => '', 'institution' => '', 'field_of_study' => '', 'start_date' => '', 'end_date' => '', 'description' => '']]) as $i => $edu)
                     <div class="border p-3 rounded mb-3 space-y-2">
                         <input type="text" name="education[{{ $i }}][degree]"
                             value="{{ $edu['degree'] ?? '' }}"
@@ -134,9 +134,37 @@
                             value="{{ $edu['institution'] ?? '' }}"
                             placeholder="Institution"
                             class="w-full border p-2 rounded">
+
+                        <input type="text" name="education[{{ $i }}][field_of_study]"
+                            value="{{ $edu['field_of_study'] ?? '' }}"
+                            placeholder="Field of Study"
+                            class="w-full border p-2 rounded">
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="date" name="education[{{ $i }}][start_date]"
+                                value="{{ $edu['start_date'] ?? '' }}"
+                                class="border p-2 rounded">
+
+                            <input type="date" name="education[{{ $i }}][end_date]"
+                                value="{{ $edu['end_date'] ?? '' }}"
+                                class="border p-2 rounded">
+                        </div>
+
+                        <textarea name="education[{{ $i }}][description]"
+                            placeholder="Description"
+                            class="w-full border p-2 rounded">{{ $edu['description'] ?? '' }}</textarea>
+
+                        <button type="button" class="remove-edu text-red-500 text-sm">
+                            Remove
+                        </button>
                     </div>
                 @endforeach
             </div>
+
+            <button type="button" id="add-edu"
+                class="bg-blue-600 text-white px-4 py-1 rounded">
+                + Add Education
+            </button>
         </div>
 
         <!-- SUBMIT -->
@@ -157,9 +185,42 @@ document.getElementById('add-skill').onclick = () => {
         </div>`);
 };
 
+document.getElementById('add-exp').onclick = () => {
+    const list = document.getElementById('experience-list');
+    const count = list.querySelectorAll('.border.p-3').length;
+    list.insertAdjacentHTML('beforeend',
+        `<div class="border p-3 rounded mb-3 space-y-2">
+            <input type="text" name="experience[${count}][title]" placeholder="Title" class="w-full border p-2 rounded">
+            <input type="text" name="experience[${count}][company]" placeholder="Company" class="w-full border p-2 rounded">
+            <div class="grid grid-cols-2 gap-2">
+                <input type="date" name="experience[${count}][start_date]" class="border p-2 rounded">
+                <input type="date" name="experience[${count}][end_date]" class="border p-2 rounded">
+            </div>
+            <textarea name="experience[${count}][description]" placeholder="Description" class="w-full border p-2 rounded"></textarea>
+            <button type="button" class="remove-exp text-red-500 text-sm">Remove</button>
+        </div>`);
+};
+
+document.getElementById('add-edu').onclick = () => {
+    const list = document.getElementById('education-list');
+    const count = list.querySelectorAll('.border.p-3').length;
+    list.insertAdjacentHTML('beforeend',
+        `<div class="border p-3 rounded mb-3 space-y-2">
+            <input type="text" name="education[${count}][degree]" placeholder="Degree" class="w-full border p-2 rounded">
+            <input type="text" name="education[${count}][institution]" placeholder="Institution" class="w-full border p-2 rounded">
+            <input type="text" name="education[${count}][field_of_study]" placeholder="Field of Study" class="w-full border p-2 rounded">
+            <div class="grid grid-cols-2 gap-2">
+                <input type="date" name="education[${count}][start_date]" class="border p-2 rounded">
+                <input type="date" name="education[${count}][end_date]" class="border p-2 rounded">
+            </div>
+            <textarea name="education[${count}][description]" placeholder="Description" class="w-full border p-2 rounded"></textarea>
+            <button type="button" class="remove-edu text-red-500 text-sm">Remove</button>
+        </div>`);
+};
+
 document.addEventListener('click', function(e){
-    if(e.target.classList.contains('remove')){
-        e.target.parentElement.remove();
+    if(e.target.classList.contains('remove') || e.target.classList.contains('remove-exp') || e.target.classList.contains('remove-edu')){
+        e.target.closest('div.border').remove();
     }
 });
 </script>

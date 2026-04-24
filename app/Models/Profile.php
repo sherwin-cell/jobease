@@ -24,9 +24,6 @@ class Profile extends Model
     protected $casts = [
         'skills' => 'array',
         'interests' => 'array',
-        'experience' => 'array',
-        'education' => 'array',
-        'certifications' => 'array',
     ];
 
     public function user()
@@ -39,12 +36,10 @@ class Profile extends Model
     {
         return $this->hasMany(Experience::class);
     }
-
-    public function educations()
+    public function education()
     {
         return $this->hasMany(Education::class);
     }
-
     public function certifications()
     {
         return $this->hasMany(Certification::class);

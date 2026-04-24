@@ -11,11 +11,16 @@ class JobseekerProfile extends Model
 
     protected $fillable = [
         'user_id',
+        'headline',
+        'bio',
         'skills',
         'experience',
         'education',
         'certifications',
         'interests',
+        'location',
+        'phone',
+        'website',
     ];
 
     protected $casts = [
