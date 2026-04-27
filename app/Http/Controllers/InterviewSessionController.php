@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\InterviewSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Auth;
 
 class InterviewSessionController extends Controller
@@ -27,7 +26,7 @@ class InterviewSessionController extends Controller
                 'job_seeker_id' => $request->job_seeker_id,
                 'employer_id' => auth()->id(),
                 'scheduled_at' => $slot,
-                'room_id' => 'room_' . \Illuminate\Support\Str::uuid(),
+                'room_id' => 'room_' . Str::uuid(),
                 'status' => 'pending',
             ]);
         }
@@ -55,12 +54,11 @@ class InterviewSessionController extends Controller
         return view('interviews.jobseeker', compact('sessions'));
     }
 
-    // Join interview page
+    // Join page (SAFE CHECK)
     public function join($id)
     {
         $session = InterviewSession::findOrFail($id);
 
-        // SECURITY CHECK
         if (
             $session->job_seeker_id !== auth()->id() &&
             $session->employer_id !== auth()->id()
@@ -71,6 +69,7 @@ class InterviewSessionController extends Controller
         return view('interviews.call', compact('session'));
     }
 
+    // Call method for ZEGOCLOUD
     public function call(InterviewSession $session)
     {
         $appID = 948409277;
@@ -80,20 +79,18 @@ class InterviewSessionController extends Controller
             abort(500, 'ZEGO_SERVER_SECRET is not set');
         }
 
-        $userID = Auth::id();
+        $userID = (string) Auth::id();
         $userName = Auth::user()->name;
-        $roomID = "room_" . $session->id;
+        $roomID = $session->room_id;
 
-        $expire = time() + 2 * 60 * 60;
-
-        $payload = [
-            'app_id' => $appID,
-            'user_id' => (string) $userID,
-            'room_id' => $roomID,
-            'exp' => $expire,
-        ];
-
-        $kitToken = JWT::encode($payload, $serverSecret, 'HS256');
+        // Use ZegoToken service to generate proper HMAC-signed token
+        $kitToken = \App\Services\ZegoToken::generate(
+            $appID,
+            $serverSecret,
+            $roomID,
+            $userID,
+            $userName
+        );
 
         return view('interviews.call', compact(
             'session',

@@ -28,146 +28,163 @@
             <div class="bg-white rounded-3xl shadow overflow-hidden">
 
                 {{-- COVER --}}
-                <div class="h-36 bg-gradient-to-r from-yellow-300 via-orange-400 to-pink-500"></div>
+                <div class="h-36 bg-gradient-to-r from-[#00c996] to-[#003d4d]"></div>
 
                 <div class="p-5">
 
                     {{-- HEADER ROW --}}
-                    <div class="flex gap-4">
+                    <div class="flex gap-6">
 
-                        {{-- AVATAR --}}
-                        <div class="-mt-14 relative">
-                            <div
-                                class="w-20 h-20 rounded-full border-4 border-white bg-gray-300 flex items-center justify-center text-lg font-bold text-white shadow">
-                                {{ strtoupper(substr($profile->user->name, 0, 1)) }}
+                        {{-- LEFT SIDE (Avatar + Info) --}}
+                        <div class="flex gap-4 w-1/2">
+
+                            {{-- AVATAR --}}
+                            <div class="-mt-14">
+                                <div class="relative w-20 h-20">
+
+                                    {{-- AVATAR CIRCLE --}}
+                                    <div
+                                        class="w-full h-full rounded-full border-4 border-white bg-gray-300 flex items-center justify-center text-lg font-bold text-white shadow">
+                                        {{ strtoupper(substr($profile->user->name, 0, 1)) }}
+                                    </div>
+
+                                    {{-- EDIT BUTTON --}}
+                                    <a href="{{ route('jobseeker.profile.edit') }}"
+                                        class="absolute bottom-1 right-1 bg-gray-800 text-white p-1 rounded-full shadow hover:bg-gray-700">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5
+                                    m-1.414-9.414a2 2 0 112.828 2.828L11 15l-4 1 1-4
+                                    7.586-7.586z" />
+                                        </svg>
+
+                                    </a>
+
+                                </div>
                             </div>
+                            {{-- INFO --}}
+                            <div class="flex-1 space-y-2">
 
-                            {{-- EDIT --}}
-                            <a href="{{ route('jobseeker.profile.edit') }}"
-                                class="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full shadow hover:bg-gray-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5
-                                                  m-1.414-9.414a2 2 0 112.828 2.828L11 15l-4 1 1-4
-                                                  7.586-7.586z" />
-                                </svg>
-                            </a>
-                        </div>
+                                <h1 class="text-lg font-semibold text-gray-900">
+                                    {{ $profile->user->name }}
+                                </h1>
 
-                        {{-- INFO --}}
-                        <div class="flex-1">
+                                <div class="text-xs">
+                                    <span class="font-medium text-gray-500">Headline:</span>
+                                    {{ $profile->headline ?? 'Job Seeker' }}
+                                </div>
 
-                            {{-- NAME --}}
-                            <h1 class="text-lg font-semibold text-gray-900">
-                                {{ $profile->user->name }}
-                            </h1>
+                                <div class="text-xs">
+                                    <span class="font-medium text-gray-500">Location:</span>
+                                    {{ $profile->location ?? 'No location' }}
+                                </div>
 
-                            {{-- HEADLINE --}}
-                            <p class="text-xs text-gray-600">
-                                <span class="font-medium text-gray-500">Headline:</span>
-                                {{ $profile->headline ?? 'Job Seeker' }}
-                            </p>
-
-                            {{-- LOCATION --}}
-                            <p class="text-xs text-gray-500">
-                                <span class="font-medium">Location:</span>
-                                {{ $profile->location ?? 'No location' }}
-                            </p>
-
-                            {{-- CONTACT --}}
-                            <div class="text-xs text-gray-600 mt-2">
-                                <span class="font-medium text-gray-500">Email:</span>
-                                {{ $profile->user->email }}
+                                <div class="text-xs">
+                                    <span class="font-medium text-gray-500">Email:</span>
+                                    {{ $profile->user->email }}
+                                </div>
 
                                 @if($profile->phone)
-                                    <span class="ml-2">
+                                    <div class="text-xs">
                                         <span class="font-medium text-gray-500">Phone:</span>
                                         {{ $profile->phone }}
-                                    </span>
+                                    </div>
                                 @endif
-                            </div>
 
-                            {{-- BIO --}}
-                            <p class="text-xs text-gray-700 mt-2 leading-snug">
-                                <span class="font-medium text-gray-500">Bio:</span>
-                                {{ $profile->bio ?: 'No biography added yet.' }}
-                            </p>
-
-                            {{-- SKILLS --}}
-                            <div class="mt-3">
-                                <p class="text-[10px] font-semibold text-gray-500 mb-1">Skills:</p>
-
-                                <div class="flex flex-wrap gap-1.5">
-                                    @forelse($skills as $skill)
-                                        <span class="px-2 py-0.5 bg-gray-100 text-gray-700 text-[10px] rounded-full">
-                                            {{ $skill }}
-                                        </span>
-                                    @empty
-                                        <span class="text-[10px] text-gray-400">No skills</span>
-                                    @endforelse
+                                <div class="text-xs">
+                                    <span class="font-medium text-gray-500">Bio:</span>
+                                    {{ $profile->bio ?: 'No biography added yet.' }}
                                 </div>
-                            </div>
 
+                                {{-- SKILLS --}}
+                                <div>
+                                    <p class="text-[10px] font-semibold text-gray-500 mb-1">Skills:</p>
+
+                                    <div class="flex flex-wrap gap-1.5">
+                                        @forelse($skills as $skill)
+                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-700 text-[10px] rounded-full">
+                                                {{ $skill }}
+                                            </span>
+                                        @empty
+                                            <span class="text-[10px] text-gray-400">No skills</span>
+                                        @endforelse
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
 
-                        {{-- EXPERIENCE --}}
-                        <div class="mt-6">
-                            <h2 class="text-sm font-semibold mb-3 text-gray-800 border-b pb-1">
-                                Experience
-                            </h2>
+                        {{-- RIGHT SIDE (Experience + Education) --}}
+                        <div class="w-1/2">
 
-                            @forelse($experience as $exp)
-                                <div class="mb-3 text-xs">
-                                    <p class="font-medium text-gray-900">
-                                        {{ $exp['title'] ?? '-' }}
-                                        <span class="text-gray-500">• {{ $exp['company'] ?? '-' }}</span>
-                                    </p>
+                            {{-- EXPERIENCE --}}
+                            {{-- EXPERIENCE --}}
+                            <div>
+                                <h2 class="text-sm font-semibold mb-3 text-gray-800 border-b pb-1">
+                                    Experience
+                                </h2>
 
-                                    <p class="text-gray-500">
-                                        {{ $formatDate($exp['start_date'] ?? null) ?? '-' }} -
-                                        {{ $formatDate($exp['end_date'] ?? null) ?? 'Present' }}
-                                    </p>
-                                </div>
-                            @empty
-                                <p class="text-xs text-gray-400">No experience added</p>
-                            @endforelse
-                        </div>
-                        {{-- EDUCATION --}}
-                        {{-- EDUCATION --}}
-                        <div class="mt-6">
-                            <h2 class="text-sm font-semibold mb-3 text-gray-800 border-b pb-1">
-                                Education
-                            </h2>
+                                @forelse($experience as $exp)
+                                    <div class="mb-4 text-xs space-y-1">
 
-                            @forelse($education as $edu)
-                                <div class="mb-4 text-xs">
+                                        <div>
+                                            <span class="font-medium text-gray-500">Title:</span>
+                                            {{ $exp['title'] ?? '-' }}
+                                        </div>
 
-                                    {{-- DEGREE --}}
-                                    <p class="font-medium text-gray-900">
-                                        {{ $edu['degree'] ?? '-' }}
-                                    </p>
+                                        <div>
+                                            <span class="font-medium text-gray-500">Company:</span>
+                                            {{ $exp['company'] ?? '-' }}
+                                        </div>
 
-                                    {{-- UNIVERSITY --}}
-                                    <p class="text-gray-600">
-                                        {{ $edu['institution'] ?? 'No university' }}
-                                    </p>
+                                        <div>
+                                            <span class="font-medium text-gray-500">Duration:</span>
+                                            {{ $formatDate($exp['start_date'] ?? null) ?? '-' }} -
+                                            {{ $formatDate($exp['end_date'] ?? null) ?? 'Present' }}
+                                        </div>
 
-                                    {{-- DATES --}}
-                                    <p class="text-gray-500 mt-1">
-                                        {{ $formatDate($edu['start_date'] ?? null) ?? '-' }} -
-                                        {{ $formatDate($edu['end_date'] ?? null) ?? 'Present' }}
-                                    </p>
+                                    </div>
+                                @empty
+                                    <p class="text-xs text-gray-400">No experience added</p>
+                                @endforelse
+                            </div>
 
-                                </div>
-                            @empty
-                                <p class="text-xs text-gray-400">No education added</p>
-                            @endforelse
+                            {{-- EDUCATION --}}
+                            <div class="mt-6">
+                                <h2 class="text-sm font-semibold mb-3 text-gray-800 border-b pb-1">
+                                    Education
+                                </h2>
+
+                                @forelse($education as $edu)
+                                    <div class="mb-4 text-xs space-y-1">
+
+                                        <div>
+                                            <span class="font-medium text-gray-500">Degree:</span>
+                                            {{ $edu['degree'] ?? '-' }}
+                                        </div>
+
+                                        <div>
+                                            <span class="font-medium text-gray-500">University:</span>
+                                            {{ $edu['institution'] ?? 'No university' }}
+                                        </div>
+
+                                        <div>
+                                            <span class="font-medium text-gray-500">Duration:</span>
+                                            {{ $formatDate($edu['start_date'] ?? null) ?? '-' }} -
+                                            {{ $formatDate($edu['end_date'] ?? null) ?? 'Present' }}
+                                        </div>
+
+                                    </div>
+                                @empty
+                                    <p class="text-xs text-gray-400">No education added</p>
+                                @endforelse
+                            </div>
                         </div>
 
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
 
 @endsection

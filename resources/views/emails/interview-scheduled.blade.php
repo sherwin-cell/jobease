@@ -12,7 +12,7 @@
     <p><strong>Room:</strong> {{ $session->room_id }}</p>
 
     <p>
-        <a href="{{ url('/interviews/call/' . $session->id) }}">
+        <a href="{{ route('interviews.call', $session->id) }}">
             Join Interview Room
         </a>
     </p>

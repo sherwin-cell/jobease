@@ -50,7 +50,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/interviews/{id}/join', [InterviewSessionController::class, 'join'])
         ->name('interviews.join');
 
-    Route::get('/interviews/call/{session}', [InterviewSessionController::class, 'call'])->name('interviews.call');
+    Route::get('/interviews/call/{id}', [InterviewSessionController::class, 'call'])
+        ->name('interviews.call');
 
     // Email Verification Routes
     Route::get('/email/verify', function () {

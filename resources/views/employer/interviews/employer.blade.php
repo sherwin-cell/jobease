@@ -2,15 +2,22 @@
 
 @section('content')
 
+@php
+    use Carbon\Carbon;
+@endphp
+
 <h2 class="text-2xl font-bold">Interview Sessions</h2>
 
 @foreach($sessions as $session)
     <div class="border p-4 mt-3 rounded">
-        <p><b>Scheduled:</b> {{ $session->scheduled_at }}</p>
+
+        <p><b>Scheduled:</b> {{ Carbon::parse($session->scheduled_at)->format('M d, Y h:i A') }}</p>
+
         <p><b>Status:</b> {{ ucfirst($session->status) }}</p>
 
-        @if(now()->gte(\Carbon\Carbon::parse($session->scheduled_at)))
-            <a href="{{ route('interviews.call', $session->id) }}" class="bg-green-500 text-white px-3 py-1 rounded">
+        @if(now()->greaterThanOrEqualTo(Carbon::parse($session->scheduled_at)))
+            <a href="{{ route('interviews.call', $session->id) }}"
+               class="bg-green-500 text-white px-3 py-1 rounded">
                 Join Interview
             </a>
         @else
@@ -18,6 +25,7 @@
                 Interview Not Started
             </button>
         @endif
+
     </div>
 @endforeach
 

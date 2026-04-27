@@ -9,7 +9,8 @@
         <p><b>Time:</b> {{ $session->scheduled_at }}</p>
 
         @if(now()->gte(\Carbon\Carbon::parse($session->scheduled_at)))
-            <a href="{{ route('interviews.call', $session->id) }}" class="bg-green-500 text-white px-3 py-1 rounded">
+            <a href="{{ route('interviews.call', $session->id) }}"
+               class="bg-green-500 text-white px-3 py-1 rounded">
                 Join Interview
             </a>
         @else
