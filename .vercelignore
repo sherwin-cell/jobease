@@ -1,7 +1,0 @@
-*.php
-storage/
-app/
-bootstrap/
-config/
-database/
-routes/
