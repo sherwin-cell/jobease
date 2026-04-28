@@ -34,24 +34,25 @@ COPY . .
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Create storage and cache directories
-RUN mkdir -p /app/storage/framework/cache/data
-RUN mkdir -p /app/storage/framework/sessions
-RUN mkdir -p /app/storage/framework/views
-RUN mkdir -p /app/bootstrap/cache
-RUN mkdir -p /app/storage/logs
+RUN mkdir -p /app/storage/framework/cache/data \
+    && mkdir -p /app/storage/framework/sessions \
+    && mkdir -p /app/storage/framework/views \
+    && mkdir -p /app/bootstrap/cache \
+    && mkdir -p /app/storage/logs
 
 # Set permissions
-RUN chown -R www-data:www-data /app/storage
-RUN chown -R www-data:www-data /app/bootstrap/cache
-RUN chmod -R 775 /app/storage
-RUN chmod -R 775 /app/bootstrap/cache
+RUN chown -R www-data:www-data /app/storage \
+    && chown -R www-data:www-data /app/bootstrap/cache \
+    && chmod -R 775 /app/storage \
+    && chmod -R 775 /app/bootstrap/cache
 
 # Cache Laravel files
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
+RUN php artisan config:cache || true \
+    && php artisan route:cache || true \
+    && php artisan view:cache || true
 
 EXPOSE 80
 
-# Start FrankenPHP
-CMD ["frankenphp", "run"]
+# Override and clear the entrypoint, then use PHP's built-in server
+ENTRYPOINT []
+CMD php artisan serve --host=0.0.0.0 --port=80
