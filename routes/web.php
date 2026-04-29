@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/interviews/{id}/join', [InterviewSessionController::class, 'join'])
         ->name('interviews.join');
 
-    Route::get('/interviews/call/{id}', [InterviewSessionController::class, 'call'])
+    Route::get('/interviews/call/{session}', [InterviewSessionController::class, 'call'])
         ->name('interviews.call');
 
     // Email Verification Routes
@@ -74,6 +74,6 @@ Route::middleware(['auth'])->group(function () {
         return back()->with('message', 'Verification link sent!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-    require __DIR__.'/admin.php';
+    require __DIR__ . '/admin.php';
 });
 

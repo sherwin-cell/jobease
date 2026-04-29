@@ -216,6 +216,12 @@ class ApplicationController extends Controller
         // Send email to job seeker
         Mail::to($application->user->email)->send(new InterviewScheduledMail($session));
 
+        $employerEmail = $application->job->employer?->email;
+
+        if ($employerEmail) {
+            Mail::to($employerEmail)->send(new InterviewScheduledMail($session));
+        }
+
         return back()->with('success', 'Interview scheduled and candidate notified.');
     }
 

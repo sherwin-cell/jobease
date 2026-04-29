@@ -14,7 +14,7 @@
         </div>
         <a href="{{ route('employer.jobs.create') }}"
             class="mt-4 block text-center bg-blue-600 text-white text-sm py-2 rounded-lg hover:bg-blue-700 transition">
-            Create Job
+            Create Jobs
         </a>
     </div>
     <nav class="flex-1 px-4 py-6 space-y-2">

@@ -12,6 +12,9 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800">
+    @php
+        $hideSidebar = $hideSidebar ?? false;
+    @endphp
 
     @auth
         @if(Auth::user()->isJobSeeker())

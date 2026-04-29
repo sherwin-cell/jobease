@@ -16,6 +16,12 @@ class RoleMiddleware
 
         $user = auth()->user();
 
+        if ($user->is_banned) {
+            auth()->logout();
+            return redirect('/login')->withErrors([
+                'email' => 'Your account has been banned.'
+            ]);
+        }
         // Convert role names → role IDs
         $roleIds = collect($roles)
             ->map(function ($role) {

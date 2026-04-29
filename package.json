@@ -3,10 +3,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build --config vite.frontend.config.js",
-        "build:laravel": "vite build",
-        "dev": "vite --config vite.frontend.config.js",
-        "dev:laravel": "vite"
+        "dev": "vite",
+        "build": "vite build"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
@@ -31,6 +29,7 @@
     },
     "dependencies": {
         "@zegocloud/zego-uikit-prebuilt": "^2.17.3",
+        "alpinejs": "^3.15.11",
         "laravel-echo": "^2.3.4",
         "pusher-js": "^8.5.0"
     },

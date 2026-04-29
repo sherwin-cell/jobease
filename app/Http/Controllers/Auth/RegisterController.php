@@ -47,7 +47,7 @@ class RegisterController extends Controller
         ]);
 
         // Send email verification link
-        $user->sendEmailVerificationNotification();
+        //$user->sendEmailVerificationNotification();
 
         // If employer, create employer profile
         if ($user->isEmployer()) {

@@ -54,9 +54,4 @@ Route::middleware(['auth', 'role:employer', 'verified', 'employer.profile.comple
         Route::get('/applications/{application}', [ApplicationController::class, 'employerShow'])->name('applications.show');
         Route::post('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
         Route::post('/applications/{application}/schedule-interview', [ApplicationController::class, 'scheduleInterview'])->name('interviews.schedule');
-
-
-        // Dashboard
-        Route::get('/dashboard', [EmployerController::class, 'dashboard'])->name('dashboard');
-
     });

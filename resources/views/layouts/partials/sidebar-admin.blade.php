@@ -18,18 +18,16 @@
             class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('admin.dashboard') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
             🏠 <span>Dashboard</span>
         </a>
-        <a href="{{ route('admin.users') }}"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('admin.users*') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
-            👥 <span>Manage Users</span>
-        </a>
-        <a href="{{ route('admin.jobs') }}"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('admin.jobs*') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
-            💼 <span>Manage Jobs</span>
-        </a>
-        <a href="{{ route('admin.reports') }}"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('admin.reports*') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
-            📊 <span>View Reports</span>
-        </a>
+        <!-- Users Management with Submenu -->
+        <div>
+            <a href="{{ route('admin.users') }}"
+                class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('admin.users*') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+                👥 <span>Manage Users</span>
+            </a>
+
+            
+        </div>
+
         <a href="{{ route('admin.employer-profiles.index') }}"
             class="flex items-center gap-3 px-4 py-2 rounded-lg transition
     {{ request()->routeIs('admin.employer-profiles.*') ? 'bg-gray-900 text-white font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">

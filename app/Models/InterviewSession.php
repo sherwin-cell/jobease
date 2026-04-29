@@ -35,4 +35,7 @@ class InterviewSession extends Model
     {
         return $this->belongsTo(User::class, 'job_seeker_id');
     }
+    protected $casts = [
+        'scheduled_at' => 'datetime',
+    ];
 }

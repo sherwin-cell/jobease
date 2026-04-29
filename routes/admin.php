@@ -26,10 +26,6 @@ Route::middleware(['auth', 'role:3']) // 3 = Super Admin
         Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
         Route::post('/users/{user}/ban', [AdminUserController::class, 'ban'])->name('users.ban');
         Route::post('/users/{user}/unban', [AdminUserController::class, 'unban'])->name('users.unban');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 
-        // Jobs management
-        Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs');
-
-        // Reports
-        Route::get('/reports', [AdminReportController::class, 'index'])->name('reports');
     });
