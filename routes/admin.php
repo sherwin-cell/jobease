@@ -28,4 +28,11 @@ Route::middleware(['auth', 'role:3']) // 3 = Super Admin
         Route::post('/users/{user}/unban', [AdminUserController::class, 'unban'])->name('users.unban');
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 
+        Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs');
+        Route::get('/activity-logs', function () {
+            return view('admin.activity-logs.index');
+        })->name('activity-logs');
+
+        Route::post('/jobs/{job}/approve', [AdminJobController::class, 'approve'])->name('jobs.approve');
+        Route::post('/jobs/{job}/reject', [AdminJobController::class, 'reject'])->name('jobs.reject');
     });

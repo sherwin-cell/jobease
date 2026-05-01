@@ -4,7 +4,7 @@
     <nav class="sidebar" id="app-sidebar">
         <header class="sidebar-header">
             <div class="sidebar-brand">
-                <div class="brand-icon" style="background: linear-gradient(135deg, #1f2937 0%, #111827 100%);">🛡️</div>
+                <div class="brand-icon">🛡️</div>
                 <span class="brand-name">Admin Portal</span>
             </div>
             <div class="user">
@@ -25,12 +25,17 @@
             <a href="{{ route('admin.users') }}" data-tooltip="Manage Users"
                 class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">
                 <span class="icon">👥</span>
-                <span class="label">Manage Users</span>
+                <span class="label">Users</span>
             </a>
-            <a href="{{ route('admin.employer-profiles.index') }}" data-tooltip="Employer Profiles"
-                class="{{ request()->routeIs('admin.employer-profiles.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.jobs') }}" data-tooltip="Job Postings"
+                class="{{ request()->routeIs('admin.jobs*') ? 'active' : '' }}">
+                <span class="icon">💼</span>
+                <span class="label">Job Postings</span>
+            </a>
+            <a href="{{ route('admin.employer-profiles.index') }}" data-tooltip="Employer Approvals"
+                class="{{ request()->routeIs('admin.employer-profiles*') ? 'active' : '' }}">
                 <span class="icon">🏢</span>
-                <span class="label">Employer Profiles</span>
+                <span class="label">Employer Approvals</span>
             </a>
         </div>
 

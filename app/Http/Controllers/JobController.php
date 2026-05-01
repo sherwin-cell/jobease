@@ -9,6 +9,7 @@ use App\Models\JobLiveSkillQa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use App\Models\ActivityLog;
 use App\Models\Application;
 use App\Models\Answer;
 
@@ -44,7 +45,10 @@ class JobController extends Controller
             }
         }
 
-        $jobs = $query->latest()->paginate(10);
+        $jobs = $query
+            ->with('employer.employerProfile')
+            ->latest()
+            ->paginate(10);
         return view('jobseeker.jobs.index', compact('jobs'));
     }
 
@@ -79,6 +83,7 @@ class JobController extends Controller
     {
         return view('employer.jobs.create', ['job' => null]);
     }
+
 
     // Employer: Store new job
     public function store(Request $request)
@@ -136,6 +141,7 @@ class JobController extends Controller
         $validated['employer_id'] = Auth::id();
 
         $job = DB::transaction(function () use ($validated, $request) {
+
             $job = Job::create(collect($validated)->only([
                 'title',
                 'description',
@@ -147,6 +153,13 @@ class JobController extends Controller
             ])->all());
 
             $this->upsertLiveSkillQa($job, $request);
+
+            // ✅ Activity Log
+            ActivityLog::create([
+                'user_id' => Auth::id(), // can be null, that's fine
+                'action' => 'New job posting created',
+                'description' => $job->title . ' at ' . $job->location,
+            ]);
 
             return $job;
         });

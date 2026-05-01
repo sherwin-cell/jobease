@@ -55,8 +55,9 @@ class User extends Authenticatable implements MustVerifyEmail
     // 🏢 Employer Profile
     public function employerProfile()
     {
-        return $this->hasOne(EmployerProfile::class);
+        return $this->hasOne(EmployerProfile::class, 'user_id');
     }
+    
 
     // -----------------------------
     // APPLICATIONS / JOBS
