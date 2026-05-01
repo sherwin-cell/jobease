@@ -3,78 +3,102 @@
 @section('title', 'Job Seeker Dashboard')
 
 @section('content')
-
-    <div class="flex items-start justify-between gap-6">
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Your Dashboard</h1>
             <p class="mt-1 text-sm text-gray-500">
-                Welcome back, {{ auth()->user()->name }}. Here’s what’s happening today.
+                Welcome back, <strong class="text-gray-900">{{ auth()->user()->name }}</strong>. Your next opportunity awaits!
             </p>
         </div>
-        <div class="text-sm text-gray-500">
+        <div class="text-sm text-gray-500 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
             {{ now()->format('l, F j, Y') }}
         </div>
     </div>
 
-    <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-6">
-        <div class="flex items-start justify-between gap-6">
-            <div>
-                <h2 class="text-lg font-semibold text-gray-900">
-                    Keep your profile updated
-                </h2>
-                <p class="mt-1 text-sm text-gray-600">
-                    A complete profile helps employers find you faster.
-                </p>
+    <!-- Profile Completion Banner -->
+    <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl border border-purple-100 p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="flex items-start gap-3">
+                <div class="text-3xl">⭐</div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Complete your profile</h2>
+                    <p class="text-sm text-gray-600 mt-1">A complete profile increases your chances of getting hired by 40%</p>
+                </div>
             </div>
-            <a href="{{ route('jobseeker.profile.show') }}"
-                class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition">
-                View Profile
+            <a href="{{ route('jobseeker.profile.show') }}" 
+                class="inline-flex items-center justify-center bg-purple-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-purple-700 transition-all shadow-md hover:shadow-lg">
+                Complete Profile →
             </a>
         </div>
     </div>
 
-    <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <a href="{{ route('jobseeker.jobs.index') }}"
-            class="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-blue-200 hover:shadow-sm transition">
-            <div class="flex items-center justify-between">
-                <div class="text-sm font-semibold text-gray-900">Browse Jobs</div>
-                <div class="text-lg">💼</div>
+    <!-- Action Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Browse Jobs -->
+        <a href="{{ route('jobseeker.jobs.index') }}" 
+            class="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
+            <div class="flex items-start justify-between mb-4">
+                <div class="text-lg font-semibold text-gray-900">Browse Jobs</div>
+                <div class="text-3xl">💼</div>
             </div>
-            <p class="mt-2 text-sm text-gray-600">
-                Discover roles that match your goals.
+            <p class="text-sm text-gray-600 leading-relaxed">
+                Discover thousands of job opportunities that match your skills and career goals.
             </p>
-            <div class="mt-4 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
-                View jobs →
+            <div class="mt-5 text-sm font-semibold text-blue-600 group-hover:text-blue-700 group-hover:translate-x-1 transition-all">
+                Find your next role →
             </div>
         </a>
 
-        <a href="{{ route('jobseeker.applications.index') }}"
-            class="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-blue-200 hover:shadow-sm transition">
-            <div class="flex items-center justify-between">
-                <div class="text-sm font-semibold text-gray-900">Applications</div>
-                <div class="text-lg">📋</div>
+        <!-- My Applications -->
+        <a href="{{ route('jobseeker.applications.index') }}" 
+            class="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
+            <div class="flex items-start justify-between mb-4">
+                <div class="text-lg font-semibold text-gray-900">Applications</div>
+                <div class="text-3xl">📋</div>
             </div>
-            <p class="mt-2 text-sm text-gray-600">
-                Track your submitted applications and statuses.
+            <p class="text-sm text-gray-600 leading-relaxed">
+                Track your submitted applications, view status updates, and manage your job search.
             </p>
-            <div class="mt-4 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
-                View applications →
+            <div class="mt-5 text-sm font-semibold text-blue-600 group-hover:text-blue-700 group-hover:translate-x-1 transition-all">
+                Track applications →
             </div>
         </a>
 
-        <a href="{{ route('jobseeker.profile.create') }}"
-            class="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-blue-200 hover:shadow-sm transition">
-            <div class="flex items-center justify-between">
-                <div class="text-sm font-semibold text-gray-900">EditProfile</div>
-                <div class="text-lg">✏️</div>
+        <!-- My Profile -->
+        <a href="{{ route('jobseeker.profile.show') }}" 
+            class="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-xl transition-all duration-300">
+            <div class="flex items-start justify-between mb-4">
+                <div class="text-lg font-semibold text-gray-900">My Profile</div>
+                <div class="text-3xl">👤</div>
             </div>
-            <p class="mt-2 text-sm text-gray-600">
-                Update your headline and experience.
+            <p class="text-sm text-gray-600 leading-relaxed">
+                Update your personal information, resume, work experience, and skills.
             </p>
-            <div class="mt-4 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
-                Edit now →
+            <div class="mt-5 text-sm font-semibold text-blue-600 group-hover:text-blue-700 group-hover:translate-x-1 transition-all">
+                Update profile →
             </div>
         </a>
     </div>
 
+    <!-- Quick Stats -->
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-900">Quick Stats</h3>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-2 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600">{{ $applicationsCount ?? 0 }}</div>
+                    <div class="text-sm text-gray-500 mt-1">Applications Sent</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600">{{ $profileViews ?? 0 }}</div>
+                    <div class="text-sm text-gray-500 mt-1">Profile Views</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

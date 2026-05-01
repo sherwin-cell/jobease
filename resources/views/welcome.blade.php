@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +8,8 @@
 
     <!-- Fonts: Premium typefaces -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700|playfair-display:700" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700|playfair-display:700"
+        rel="stylesheet">
 
     <style>
         /* Eye-friendly, Simple, Blue-themed Design */
@@ -31,7 +33,7 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: 
+            background:
                 radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
                 linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
@@ -52,29 +54,47 @@
             animation: float 25s infinite linear;
         }
 
-        .shape-1 { 
-            width: 60px; height: 60px; 
-            top: 15%; left: 10%; 
+        .shape-1 {
+            width: 60px;
+            height: 60px;
+            top: 15%;
+            left: 10%;
             background: rgba(99, 102, 241, 0.3);
             animation-delay: 0s;
         }
-        .shape-2 { 
-            width: 100px; height: 100px; 
-            top: 70%; right: 15%; 
+
+        .shape-2 {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            right: 15%;
             background: rgba(59, 130, 246, 0.2);
             animation-delay: -8s;
         }
-        .shape-3 { 
-            width: 40px; height: 40px; 
-            bottom: 15%; left: 25%; 
+
+        .shape-3 {
+            width: 40px;
+            height: 40px;
+            bottom: 15%;
+            left: 25%;
             background: rgba(147, 51, 234, 0.2);
             animation-delay: -15s;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            33% { transform: translateY(-15px) rotate(120deg); }
-            66% { transform: translateY(10px) rotate(240deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            33% {
+                transform: translateY(-15px) rotate(120deg);
+            }
+
+            66% {
+                transform: translateY(10px) rotate(240deg);
+            }
         }
 
         /* Header - Clean & Simple */
@@ -99,23 +119,45 @@
         }
 
         .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             font-size: 1.75rem;
             font-weight: 700;
             color: #1e40af;
             font-family: 'Playfair Display', serif;
         }
 
-        @media (min-width: 1024px) { .nav-brand { font-size: 2.25rem; } }
+        @media (min-width: 1024px) {
+            .nav-brand {
+                font-size: 2.25rem;
+            }
+        }
+
+        /* Logo sizing - applies on ALL screen sizes */
+        .nav-logo {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-logo {
+                height: 44px;
+            }
+        }
 
         /* Desktop Navigation */
         [class*="hidden md:flex"] {
             display: none;
         }
+
         @media (min-width: 768px) {
-            [class*="hidden md:flex"] { 
-                display: flex; 
-                align-items: center; 
-                gap: 1.5rem; 
+            [class*="hidden md:flex"] {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
             }
         }
 
@@ -136,7 +178,7 @@
 
         /* Mobile Hamburger */
         .hamburger {
-            display: flex;
+            display: none;
             flex-direction: column;
             gap: 4px;
             width: 24px;
@@ -145,6 +187,12 @@
             background: none;
             border: none;
             cursor: pointer;
+        }
+
+        @media (max-width: 767px) {
+            .hamburger {
+                display: flex;
+            }
         }
 
         .hamburger span {
@@ -157,9 +205,11 @@
         .hamburger.active span:nth-child(1) {
             transform: rotate(45deg) translate(6px, 6px);
         }
+
         .hamburger.active span:nth-child(2) {
             opacity: 0;
         }
+
         .hamburger.active span:nth-child(3) {
             transform: rotate(-45deg) translate(6px, -6px);
         }
@@ -219,8 +269,17 @@
             min-height: calc(100vh - 140px);
         }
 
-        @media (min-width: 640px) { main { padding: 3rem 1.5rem; } }
-        @media (min-width: 1024px) { main { padding: 4rem 2rem; } }
+        @media (min-width: 640px) {
+            main {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            main {
+                padding: 4rem 2rem;
+            }
+        }
 
         /* Hero Section */
         .hero-section {
@@ -229,7 +288,11 @@
             max-width: 48rem;
         }
 
-        @media (min-width: 1024px) { .hero-section { margin-bottom: 7rem; } }
+        @media (min-width: 1024px) {
+            .hero-section {
+                margin-bottom: 7rem;
+            }
+        }
 
         .display-font {
             font-family: 'Playfair Display', serif;
@@ -291,7 +354,11 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
-        @media (min-width: 480px) { .btn { width: auto; } }
+        @media (min-width: 480px) {
+            .btn {
+                width: auto;
+            }
+        }
 
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -380,7 +447,11 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @media (min-width: 1024px) { .feature-card { padding: 3rem 2.5rem; } }
+        @media (min-width: 1024px) {
+            .feature-card {
+                padding: 3rem 2.5rem;
+            }
+        }
 
         .feature-card:hover {
             transform: translateY(-8px);
@@ -418,6 +489,7 @@
                 opacity: 0;
                 transform: translateY(24px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -429,16 +501,36 @@
             animation: fadeInUp 0.6s ease-out forwards;
         }
 
-        .feature-card:nth-child(1) { animation-delay: 0.1s; }
-        .feature-card:nth-child(2) { animation-delay: 0.2s; }
-        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
 
         /* Responsive Typography */
         @media (max-width: 480px) {
-            main { padding: 1.5rem 1rem; }
-            .hero-section { margin-bottom: 3rem; }
-            .cta-buttons { gap: 0.75rem; }
-            .btn { padding: 0.875rem 1.5rem; font-size: 0.95rem; }
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            .hero-section {
+                margin-bottom: 3rem;
+            }
+
+            .cta-buttons {
+                gap: 0.75rem;
+            }
+
+            .btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.95rem;
+            }
         }
 
         /* Dark Mode */
@@ -447,28 +539,54 @@
                 background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
                 color: #f1f5f9;
             }
+
             .gradient-bg {
-                background: 
+                background:
                     radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
                     radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
                     linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             }
+
             header {
                 background: rgba(15, 23, 42, 0.95);
                 border-color: rgba(30, 41, 59, 0.5);
             }
-            .nav-brand { color: #60a5fa; }
-            .nav-link { color: #94a3b8; }
-            .nav-link:hover { color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
-            .hero-title { color: #f8fafc; }
-            .hero-subtitle { color: #cbd5e1; }
+
+            .nav-brand {
+                color: #60a5fa;
+            }
+
+            .nav-link {
+                color: #94a3b8;
+            }
+
+            .nav-link:hover {
+                color: #60a5fa;
+                background: rgba(96, 165, 250, 0.1);
+            }
+
+            .hero-title {
+                color: #f8fafc;
+            }
+
+            .hero-subtitle {
+                color: #cbd5e1;
+            }
+
             .feature-card {
                 background: rgba(30, 41, 59, 0.8);
                 border-color: rgba(51, 65, 85, 0.5);
                 color: #f1f5f9;
             }
-            .feature-title { color: #f8fafc; }
-            .feature-desc { color: #cbd5e1; }
+
+            .feature-title {
+                color: #f8fafc;
+            }
+
+            .feature-desc {
+                color: #cbd5e1;
+            }
+
             .btn-secondary {
                 background: rgba(30, 41, 59, 0.8);
                 color: #60a5fa;
@@ -491,15 +609,18 @@
     <!-- Clean Header -->
     <header>
         <nav>
-            <div class="nav-brand">{{ config('app.name', 'JobEase') }}</div>
-            
+            <div class="nav-brand">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="nav-logo">
+                {{ config('app.name', 'obEase') }}
+            </div>
+
             <div class="hidden md:flex">
                 <a href="{{ route('login') }}" class="nav-link">Log in</a>
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}" class="btn btn-secondary">Sign up</a>
                 @endif
             </div>
-            
+
             <button class="hamburger" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
@@ -522,7 +643,7 @@
                 <span>Perfect Opportunity</span>
             </h1>
             <p class="hero-subtitle">
-                JobEase matches qualified professionals with meaningful opportunities 
+                JobEase matches qualified professionals with meaningful opportunities
                 using intelligent algorithms designed for your success.
             </p>
             <div class="cta-buttons">
@@ -531,7 +652,8 @@
             </div>
             <div class="scroll-indicator" onclick="scrollToFeatures()">
                 <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                 </svg>
             </div>
         </div>
@@ -543,7 +665,8 @@
                 <div class="feature-card">
                     <div class="feature-icon">🎯</div>
                     <h3 class="feature-title">Smart Matching</h3>
-                    <p class="feature-desc">AI-powered recommendations based on your skills, experience, and career goals</p>
+                    <p class="feature-desc">AI-powered recommendations based on your skills, experience, and career
+                        goals</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
@@ -553,7 +676,8 @@
                 <div class="feature-card">
                     <div class="feature-icon">📈</div>
                     <h3 class="feature-title">Career Growth</h3>
-                    <p class="feature-desc">Track progress, get insights, and access resources for professional development</p>
+                    <p class="feature-desc">Track progress, get insights, and access resources for professional
+                        development</p>
                 </div>
             </div>
         </section>
@@ -563,7 +687,7 @@
         // Mobile Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const mobileMenu = document.querySelector('.mobile-menu');
-        
+
         hamburger.addEventListener('click', () => {
             mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
             hamburger.classList.toggle('active');
@@ -579,7 +703,7 @@
 
         // Smooth scroll to features
         function scrollToFeatures() {
-            document.querySelector('.feature-grid').scrollIntoView({ 
+            document.querySelector('.feature-grid').scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
@@ -591,4 +715,5 @@
         });
     </script>
 </body>
+
 </html>

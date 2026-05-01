@@ -1,48 +1,56 @@
-<!-- SIDEBAR: Employer -->
-<aside class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 flex flex-col">
-    <div class="flex items-center gap-3 px-6 py-5 border-b">
-        <div class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-xl text-lg">🏢</div>
-        <span class="text-xl font-bold text-gray-800">Employer</span>
-    </div>
-    <div class="px-6 py-5 border-b">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full text-xl">👤</div>
-            <div>
-                <div class="font-semibold text-gray-800">{{ auth()->user()->name }}</div>
-                <div class="text-sm text-gray-500">Employer</div>
+<aside class="sidebar-wrapper">
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <nav class="sidebar" id="app-sidebar">
+        <header class="sidebar-header">
+            <div class="sidebar-brand">
+                <div class="brand-icon" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);">🏢</div>
+                <span class="brand-name">Employer Hub</span>
             </div>
+            <div class="user">
+                <div class="avatar">{{ substr(auth()->user()->name, 0, 1) }}</div>
+                <div class="user-meta">
+                    <p class="name">{{ auth()->user()->name }}</p>
+                    <p class="role">Employer</p>
+                </div>
+            </div>
+            <a href="{{ route('employer.jobs.create') }}" class="sidebar-create-btn">
+                <span class="icon">➕</span>
+                <span class="label">Post a Job</span>
+            </a>
+        </header>
+
+        <div class="menu">
+            <a href="{{ route('employer.dashboard') }}" data-tooltip="Dashboard"
+                class="{{ request()->routeIs('employer.dashboard') ? 'active' : '' }}">
+                <span class="icon">🏠</span>
+                <span class="label">Dashboard</span>
+            </a>
+            <a href="{{ route('employer.jobs.index') }}" data-tooltip="My Jobs"
+                class="{{ request()->routeIs('employer.jobs.*') ? 'active' : '' }}">
+                <span class="icon">💼</span>
+                <span class="label">My Jobs</span>
+            </a>
+            <a href="{{ route('employer.applications.index') }}" data-tooltip="Applications"
+                class="{{ request()->routeIs('employer.applications.*') ? 'active' : '' }}">
+                <span class="icon">📋</span>
+                <span class="label">Applications</span>
+            </a>
+            <a href="{{ route('employer.profile.edit') }}" data-tooltip="Company Profile"
+                class="{{ request()->routeIs('employer.profile.*') ? 'active' : '' }}">
+                <span class="icon">🏢</span>
+                <span class="label">Company Profile</span>
+            </a>
         </div>
-        <a href="{{ route('employer.jobs.create') }}"
-            class="mt-4 block text-center bg-blue-600 text-white text-sm py-2 rounded-lg hover:bg-blue-700 transition">
-            Create Jobs
-        </a>
-    </div>
-    <nav class="flex-1 px-4 py-6 space-y-2">
-        <a href="{{ route('employer.dashboard') }}"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('employer.dashboard') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
-            🏠 <span>Dashboard</span>
-        </a>
-        <a href="{{ route('employer.jobs.index') }}"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('employer.jobs.*') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
-            💼 <span>My Jobs</span>
-        </a>
-        <a href="{{ route('employer.applications.index') }}"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('employer.applications.*') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
-            📋 <span>Applications</span>
-        </a>
-        <a href="{{ route('employer.profile.edit') }}"
-            class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('employer.profile.*') ? 'bg-blue-100 text-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100' }}">
-            👤 <span>Company Profile</span>
-        </a>
+
+        <footer class="sidebar-footer">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" onclick="return confirm('Are you sure you want to log out?');">
+                    <span class="icon">🚪</span>
+                    <span class="label">Logout</span>
+                </button>
+            </form>
+        </footer>
     </nav>
-    <div class="p-4 border-t">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit"
-                class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition"
-                onclick="return confirm('Are you sure you want to log out?');">
-                🚪 <span>Logout</span>
-            </button>
-        </form>
-    </div>
 </aside>
