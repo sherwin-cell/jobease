@@ -75,14 +75,6 @@
                 @endforeach
             </tbody>
         </table>
-
-        <!-- Debug Info -->
-        <div style="background-color: #f3f4f6; padding: 12px; margin-top: 16px;">
-            <strong>Debug:</strong><br>
-            @foreach($users as $user)
-                {{ $user->name }}: is_banned = {{ $user->is_banned ? 'YES' : 'NO' }}<br>
-            @endforeach
-        </div>
     </div>
 
 @endsection

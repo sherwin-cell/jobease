@@ -7,9 +7,11 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\LogsActivity;
 
 class EmployerRegisterController extends Controller
 {
+    use LogsActivity;
     public function showRegistrationForm()
     {
         return view('auth.employer-register');

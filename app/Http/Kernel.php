@@ -32,13 +32,11 @@ class Kernel extends HttpKernel
         ],
     ];
 
-    // ✅ ONLY USE THIS (Laravel 11+)
+    // ✅ ONLY USE THIS FOR LARAVEL 12
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-        // ✅ your custom middleware
         'employer.profile.complete' => \App\Http\Middleware\EnsureEmployerProfileComplete::class,
     ];
 }

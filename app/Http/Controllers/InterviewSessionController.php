@@ -41,7 +41,7 @@ class InterviewSessionController extends Controller
             ->orderBy('scheduled_at')
             ->get();
 
-        return view('interviews.employer', compact('sessions'));
+        return view('jobseeker.interview.jobseeker', compact('sessions'));
     }
 
     // Job seeker dashboard
@@ -51,7 +51,7 @@ class InterviewSessionController extends Controller
             ->orderBy('scheduled_at')
             ->get();
 
-        return view('interviews.jobseeker', compact('sessions'));
+        return view('jobseeker.interview.jobseeker', compact('sessions'));
     }
 
     // Join page (SAFE CHECK)

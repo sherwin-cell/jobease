@@ -20,6 +20,9 @@ class JobController extends Controller
     {
         $query = Job::query();
 
+        // ✅ CRITICAL: Only show active jobs to job seekers
+        $query->where('status', 'active');
+
         if ($request->filled('location')) {
             $query->where('location', 'like', '%' . $request->location . '%');
         }
@@ -49,21 +52,26 @@ class JobController extends Controller
             ->with('employer.employerProfile')
             ->latest()
             ->paginate(10);
+
         return view('jobseeker.jobs.index', compact('jobs'));
     }
-
-    // Job Seeker: View single job7/vvvvvvvvcvd
+// Job Seeker: View single job
     public function show(Job $job)
     {
         return view('jobseeker.jobs.show', compact('job'));
     }
 
     // Employer: List my jobs
-    public function employerIndex()
+    public function employerIndex(Request $request)  // Add Request parameter
     {
-        $jobs = Job::where('employer_id', Auth::id())
-            ->latest()
-            ->get();
+        $query = Job::where('employer_id', Auth::id());
+
+        // Optional: Add status filter for employers
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $jobs = $query->latest()->get();
 
         return view('employer.jobs.index', compact('jobs'));
     }
@@ -139,6 +147,7 @@ class JobController extends Controller
         // Convert comma-separated string to array
         $validated['skills_required'] = array_map('trim', explode(',', $request->skills_required));
         $validated['employer_id'] = Auth::id();
+        $validated['status'] = 'pending';
 
         $job = DB::transaction(function () use ($validated, $request) {
 
@@ -155,11 +164,14 @@ class JobController extends Controller
             $this->upsertLiveSkillQa($job, $request);
 
             // ✅ Activity Log
+            $user = Auth::user();
             ActivityLog::create([
-                'user_id' => Auth::id(), // can be null, that's fine
+                'user_id' => $user ? $user->id : null,
                 'action' => 'New job posting created',
                 'description' => $job->title . ' at ' . $job->location,
+                'job_id' => $job->id,
             ]);
+
 
             return $job;
         });

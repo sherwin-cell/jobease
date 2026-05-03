@@ -165,7 +165,8 @@
 
                                         <div>
                                             <p class="text-sm font-semibold">{{ $user->name }}</p>
-                                            <p class="text-xs text-gray-500">{{ $user->employer->company_name ?? 'No Company' }}</p>
+                                            <p class="text-xs text-gray-500">{{ $user->employer->company_name ?? 'No Company' }}
+                                            </p>
                                         </div>
                                     </div>
                                 </td>
@@ -280,12 +281,14 @@
                             <tr class="hover:bg-gray-50">
 
                                 <td class="px-6 py-4 font-semibold">{{ $job->title }}</td>
-                                <td class="px-6 py-4 text-gray-600">{{ $job->employer->employerProfile->company_name ?? 'No Company' }}</td>
+                                <td class="px-6 py-4 text-gray-600">
+                                    {{ $job->employer->employerProfile->company_name ?? 'No Company' }}
+                                </td>
 
                                 <td class="px-6 py-4">
                                     <span
                                         class="px-2 py-1 text-xs rounded
-                                                        {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
+                                                                                        {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
                                         {{ ucfirst($job->status) }}
                                     </span>
                                 </td>
@@ -322,12 +325,14 @@
                         <div class="flex justify-between">
                             <div>
                                 <p class="font-semibold">{{ $job->title }}</p>
-                                <p class="text-xs text-gray-500">{{ $job->employer->employerProfile->company_name ?? 'No Company' }}</p>
+                                <p class="text-xs text-gray-500">
+                                    {{ $job->employer->employerProfile->company_name ?? 'No Company' }}
+                                </p>
                             </div>
 
                             <span
                                 class="text-xs px-2 py-1 rounded
-                                                {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
+                                                                                {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
                                 {{ ucfirst($job->status) }}
                             </span>
                         </div>
@@ -355,46 +360,76 @@
         <!-- ACTIVITY LOG PANEL -->
         <div id="logsPanel" class="tab-panel hidden">
 
-            <!-- Header -->
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold text-gray-900">System Activity Log</h2>
-                <p class="text-sm text-gray-500 mt-1">
-                    Monitor recent system activities and user actions
-                </p>
+            <!-- Activity Log Header with Cleanup Button -->
+            <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">System Activity Log</h2>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Monitor recent system activities and user actions
+                    </p>
+                </div>
+
+                <!-- Cleanup Button -->
+                <form action="{{ route('admin.activity-logs.cleanup') }}" method="POST"
+                    onsubmit="return confirm('⚠️ WARNING: This will permanently delete all orphaned activity logs (logs from deleted users). This action cannot be undone! Are you sure?')">
+                    @csrf
+                    <button type="submit"
+                        class="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all duration-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        🗑️ Clean Up Orphaned Logs
+                    </button>
+                </form>
             </div>
 
             <!-- Logs List -->
             <div class="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100">
-
                 @forelse ($logs as $log)
                     <div class="p-4 sm:p-5 flex items-start justify-between gap-4">
-
-                        <!-- Left Content -->
                         <div>
                             <p class="text-sm font-medium text-gray-900">
                                 {{ $log->action }}
                             </p>
-
                             <p class="text-xs text-gray-500 mt-1">
-                                By {{ $log->user->name ?? 'System' }}
+                                By
+                                @if($log->user)
+                                    {{ $log->user->name }}
+                                    <span class="text-gray-400">
+                                        ({{ $log->user->role_id == 2 ? 'Employer' : ($log->user->role_id == 1 ? 'Job Seeker' : 'User') }})
+                                    </span>
+                                @else
+                                    <span class="text-red-400">Deleted User (Account Removed)</span>
+                                @endif
                             </p>
+                            @if($log->description)
+                                <p class="text-xs text-gray-400 mt-1">
+                                    {{ $log->description }}
+                                </p>
+                            @endif
                         </div>
-
-                        <!-- Right Date -->
                         <div class="text-right shrink-0">
                             <p class="text-xs text-gray-500">
                                 {{ $log->created_at->format('Y-m-d h:i A') }}
                             </p>
                         </div>
-
                     </div>
                 @empty
-                    <div class="p-6 text-center text-gray-400 text-sm">
-                        No activity logs found
+                    <div class="p-12 text-center">
+                        <div class="text-5xl mb-3">📭</div>
+                        <p class="text-gray-500 text-sm">No activity logs found</p>
+                        <p class="text-xs text-gray-400 mt-1">Activities will appear here as users interact with the system</p>
                     </div>
                 @endforelse
-
             </div>
+
+            <!-- Pagination (if using paginate instead of limit) -->
+            @if(method_exists($logs, 'hasPages') && $logs->hasPages())
+                <div class="mt-6">
+                    {{ $logs->links() }}
+                </div>
+            @endif
         </div>
     </div>
 

@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminJobController;
-use App\Http\Controllers\Admin\AdminReportController;
+
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEmployerProfileController;
-
 Route::middleware(['auth', 'role:3']) // 3 = Super Admin
     ->prefix('admin')
     ->name('admin.')
@@ -30,9 +29,13 @@ Route::middleware(['auth', 'role:3']) // 3 = Super Admin
 
         Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs');
         Route::get('/activity-logs', function () {
-            return view('admin.activity-logs.index');
+            $logs = \App\Models\ActivityLog::with('user')->latest()->paginate(20);
+            return view('admin.activity-logs.index', compact('logs'));
         })->name('activity-logs');
 
         Route::post('/jobs/{job}/approve', [AdminJobController::class, 'approve'])->name('jobs.approve');
         Route::post('/jobs/{job}/reject', [AdminJobController::class, 'reject'])->name('jobs.reject');
+
+        Route::post('/activity-logs/cleanup', [AdminDashboardController::class, 'cleanupOrphanedLogs'])
+            ->name('activity-logs.cleanup');  // Make sure this matches
     });

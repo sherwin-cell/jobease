@@ -21,8 +21,8 @@ class JobseekerProfile extends Model
         'location',
         'phone',
         'website',
+        'resume_path', // ADD THIS
     ];
-
     protected $casts = [
         'skills' => 'array',
         'experience' => 'array',

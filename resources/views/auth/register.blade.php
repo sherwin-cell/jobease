@@ -370,7 +370,7 @@
             .pw-toggle {
                 display: none !important;
             }
-            
+
             /* Remove extra padding on desktop since no eye button */
             input[type="password"],
             input.pw-field {
@@ -383,23 +383,24 @@
             .pw-toggle {
                 display: flex;
             }
-            
+
             /* Larger touch targets for mobile */
             .pw-toggle {
                 width: 44px;
                 height: 44px;
                 right: 8px;
             }
-            
+
             .eye-icon {
                 width: 22px;
                 height: 22px;
             }
-            
+
             input[type="password"],
             input.pw-field {
                 padding-right: 52px;
-                font-size: 16px; /* Prevents zoom on iOS */
+                font-size: 16px;
+                /* Prevents zoom on iOS */
             }
         }
 
@@ -762,7 +763,8 @@
                         <div class="input-wrap">
                             <input type="password" id="password" name="password" class="pw-field"
                                 placeholder="Create password" autocomplete="new-password" required>
-                            <button type="button" class="pw-toggle" id="togglePassword" aria-label="Toggle password visibility">
+                            <button type="button" class="pw-toggle" id="togglePassword"
+                                aria-label="Toggle password visibility">
                                 <svg class="eye-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                                     <circle cx="12" cy="12" r="3" />
@@ -787,7 +789,8 @@
                         <div class="input-wrap">
                             <input type="password" id="password_confirmation" name="password_confirmation"
                                 class="pw-field" placeholder="Repeat password" autocomplete="new-password" required>
-                            <button type="button" class="pw-toggle" id="toggleConfirmPassword" aria-label="Toggle confirm password visibility">
+                            <button type="button" class="pw-toggle" id="toggleConfirmPassword"
+                                aria-label="Toggle confirm password visibility">
                                 <svg class="eye-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                                     <circle cx="12" cy="12" r="3" />
@@ -831,10 +834,11 @@
 
             let currentToggleListeners = {};
 
-            /* ── Role → Company toggle ─────────────────────────────── */
+            /* ── Role → Company toggle & Form Action ─────────────────────────────── */
             const roleSelect = document.getElementById('roleSelect');
             const companyWrap = document.getElementById('companyWrap');
             const companyInput = document.getElementById('company_name');
+            const registerForm = document.getElementById('registerForm');
 
             function syncCompany() {
                 const text = roleSelect.options[roleSelect.selectedIndex]?.text.toLowerCase() ?? '';
@@ -844,49 +848,61 @@
                 if (!isEmployer) companyInput.value = '';
             }
 
-            roleSelect.addEventListener('change', syncCompany);
-            syncCompany();
+            function updateFormAction() {
+                const text = roleSelect.options[roleSelect.selectedIndex]?.text.toLowerCase() ?? '';
+                const isEmployer = text.includes('employer');
 
-            /* ── Password visibility toggle function (FIXED) ────────── */
+                if (isEmployer) {
+                    registerForm.action = "{{ route('employer.register') }}";
+                } else {
+                    registerForm.action = "{{ route('register') }}";
+                }
+            }
+
+            roleSelect.addEventListener('change', function () {
+                syncCompany();
+                updateFormAction();
+            });
+
+            syncCompany();
+            updateFormAction();
+
+            /* ── Password visibility toggle function ────────── */
             function attachToggleListener(toggleButtonId, passwordFieldId) {
                 const toggleBtn = document.getElementById(toggleButtonId);
                 const passwordField = document.getElementById(passwordFieldId);
-                
+
                 if (!toggleBtn || !passwordField) return false;
-                
-                // Remove existing listener if any
+
                 if (currentToggleListeners[toggleButtonId]) {
                     toggleBtn.removeEventListener('click', currentToggleListeners[toggleButtonId]);
                 }
-                
-                // Create new listener
-                const handler = function(e) {
+
+                const handler = function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordField.setAttribute('type', type);
                     toggleBtn.classList.toggle('active');
-                    
-                    // Change eye icon style when active
+
                     if (type === 'text') {
                         toggleBtn.style.color = '#2563eb';
                     } else {
                         toggleBtn.style.color = '';
                     }
                 };
-                
+
                 toggleBtn.addEventListener('click', handler);
                 currentToggleListeners[toggleButtonId] = handler;
-                
-                // Also handle keyboard events
+
                 toggleBtn.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         handler(e);
                     }
                 });
-                
+
                 return true;
             }
 
@@ -894,25 +910,21 @@
             function updatePasswordToggles() {
                 const isMobile = window.innerWidth <= 768;
                 const toggleBtns = ['togglePassword', 'toggleConfirmPassword'];
-                
+
                 toggleBtns.forEach(btnId => {
                     const toggleBtn = document.getElementById(btnId);
                     if (!toggleBtn) return;
-                    
+
                     if (isMobile) {
-                        // Ensure toggle is visible and has listener
                         toggleBtn.style.display = 'flex';
                         attachToggleListener(btnId, btnId === 'togglePassword' ? 'password' : 'password_confirmation');
                     } else {
-                        // Hide toggle on desktop
                         toggleBtn.style.display = 'none';
-                        // Reset password field type to password if it was visible
                         const fieldId = btnId === 'togglePassword' ? 'password' : 'password_confirmation';
                         const passwordField = document.getElementById(fieldId);
                         if (passwordField && passwordField.getAttribute('type') === 'text') {
                             passwordField.setAttribute('type', 'password');
                         }
-                        // Remove active class if any
                         toggleBtn.classList.remove('active');
                         toggleBtn.style.color = '';
                     }
@@ -965,11 +977,10 @@
             pwConfirm.addEventListener('input', checkMatch);
 
             /* ── Submit state ──────────────────────────────────────── */
-            const form = document.getElementById('registerForm');
             const submitBtn = document.getElementById('submitBtn');
 
-            if (form && submitBtn) {
-                form.addEventListener('submit', function () {
+            if (registerForm && submitBtn) {
+                registerForm.addEventListener('submit', function () {
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<span class="spinner"></span>Creating Account…';
                 });
@@ -980,19 +991,17 @@
 
             /* ── Listen for resize events with debounce ── */
             let resizeTimeout;
-            window.addEventListener('resize', function() {
+            window.addEventListener('resize', function () {
                 clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(function() {
+                resizeTimeout = setTimeout(function () {
                     updatePasswordToggles();
                 }, 150);
             });
 
-            /* ── Also listen for orientation changes on mobile ── */
-            window.addEventListener('orientationchange', function() {
+            window.addEventListener('orientationchange', function () {
                 setTimeout(updatePasswordToggles, 100);
             });
 
-            /* ── Re-run after any potential dynamic content loads ── */
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', updatePasswordToggles);
             } else {

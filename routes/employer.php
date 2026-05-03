@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\EmployerController;
+use App\Http\Controllers\Employer\DashboardController;
 
 Route::middleware(['auth', 'role:employer', 'verified'])
     ->prefix('employer')
@@ -37,8 +38,7 @@ Route::middleware(['auth', 'role:employer', 'verified', 'employer.profile.comple
     ->group(function () {
 
         // Dashboard (NOW FULLY PROTECTED)
-        Route::get('/dashboard', [EmployerController::class, 'dashboard'])
-            ->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Jobs
         Route::get('/jobs', [JobController::class, 'employerIndex'])->name('jobs.index');

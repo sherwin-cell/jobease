@@ -10,8 +10,14 @@ class Application extends Model
         'user_id',
         'job_id',
         'cover_letter',
+        'applied_at',
         'resume',
         'status',
+    ];
+
+    protected $casts = [
+        'applied_at' => 'datetime',
+        'status' => 'string',
     ];
 
     public function user()

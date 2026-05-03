@@ -10,12 +10,17 @@ use Illuminate\Support\Facades\Log;
 
 class AdminJobController extends Controller
 {
-    public function index()
+    public function index(Request $request)  // ← ADD $request parameter here
     {
-        $jobs = Job::with('employer.employerProfile')
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
-
+        $query = Job::with('employer.employerProfile');
+        
+        // Add status filter if provided
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        $jobs = $query->orderBy('created_at', 'desc')->paginate(10);
+        
         return view('admin.jobs.index', compact('jobs'));
     }
 
@@ -25,24 +30,23 @@ class AdminJobController extends Controller
             Log::info('=== APPROVE JOB ATTEMPT ===');
             Log::info('Job ID: ' . $job->id);
             Log::info('Current status: ' . $job->status);
+
+            // Direct update - simpler approach
+            $job->status = 'active';
+            $result = $job->save();
             
-            // Method 1: Try update()
-            $result = $job->update(['status' => 'active']);
             Log::info('Update result: ' . ($result ? 'true' : 'false'));
-            
-            // Method 2: Check if it actually updated
-            $freshJob = Job::find($job->id);
-            Log::info('New status after update: ' . $freshJob->status);
-            
-            if ($freshJob->status !== 'active') {
-                // Method 3: Force update using DB
+            Log::info('New status: ' . $job->fresh()->status);
+
+            if (!$result || $job->fresh()->status !== 'active') {
+                // Force update using DB if save() fails
                 DB::table('jobs')->where('id', $job->id)->update(['status' => 'active']);
                 Log::info('Forced DB update executed');
             }
-            
+
             return redirect()->route('admin.jobs')
                 ->with('success', 'Job approved successfully.');
-                
+
         } catch (\Exception $e) {
             Log::error('Approve error: ' . $e->getMessage());
             return redirect()->route('admin.jobs')
@@ -56,24 +60,23 @@ class AdminJobController extends Controller
             Log::info('=== REJECT JOB ATTEMPT ===');
             Log::info('Job ID: ' . $job->id);
             Log::info('Current status: ' . $job->status);
+
+            // Direct update - simpler approach
+            $job->status = 'rejected';
+            $result = $job->save();
             
-            // Method 1: Try update()
-            $result = $job->update(['status' => 'rejected']);
             Log::info('Update result: ' . ($result ? 'true' : 'false'));
-            
-            // Method 2: Check if it actually updated
-            $freshJob = Job::find($job->id);
-            Log::info('New status after update: ' . $freshJob->status);
-            
-            if ($freshJob->status !== 'rejected') {
-                // Method 3: Force update using DB
+            Log::info('New status: ' . $job->fresh()->status);
+
+            if (!$result || $job->fresh()->status !== 'rejected') {
+                // Force update using DB if save() fails
                 DB::table('jobs')->where('id', $job->id)->update(['status' => 'rejected']);
                 Log::info('Forced DB update executed');
             }
-            
+
             return redirect()->route('admin.jobs')
                 ->with('success', 'Job rejected successfully.');
-                
+
         } catch (\Exception $e) {
             Log::error('Reject error: ' . $e->getMessage());
             return redirect()->route('admin.jobs')

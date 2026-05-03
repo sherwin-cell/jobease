@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\SkillQuestion;
 use App\Models\Application;
 use App\Models\JobLiveSkillQa;
@@ -11,7 +12,7 @@ use App\Models\User;
 
 class Job extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -21,6 +22,7 @@ class Job extends Model
         'salary',
         'employer_id',
         'skills_required',
+        'status',
     ];
 
     protected $casts = [
