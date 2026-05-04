@@ -141,46 +141,58 @@
             <!-- Desktop Table -->
             <div class="hidden md:block overflow-x-auto bg-white rounded-xl border border-gray-200">
                 <table class="min-w-full divide-y divide-gray-200">
-
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name / Company</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Join Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                         </tr>
                     </thead>
-
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($users as $user)
                             <tr class="hover:bg-gray-50">
-
+                                <!-- Name Column -->
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="h-9 w-9 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">
                                             {{ strtoupper(substr($user->name, 0, 2)) }}
                                         </div>
-
                                         <div>
                                             <p class="text-sm font-semibold">{{ $user->name }}</p>
-                                            <p class="text-xs text-gray-500">{{ $user->employer->company_name ?? 'No Company' }}
-                                            </p>
+                                            @if($user->role_id == 3)
+                                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded">Admin</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4 text-sm text-gray-600">{{ $user->email }}</td>
-
+                                <!-- Company Column -->
                                 <td class="px-6 py-4 text-sm">
-                                    @if($user->role_id == 1)
-                                        <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded">Job Seeker</span>
-                                    @elseif($user->role_id == 2)
-                                        <span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded">Employer</span>
+                                    @if($user->isEmployer() && $user->employerProfile)
+                                        <span class="font-medium text-gray-900">{{ $user->employerProfile->company_name }}</span>
+                                    @else
+                                        <span class="text-gray-400">—</span>
                                     @endif
                                 </td>
 
+                                <!-- Email Column -->
+                                <td class="px-6 py-4 text-sm text-gray-600">{{ $user->email }}</td>
+
+                                <!-- Type Column -->
+                                <td class="px-6 py-4 text-sm">
+                                    @if($user->isEmployer())
+                                        <span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded">Employer</span>
+                                    @elseif($user->isJobSeeker())
+                                        <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded">Job Seeker</span>
+                                    @endif
+                                </td>
+
+                                <!-- Status Column -->
                                 <td class="px-6 py-4 text-sm">
                                     @if($user->is_banned)
                                         <span class="px-2 py-1 bg-red-50 text-red-700 text-xs rounded">Banned</span>
@@ -189,20 +201,38 @@
                                     @endif
                                 </td>
 
+                                <!-- Join Date Column -->
                                 <td class="px-6 py-4 text-sm text-gray-500">
                                     {{ $user->created_at->format('M d, Y') }}
                                 </td>
 
+                                <!-- Actions Column -->
+                                <td class="px-6 py-4 text-sm">
+                                    @if($user->is_banned)
+                                        <form action="{{ route('admin.users.unban', $user->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="submit" class="text-green-600 hover:text-green-900 font-medium">
+                                                Unban
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('admin.users.ban', $user->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="submit" class="text-orange-600 hover:text-orange-900 font-medium">
+                                                Ban
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-6 text-gray-400">
+                                <td colspan="7" class="text-center py-6 text-gray-400">
                                     No users found
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
-
                 </table>
             </div>
 
@@ -288,7 +318,7 @@
                                 <td class="px-6 py-4">
                                     <span
                                         class="px-2 py-1 text-xs rounded
-                                                                                        {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
+                                                                                                        {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
                                         {{ ucfirst($job->status) }}
                                     </span>
                                 </td>
@@ -332,7 +362,7 @@
 
                             <span
                                 class="text-xs px-2 py-1 rounded
-                                                                                {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
+                                                                                                {{ $job->status == 'active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' }}">
                                 {{ ucfirst($job->status) }}
                             </span>
                         </div>

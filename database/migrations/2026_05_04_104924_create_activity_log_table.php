@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('activity_log', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')
+                  ->nullable()
+                  ->constrained('users')
+                  ->nullOnDelete();        // keep log even if user is deleted
+            $table->string('action');      // e.g. "User Login", "New job posting created"
+            $table->text('description')->nullable();
+            $table->foreignId('job_id')
+                  ->nullable()
+                  ->constrained('jobs')
+                  ->nullOnDelete();        // keep log even if job is deleted
+            $table->string('ip_address', 45)->nullable();   // supports IPv6
+            $table->text('user_agent')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('activity_log');
+    }
+};

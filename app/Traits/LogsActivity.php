@@ -7,14 +7,24 @@ use Illuminate\Support\Facades\Auth;
 
 trait LogsActivity
 {
-    protected function logActivity($action, $description)
-    {
+    /**
+     * Write an activity log entry for the currently authenticated user.
+     *
+     * Usage inside any controller that uses this trait:
+     *   $this->logActivity('Job Posted', 'Software Engineer at Manila', jobId: $job->id);
+     */
+    protected function logActivity(
+        string   $action,
+        string   $description,
+        ?int     $jobId = null
+    ): void {
         ActivityLog::create([
-            'user_id' => Auth::id(),
-            'action' => $action,
+            'user_id'     => Auth::id(),
+            'action'      => $action,
             'description' => $description,
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent(),
+            'job_id'      => $jobId,
+            'ip_address'  => request()->ip(),
+            'user_agent'  => request()->userAgent(),
         ]);
     }
 }

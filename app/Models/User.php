@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Role;
@@ -15,7 +16,7 @@ use App\Models\EmployerProfile;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -43,7 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // -----------------------------
-    // PROFILES (NEW SYSTEM)
+    // PROFILES
     // -----------------------------
 
     // 👤 Jobseeker Profile

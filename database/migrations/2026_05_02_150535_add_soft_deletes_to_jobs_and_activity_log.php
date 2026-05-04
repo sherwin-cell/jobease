@@ -8,6 +8,13 @@ return new class extends Migration
 {
     public function up()
     {
+        // Add soft deletes to users table (most important)
+        Schema::table('users', function (Blueprint $table) {
+            if (!Schema::hasColumn('users', 'deleted_at')) {
+                $table->softDeletes();
+            }
+        });
+        
         // Add soft deletes to jobs table
         Schema::table('jobs', function (Blueprint $table) {
             if (!Schema::hasColumn('jobs', 'deleted_at')) {
@@ -15,9 +22,9 @@ return new class extends Migration
             }
         });
         
-        // Add soft deletes to activity_logs table
-        Schema::table('activity_logs', function (Blueprint $table) {
-            if (!Schema::hasColumn('activity_logs', 'deleted_at')) {
+        // Add soft deletes to activity_log table (Spatie's table - singular)
+        Schema::table('activity_log', function (Blueprint $table) {
+            if (!Schema::hasColumn('activity_log', 'deleted_at')) {
                 $table->softDeletes();
             }
         });
@@ -25,11 +32,15 @@ return new class extends Migration
     
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        
         Schema::table('jobs', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
         
-        Schema::table('activity_logs', function (Blueprint $table) {
+        Schema::table('activity_log', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
     }

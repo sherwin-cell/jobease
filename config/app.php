@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'JobPortal'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'Asia/Manila'),
 
     /*
     |--------------------------------------------------------------------------
@@ -121,6 +121,53 @@ return [
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Activity Log Configuration
+    |--------------------------------------------------------------------------
+    |
+    | These settings configure the activity logging behavior for your application.
+    | Logs are stored in the 'activity_log' table with proper user tracking.
+    |
+    */
+
+    'activitylog' => [
+        'enabled' => env('ACTIVITY_LOG_ENABLED', true),
+        
+        'table_name' => 'activity_log',
+        
+        'connection' => env('ACTIVITY_LOG_DB_CONNECTION', null),
+        
+        'default_auth_driver' => env('ACTIVITY_LOG_AUTH_DRIVER', 'web'),
+        
+        'subject_returns_soft_deleted' => false,
+        
+        'log_events' => [
+            'created',
+            'updated',
+            'deleted',
+            'registered',
+            'login',
+            'logout',
+            'approved',
+            'rejected',
+            'banned',
+            'unbanned',
+        ],
+        
+        'log_model_events' => [
+            'created' => true,
+            'updated' => true,
+            'deleted' => true,
+        ],
+        
+        'log_user_events' => [
+            'registered' => true,
+            'login' => true,
+            'logout' => true,
+        ],
     ],
 
 ];

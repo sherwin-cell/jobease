@@ -10,10 +10,12 @@ class AdminUserController extends Controller
 {
     public function index()
     {
-        $users = User::where('role_id', '!=', 3)->get();
+        $users = User::with(['employerProfile', 'jobseekerProfile'])
+            ->where('role_id', '!=', 3)
+            ->get();
+
         return view('admin.users.index', compact('users'));
     }
-
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));

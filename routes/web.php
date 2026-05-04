@@ -123,3 +123,19 @@ Route::middleware(['auth'])->group(function () {
 Route::fallback(function () {
     return redirect()->route('home');
 });
+
+Route::get('/create-log', function () {
+    try {
+        DB::table('activity_log')->insert([
+            'log_name' => 'default',
+            'description' => 'Test log from web route',
+            'causer_id' => auth()->id() ?? 1,
+            'properties' => json_encode(['action' => 'Web Test']),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return '✅ Log created successfully! <a href="/admin/dashboard">Go to Admin Dashboard</a>';
+    } catch (Exception $e) {
+        return '❌ Error: ' . $e->getMessage();
+    }
+});
