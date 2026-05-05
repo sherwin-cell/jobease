@@ -230,10 +230,6 @@
             <h2>10. Updates to This Policy</h2>
             <p>We may update this Privacy Policy from time to time. We will notify you of material changes via email or
                 through the Service.</p>
-
-            <h2>11. Contact Us</h2>
-            <p>For privacy-related questions or concerns, contact us at: <strong>privacy@jobease.com</strong></p>
-
             <div class="button-group">
                 <a href="{{ route('register') }}" class="back-btn">← Back to Registration</a>
                 <button onclick="window.close()" class="close-btn">✕ Close Window</button>

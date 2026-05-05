@@ -209,10 +209,6 @@
             <h2>9. Changes to Terms</h2>
             <p>We reserve the right to modify these terms at any time. Continued use of the Service after changes
                 constitutes acceptance of the new terms.</p>
-
-            <h2>10. Contact Information</h2>
-            <p>For questions about these Terms, please contact us at: <strong>legal@jobease.com</strong></p>
-
             <div class="button-group">
                 <a href="{{ route('register') }}" class="back-btn">← Back to Registration</a>
                 <button onclick="window.close()" class="close-btn">✕ Close Window</button>

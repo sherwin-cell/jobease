@@ -21,6 +21,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Terms and Privacy (public, no login required)
+Route::view('/terms', 'legal.terms')->name('terms');
+Route::view('/privacy', 'legal.privacy')->name('privacy');
+
 // ==================== REGISTRATION ROUTES ====================
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
@@ -92,24 +96,62 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-// ==================== AUTHENTICATED ROUTES ====================
-Route::middleware(['auth'])->group(function () {
+// ==================== AUTHENTICATED ROUTES WITH CACHE PREVENTION ====================
+// ✅ Applied 'prevent.back.history' middleware to all authenticated routes
+Route::middleware(['auth', 'prevent.back.history'])->group(function () {
 
-    // ==================== INTERVIEW ROUTES ====================
-    Route::prefix('employer')->name('employer.')->group(function () {
-        Route::get('/interviews', [InterviewSessionController::class, 'employerIndex'])->name('interviews');
+    // ==================== ADMIN ROUTES ====================
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        // Admin dashboard
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
+        // Add other admin routes here
+        // Route::get('/users', [AdminController::class, 'users'])->name('users');
+        // Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
     });
 
-    Route::prefix('jobseeker')->name('jobseeker.')->group(function () {
-        Route::get('/interviews', [InterviewSessionController::class, 'jobSeekerIndex'])->name('interviews');
-    });
+    // ==================== EMPLOYER ROUTES ====================
+    Route::middleware(['role:employer', 'employer.profile.complete'])
+        ->prefix('employer')
+        ->name('employer.')
+        ->group(function () {
+            // Employer dashboard
+            Route::get('/dashboard', function () {
+                return view('employer.dashboard');
+            })->name('dashboard');
 
+            // Interview routes
+            Route::get('/interviews', [InterviewSessionController::class, 'employerIndex'])->name('interviews');
+
+            // Add other employer routes here
+            // Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
+            // Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
+        });
+
+    // ==================== JOB SEEKER ROUTES ====================
+    Route::middleware(['role:job_seeker'])
+        ->prefix('jobseeker')
+        ->name('jobseeker.')
+        ->group(function () {
+            // Job Seeker dashboard
+    
+            // Interview routes
+            Route::get('/interviews', [InterviewSessionController::class, 'jobSeekerIndex'])->name('interviews');
+
+            // Add other job seeker routes here
+            // Route::get('/jobs', [JobController::class, 'browse'])->name('jobs');
+            // Route::get('/applications', [ApplicationController::class, 'myApplications'])->name('applications');
+        });
+
+    // ==================== SHARED AUTHENTICATED ROUTES ====================
     Route::post('/interviews', [InterviewSessionController::class, 'store'])->name('interviews.store');
     Route::post('/interviews/{id}/start', [InterviewSessionController::class, 'start'])->name('interviews.start');
     Route::get('/interviews/{id}/join', [InterviewSessionController::class, 'join'])->name('interviews.join');
     Route::get('/interviews/call/{session}', [InterviewSessionController::class, 'call'])->name('interviews.call');
 
-    // ==================== APPLICATION ROUTES ====================
+    // Application routes
     Route::get('/applications/{application}/schedule-interview', [ApplicationController::class, 'showScheduleInterviewForm'])->name('employer.interviews.schedule.form');
     Route::post('/applications/{application}/schedule-interview', [ApplicationController::class, 'scheduleInterview'])->name('employer.interviews.schedule');
 
@@ -124,6 +166,7 @@ Route::fallback(function () {
     return redirect()->route('home');
 });
 
+// ==================== TEST ROUTE (Remove in production) ====================
 Route::get('/create-log', function () {
     try {
         DB::table('activity_log')->insert([
