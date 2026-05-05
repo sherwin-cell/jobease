@@ -38,4 +38,10 @@ Route::middleware(['auth', 'role:3']) // 3 = Super Admin
 
         Route::post('/activity-logs/cleanup', [AdminDashboardController::class, 'cleanupOrphanedLogs'])
             ->name('activity-logs.cleanup');  // Make sure this matches
+    
+        // Profile routes (add inside your admin middleware group)
+        Route::middleware(['auth'])->group(function () {
+            Route::get('/profile/settings', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.settings');
+            Route::put('/profile/settings', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+        });
     });

@@ -109,7 +109,6 @@
             overflow: hidden;
         }
 
-        /* decorative orbs */
         .left::before {
             content: '';
             position: absolute;
@@ -333,7 +332,6 @@
             }
         }
 
-        /* custom select arrow */
         .select-wrap::after {
             content: '▾';
             position: absolute;
@@ -345,7 +343,6 @@
             font-size: 13px;
         }
 
-        /* password toggle - ONLY VISIBLE ON MOBILE */
         .pw-toggle {
             position: absolute;
             right: 12px;
@@ -365,26 +362,22 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* HIDE eye toggle on desktop (screens larger than 768px) */
         @media (min-width: 769px) {
             .pw-toggle {
                 display: none !important;
             }
 
-            /* Remove extra padding on desktop since no eye button */
             input[type="password"],
             input.pw-field {
                 padding-right: clamp(10px, 1.5vw, 14px);
             }
         }
 
-        /* SHOW eye toggle only on mobile (768px and below) */
         @media (max-width: 768px) {
             .pw-toggle {
                 display: flex;
             }
 
-            /* Larger touch targets for mobile */
             .pw-toggle {
                 width: 44px;
                 height: 44px;
@@ -400,7 +393,6 @@
             input.pw-field {
                 padding-right: 52px;
                 font-size: 16px;
-                /* Prevents zoom on iOS */
             }
         }
 
@@ -412,7 +404,6 @@
             transform: translateY(-50%) scale(0.95);
         }
 
-        /* SVG Eye Icon */
         .eye-icon {
             width: 20px;
             height: 20px;
@@ -427,7 +418,6 @@
             stroke: var(--blue-600);
         }
 
-        /* company field slide */
         .company-wrap {
             overflow: hidden;
             max-height: 0;
@@ -440,7 +430,6 @@
             opacity: 1;
         }
 
-        /* ─── PASSWORD STRENGTH ──────────────────────────────────────── */
         .strength-bar-row {
             display: flex;
             gap: 4px;
@@ -463,7 +452,6 @@
             transition: color 0.3s;
         }
 
-        /* ─── ERROR TEXT ─────────────────────────────────────────────── */
         .error-msg {
             font-size: 11px;
             font-weight: 600;
@@ -474,7 +462,6 @@
             gap: 4px;
         }
 
-        /* ─── CHECKBOX ───────────────────────────────────────────────── */
         .checkbox-row {
             display: flex;
             align-items: flex-start;
@@ -509,9 +496,13 @@
             color: var(--blue-600);
             font-weight: 700;
             text-decoration: none;
+            transition: all 0.2s ease;
         }
 
-        /* ─── SUBMIT BUTTON ──────────────────────────────────────────── */
+        .checkbox-row label a:hover {
+            text-decoration: underline;
+        }
+
         .btn-submit {
             width: 100%;
             padding: clamp(11px, 1.6vh, 14px);
@@ -551,7 +542,6 @@
             cursor: not-allowed;
         }
 
-        /* spinner inside button */
         .spinner {
             display: inline-block;
             width: 14px;
@@ -570,7 +560,6 @@
             }
         }
 
-        /* ─── FOOTER ─────────────────────────────────────────────────── */
         .form-footer {
             text-align: center;
             margin-top: clamp(10px, 1.5vh, 16px);
@@ -589,7 +578,6 @@
             text-decoration: underline;
         }
 
-        /* ─── MOBILE OPTIMIZATIONS ───────────────────────────────────── */
         @media (max-width: 768px) {
 
             html,
@@ -623,7 +611,6 @@
             }
         }
 
-        /* ─── TABLET ─────────────────────────────────────────────────── */
         @media (min-width: 769px) and (max-width: 1024px) {
             .card {
                 max-width: 900px;
@@ -646,7 +633,6 @@
             }
         }
 
-        /* ─── FOCUS VISIBLE (accessibility) ─────────────────────────── */
         :focus-visible {
             outline: 2px solid var(--blue-600);
             outline-offset: 2px;
@@ -658,14 +644,10 @@
 
     <div class="card" role="main">
 
-        <!-- ── LEFT BRANDING ─────────────────────────────────────────── -->
         <aside class="left" aria-label="JobEase branding">
-
             <div class="brand-logo">JobEase</div>
             <div class="brand-tagline">Start your career journey<br>with confidence.</div>
-
             <div class="divider"></div>
-
             <div class="feature">
                 <div class="feature-icon">✦</div>
                 <div class="feature-text">Smart job matching</div>
@@ -678,28 +660,22 @@
                 <div class="feature-icon">🔒</div>
                 <div class="feature-text">Secure &amp; trusted by users</div>
             </div>
-
             <div class="brand-badge">
                 <div class="brand-badge-dot"></div>
                 Hiring is live now
             </div>
-
         </aside>
 
-        <!-- ── RIGHT FORM ─────────────────────────────────────────────── -->
         <section class="right" aria-label="Registration form">
-
             <div class="form-header">
                 <div class="form-title">Create Account</div>
                 <div class="form-subtitle">Join thousands of professionals on JobEase</div>
             </div>
 
-            <form method="POST" action="{{ route('register') }}" id="registerForm" novalidate>
+            <form method="POST" action="{{ route('register') }}" id="registerForm">
                 @csrf
 
                 <div class="form-grid">
-
-                    <!-- Full Name -->
                     <div class="input-group col-span-2">
                         <label class="input-label" for="name">Full Name</label>
                         <input type="text" id="name" name="name" placeholder="Maria Santos" value="{{ old('name') }}"
@@ -709,7 +685,6 @@
                         @enderror
                     </div>
 
-                    <!-- Email -->
                     <div class="input-group col-span-2">
                         <label class="input-label" for="email">Email Address</label>
                         <input type="email" id="email" name="email" placeholder="you@example.com"
@@ -719,7 +694,6 @@
                         @enderror
                     </div>
 
-                    <!-- Account Type -->
                     <div class="input-group col-span-2">
                         <label class="input-label" for="roleSelect">Account Type</label>
                         <div class="input-wrap select-wrap">
@@ -743,7 +717,6 @@
                         @enderror
                     </div>
 
-                    <!-- Company Name (dynamic) -->
                     <div class="col-span-2">
                         <div class="company-wrap" id="companyWrap">
                             <div class="input-group">
@@ -757,7 +730,6 @@
                         </div>
                     </div>
 
-                    <!-- Password with Eye Toggle -->
                     <div class="input-group">
                         <label class="input-label" for="password">Password</label>
                         <div class="input-wrap">
@@ -783,7 +755,6 @@
                         @enderror
                     </div>
 
-                    <!-- Confirm Password with Eye Toggle -->
                     <div class="input-group">
                         <label class="input-label" for="password_confirmation">Confirm Password</label>
                         <div class="input-wrap">
@@ -803,28 +774,30 @@
                         @enderror
                     </div>
 
-                    <!-- Terms -->
                     <div class="col-span-2">
                         <div class="checkbox-row">
                             <input type="checkbox" id="terms" name="terms" required>
                             <label for="terms">
-                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                I agree to the
+                                <a href="{{ route('terms') }}" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+                                and
+                                <a href="{{ route('privacy') }}" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
                             </label>
+                            @error('terms')
+                                <div class="error-msg">⚠ {{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-
-                </div><!-- /form-grid -->
+                </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">
                     Create Account
                 </button>
-
             </form>
 
             <div class="form-footer">
                 Already have an account? <a href="{{ route('login') }}">Sign in</a>
             </div>
-
         </section>
     </div>
 
@@ -834,7 +807,6 @@
 
             let currentToggleListeners = {};
 
-            /* ── Role → Company toggle & Form Action ─────────────────────────────── */
             const roleSelect = document.getElementById('roleSelect');
             const companyWrap = document.getElementById('companyWrap');
             const companyInput = document.getElementById('company_name');
@@ -867,7 +839,6 @@
             syncCompany();
             updateFormAction();
 
-            /* ── Password visibility toggle function ────────── */
             function attachToggleListener(toggleButtonId, passwordFieldId) {
                 const toggleBtn = document.getElementById(toggleButtonId);
                 const passwordField = document.getElementById(passwordFieldId);
@@ -906,7 +877,6 @@
                 return true;
             }
 
-            /* ── Check and update toggle state based on screen size ── */
             function updatePasswordToggles() {
                 const isMobile = window.innerWidth <= 768;
                 const toggleBtns = ['togglePassword', 'toggleConfirmPassword'];
@@ -931,7 +901,6 @@
                 });
             }
 
-            /* ── Password strength meter ───────────────────────────── */
             const pwInput = document.getElementById('password');
             const pwConfirm = document.getElementById('password_confirmation');
             const segs = [1, 2, 3, 4].map(i => document.getElementById('seg' + i));
@@ -961,7 +930,6 @@
                 checkMatch();
             });
 
-            /* ── Password match checker ───────────────────────────── */
             function checkMatch() {
                 const pw = pwInput.value;
                 const pc = pwConfirm.value;
@@ -976,20 +944,44 @@
 
             pwConfirm.addEventListener('input', checkMatch);
 
-            /* ── Submit state ──────────────────────────────────────── */
             const submitBtn = document.getElementById('submitBtn');
+            const termsCheckbox = document.getElementById('terms');
+
+            function validateTerms() {
+                if (!termsCheckbox.checked) {
+                    let termsError = document.getElementById('terms-error');
+                    if (!termsError) {
+                        termsError = document.createElement('div');
+                        termsError.id = 'terms-error';
+                        termsError.className = 'error-msg';
+                        termsError.style.marginTop = '8px';
+                        termsCheckbox.closest('.checkbox-row').appendChild(termsError);
+                    }
+                    termsError.innerHTML = '⚠ You must agree to the Terms of Service and Privacy Policy';
+                    return false;
+                }
+
+                const existingError = document.getElementById('terms-error');
+                if (existingError) existingError.remove();
+                return true;
+            }
 
             if (registerForm && submitBtn) {
-                registerForm.addEventListener('submit', function () {
+                registerForm.addEventListener('submit', function (e) {
+                    if (!validateTerms()) {
+                        e.preventDefault();
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Create Account';
+                        return false;
+                    }
+
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<span class="spinner"></span>Creating Account…';
                 });
             }
 
-            /* ── Initialize on page load ── */
             updatePasswordToggles();
 
-            /* ── Listen for resize events with debounce ── */
             let resizeTimeout;
             window.addEventListener('resize', function () {
                 clearTimeout(resizeTimeout);
@@ -1009,7 +1001,6 @@
             }
         })();
     </script>
-
 </body>
 
 </html>

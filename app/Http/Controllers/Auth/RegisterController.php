@@ -14,7 +14,7 @@ use App\Traits\LogsActivity;
 class RegisterController extends Controller
 {
     use LogsActivity;
-    
+
     public function showRegistrationForm()
     {
         $roles = Role::whereIn('id', [1, 2])->get();
@@ -38,6 +38,10 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'role_id' => 'required|in:1,2',
             'company_name' => 'nullable|string|max:255',
+            'terms' => 'required|accepted', // ✅ ADDED - validates the checkbox
+        ], [
+            'terms.accepted' => 'You must agree to the Terms of Service and Privacy Policy.',
+            'terms.required' => 'Please accept the Terms of Service and Privacy Policy to continue.',
         ]);
 
         $user = User::create([
@@ -57,7 +61,7 @@ class RegisterController extends Controller
         if ($user->isJobSeeker()) {
             // Create empty job seeker profile
             $user->jobseekerProfile()->create([]);
-            
+
             // Log the registration
             ActivityLog::create([
                 'user_id' => $user->id,
@@ -65,6 +69,7 @@ class RegisterController extends Controller
                 'description' => "New Job Seeker registered: {$user->name} ({$user->email})",
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
+                // ✅ No 'terms' here - removed the bug
             ]);
         }
 
@@ -75,7 +80,7 @@ class RegisterController extends Controller
                 'approval_status' => 'pending',
                 'is_complete' => false,
             ]);
-            
+
             // Log the registration
             ActivityLog::create([
                 'user_id' => $user->id,
@@ -83,34 +88,42 @@ class RegisterController extends Controller
                 'description' => "New Employer registered: {$user->name} - Company: {$request->company_name} ({$user->email})",
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
+                // ✅ No 'terms' here - removed the bug
             ]);
         }
 
         // Login the user
         Auth::login($user);
 
-        // ✅ Redirect based on role to appropriate pages
+        // Redirect based on role
         if ($user->isJobSeeker()) {
-            // Check if profile has required fields
             $profile = $user->jobseekerProfile;
             $needsCompletion = !$profile || empty($profile->headline) || empty($profile->skills);
-            
+
             if ($needsCompletion) {
                 return redirect()->route('jobseeker.profile.edit')
-                    ->with('info', 'Please complete your profile. Your email verification link has been sent.');
+                    ->with('info', 'Please complete your profile. A verification link has been sent to your email.');
             }
-            
-            return redirect()->route('verification.notice')
+
+            return redirect()->route('jobseeker.dashboard')
                 ->with('info', 'Please verify your email address. A verification link has been sent to your email.');
         }
-        
+
         if ($user->isEmployer()) {
-            return redirect()->route('employer.complete-profile')
-                ->with('info', 'Please complete your company profile. A verification link has been sent to your email.');
+            $profile = $user->employerProfile;
+            $needsCompletion = !$profile || empty($profile->company_name) || $profile->approval_status == 'pending';
+
+            if ($needsCompletion) {
+                return redirect()->route('employer.complete-profile')
+                    ->with('info', 'Please complete your company profile. A verification link has been sent to your email.');
+            }
+
+            return redirect()->route('employer.dashboard')
+                ->with('info', 'Please verify your email address. A verification link has been sent to your email.');
         }
-        
-        // Fallback
-        return redirect()->route('verification.notice')
+
+        // Fallback for admin
+        return redirect()->route('admin.dashboard')
             ->with('info', 'Please verify your email address. A verification link has been sent to your email.');
     }
 }
