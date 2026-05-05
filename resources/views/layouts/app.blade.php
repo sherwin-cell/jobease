@@ -90,11 +90,8 @@
         .sidebar {
             width: var(--sidebar-closed);
             height: 100vh;
-            background: rgba(255, 255, 255, 0.72);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-right: 1px solid rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
             border-right: 1px solid var(--gray-200);
             display: flex;
             flex-direction: column;
@@ -111,24 +108,19 @@
 
         /* Scrollbar Styling */
         .sidebar::-webkit-scrollbar,
-        .menu::-webkit-scrollbar {
+        .sidebar-menu::-webkit-scrollbar {
             width: 4px;
         }
 
         .sidebar::-webkit-scrollbar-track,
-        .menu::-webkit-scrollbar-track {
+        .sidebar-menu::-webkit-scrollbar-track {
             background: var(--gray-100);
         }
 
         .sidebar::-webkit-scrollbar-thumb,
-        .menu::-webkit-scrollbar-thumb {
+        .sidebar-menu::-webkit-scrollbar-thumb {
             background: var(--gray-300);
             border-radius: 10px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover,
-        .menu::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-400);
         }
 
         /* Header */
@@ -138,12 +130,19 @@
             flex-shrink: 0;
         }
 
+        .sidebar-header-inline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
         .sidebar-brand {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 20px;
             overflow: hidden;
+            flex: 1;
         }
 
         .brand-icon {
@@ -168,197 +167,275 @@
             background-clip: text;
             color: transparent;
             white-space: nowrap;
+            transition: opacity var(--sidebar-transition);
         }
 
-        .sidebar.collapsed .brand-name {
-            display: none;
-        }
-
-        /* User Section */
-        .user {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            overflow: hidden;
-            padding: 8px 0;
-        }
-
-        .avatar {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--primary-light) 0%, #dbeafe 100%);
-            border-radius: 12px;
-            display: flex;
+        /* Hamburger button inside sidebar - ALWAYS VISIBLE */
+        .sidebar-hamburger {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 10px;
+            display: flex !important; /* Always show */
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            font-size: 20px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .user-meta {
-            overflow: hidden;
-            min-width: 0;
-            flex: 1;
-        }
-
-        .user-meta .name {
-            font-size: 14px;
-            font-weight: 600;
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: var(--gray-800);
-        }
-
-        .user-meta .role {
-            font-size: 11px;
-            color: var(--gray-500);
-            margin: 2px 0 0;
-            white-space: nowrap;
-        }
-
-        .sidebar.collapsed .user-meta {
-            display: none;
-        }
-
-        /* Create Button (Employer) */
-        .sidebar-create-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 16px;
-            padding: 10px 12px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
             transition: all 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .sidebar-create-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .sidebar-create-btn .icon {
-            font-size: 16px;
             flex-shrink: 0;
+            color: var(--gray-600);
         }
 
-        .sidebar.collapsed .sidebar-create-btn .label {
-            display: none;
+        .sidebar-hamburger:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .sidebar-hamburger svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            transition: transform 0.3s ease;
+        }
+
+        /* Rotate icon when expanded */
+        .sidebar.expanded .sidebar-hamburger svg {
+            transform: rotate(90deg);
         }
 
         /* Menu */
-        .menu {
-            padding: 16px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .sidebar-menu {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
         }
 
-        .menu a {
+        .menu-section {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--gray-100);
+            transition: padding var(--sidebar-transition);
+        }
+
+        .menu-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-500);
+            margin-bottom: 12px;
+            padding-left: 12px;
+            transition: opacity var(--sidebar-transition);
+        }
+
+        .menu-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px;
+            padding: 10px 12px;
+            margin: 4px 0;
             border-radius: 12px;
             text-decoration: none;
-            color: var(--gray-600);
+            color: var(--gray-700);
             font-size: 14px;
             font-weight: 500;
-            position: relative;
             transition: all 0.2s;
             white-space: nowrap;
             overflow: hidden;
+            position: relative;
         }
 
-        .menu a:hover {
+        .menu-item:hover {
             background: var(--gray-100);
             color: var(--primary);
             transform: translateX(4px);
         }
 
-        .menu a.active {
-            background: linear-gradient(135deg, rgba(15, 40, 84, 0.08), rgba(73, 136, 196, 0.12));
-            box-shadow: inset 0 0 0 1px rgba(73, 136, 196, 0.12);
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05));
             color: var(--primary);
             font-weight: 600;
             border-right: 3px solid var(--primary);
         }
 
-        .menu a .icon {
-            font-size: 20px;
+        .menu-text {
+            transition: opacity var(--sidebar-transition);
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
             flex-shrink: 0;
-            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .menu a .label {
-            font-weight: 500;
+        .menu-icon svg {
+            width: 20px;
+            height: 20px;
         }
 
-        .sidebar.collapsed .menu a .label {
+        .menu-badge {
+            margin-left: auto;
+            font-size: 11px;
+            background: #ef476f;
+            padding: 2px 8px;
+            border-radius: 20px;
+            color: white;
+            transition: all var(--sidebar-transition);
+        }
+
+        .menu-badge.pending {
+            background: #ff9f1c;
+        }
+
+        /* ============================================================
+           COLLAPSED SIDEBAR STYLES - HIDE TEXT (Hamburger OFF)
+        ============================================================ */
+        
+        /* Hide brand name when collapsed */
+        .sidebar.collapsed .brand-name {
             display: none;
         }
 
-        /* Tooltips for collapsed mode */
-        .menu a[data-tooltip]::after {
+        /* Center brand icon when collapsed */
+        .sidebar.collapsed .sidebar-brand {
+            justify-content: center;
+        }
+
+        /* Hide all menu labels/section headers when collapsed */
+        .sidebar.collapsed .menu-label {
+            display: none;
+        }
+
+        /* Hide menu text and badges when collapsed */
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .menu-badge {
+            display: none;
+        }
+
+        /* Adjust menu section padding when collapsed */
+        .sidebar.collapsed .menu-section {
+            padding: 12px 0;
+        }
+
+        /* Center menu items and remove gap when collapsed */
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding: 12px;
+            gap: 0;
+        }
+
+        /* Remove translate effect on hover when collapsed */
+        .sidebar.collapsed .menu-item:hover {
+            transform: translateX(0);
+        }
+
+        /* Adjust active indicator for collapsed mode */
+        .sidebar.collapsed .menu-item.active {
+            border-right: none;
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Hide logout button text when collapsed */
+        .sidebar.collapsed .logout-btn .btn-label {
+            display: none;
+        }
+
+        /* Center logout button icon when collapsed */
+        .sidebar.collapsed .logout-btn {
+            justify-content: center;
+            padding: 12px;
+            gap: 0;
+        }
+
+        /* Tooltips for collapsed mode - show on hover */
+        .sidebar.collapsed .menu-item[data-tooltip]:hover::after {
             content: attr(data-tooltip);
             position: absolute;
-            left: calc(var(--sidebar-closed) + 12px);
+            left: calc(var(--sidebar-closed) + 8px);
             top: 50%;
-            transform: translateY(-50%) scale(0.95);
+            transform: translateY(-50%);
             background: var(--gray-900);
             color: white;
             font-size: 12px;
-            font-weight: 500;
             padding: 6px 12px;
             border-radius: 8px;
-            opacity: 0;
-            pointer-events: none;
             white-space: nowrap;
             z-index: 9999;
-            transition: opacity 0.2s, transform 0.2s;
             box-shadow: var(--shadow-lg);
+            pointer-events: none;
+            animation: fadeIn 0.2s ease;
         }
 
-        .sidebar.collapsed .menu a:hover::after {
-            opacity: 1;
-            transform: translateY(-50%) scale(1);
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
         }
 
-        .sidebar.expanded .menu a::after {
-            display: none !important;
+        /* ============================================================
+           EXPANDED SIDEBAR STYLES - SHOW TEXT (Hamburger ON)
+        ============================================================ */
+        .sidebar.expanded .brand-name {
+            display: block;
+        }
+
+        .sidebar.expanded .sidebar-brand {
+            justify-content: flex-start;
+        }
+
+        .sidebar.expanded .menu-label {
+            display: block;
+        }
+
+        .sidebar.expanded .menu-text {
+            display: inline;
+        }
+
+        .sidebar.expanded .menu-badge {
+            display: inline-block;
+        }
+
+        .sidebar.expanded .menu-item {
+            justify-content: flex-start;
+            padding: 10px 12px;
+            gap: 12px;
+        }
+
+        .sidebar.expanded .logout-btn .btn-label {
+            display: inline;
+        }
+
+        .sidebar.expanded .logout-btn {
+            justify-content: flex-start;
+            padding: 10px 12px;
+            gap: 12px;
         }
 
         /* Footer */
         .sidebar-footer {
-            padding: 16px 12px;
+            padding: 16px;
             border-top: 1px solid var(--gray-200);
             flex-shrink: 0;
         }
 
-        .sidebar-footer button {
+        .logout-btn {
             width: 100%;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            color: var(--danger);
             display: flex;
-            gap: 12px;
             align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: transparent;
+            border: none;
             border-radius: 12px;
+            color: var(--danger);
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
@@ -367,18 +444,15 @@
             overflow: hidden;
         }
 
-        .sidebar-footer button:hover {
+        .logout-btn:hover {
             background: #fef2f2;
-            transform: translateX(4px) scale(1.015);
+            transform: translateX(4px);
         }
 
-        .sidebar-footer button .icon {
-            font-size: 20px;
+        .logout-btn .btn-icon {
+            width: 24px;
+            height: 24px;
             flex-shrink: 0;
-        }
-
-        .sidebar.collapsed .sidebar-footer button .label {
-            display: none;
         }
 
         /* ============================================================
@@ -407,12 +481,8 @@
             padding: 24px 32px;
         }
 
-        /* Hamburger Button */
-        .hamburger-btn {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 8px 24px rgba(15, 40, 84, 0.12);
+        /* Mobile hamburger button (visible only on mobile) */
+        .mobile-hamburger {
             position: fixed;
             top: 20px;
             left: 20px;
@@ -422,19 +492,25 @@
             background: white;
             border: 1px solid var(--gray-200);
             border-radius: 12px;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
             cursor: pointer;
             box-shadow: var(--shadow-md);
             transition: all 0.2s;
-            display: none;
+            color: var(--gray-700);
         }
 
-        .hamburger-btn:hover {
+        .mobile-hamburger:hover {
             background: var(--gray-100);
             transform: scale(1.05);
+        }
+
+        .mobile-hamburger svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2;
         }
 
         /* ============================================================
@@ -451,32 +527,19 @@
                 display: block;
             }
 
-            .hamburger-btn {
+            .mobile-hamburger {
                 display: flex;
             }
 
             .sidebar {
                 width: 280px !important;
                 transform: translateX(-100%);
-                box-shadow: var(--shadow-xl);
                 transition: transform var(--sidebar-transition);
             }
 
             .sidebar.expanded {
                 transform: translateX(0);
-            }
-
-            /* Always show labels on mobile when expanded */
-            .sidebar.expanded .menu a .label,
-            .sidebar.expanded .user-meta,
-            .sidebar.expanded .brand-name,
-            .sidebar.expanded .sidebar-footer button .label,
-            .sidebar.expanded .sidebar-create-btn .label {
-                display: inline-block !important;
-            }
-
-            .menu a[data-tooltip]::after {
-                display: none !important;
+                width: 280px !important;
             }
 
             .app-main,
@@ -501,45 +564,73 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .app-content>* {
+        .app-content > * {
             animation: fadeInUp 0.4s ease-out;
-        }
-
-        /* Utility Classes */
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
         }
     </style>
 </head>
 
 <body>
-
     @auth
         @php
             $isJobSeeker = Auth::user()->isJobSeeker();
             $isAdmin = Auth::user()->isAdmin();
         @endphp
 
-        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle sidebar">☰</button>
+        <!-- Mobile hamburger button (visible only on mobile) -->
+        <button class="mobile-hamburger" id="mobile-hamburger" aria-label="Toggle Sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+        </button>
 
         <div class="app-shell">
-            @if ($isJobSeeker)
-                @include('layouts.partials.sidebar-jobseeker')
-            @elseif ($isAdmin)
-                @include('layouts.partials.sidebar-admin')
-            @else
-                @include('layouts.partials.sidebar-employer')
-            @endif
+            <!-- Sidebar Structure -->
+            <aside class="sidebar-wrapper">
+                <div class="sidebar-overlay" id="sidebar-overlay"></div>
+                <nav class="sidebar" id="app-sidebar">
+                    <header class="sidebar-header">
+                        <div class="sidebar-header-inline">
+                            <div class="sidebar-brand">
+                                <div class="brand-icon">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <rect width="32" height="32" rx="8" fill="url(#gradient)" />
+                                        <path d="M16 8L20 12L16 16L12 12L16 8Z" fill="white" />
+                                        <path d="M16 14L20 18L16 22L12 18L16 14Z" fill="white" />
+                                        <defs>
+                                            <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                                                <stop stop-color="#4361ee" />
+                                                <stop offset="1" stop-color="#7209b7" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <span class="brand-name">JobEase</span>
+                            </div>
+                            <button class="sidebar-hamburger" id="sidebar-hamburger" aria-label="Toggle Sidebar">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 6L20 6M4 12L20 12M4 18L20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </header>
+
+                    <!-- Dynamic Sidebar Content -->
+                    @if ($isJobSeeker)
+                        @include('layouts.partials.sidebar-jobseeker')
+                    @elseif ($isAdmin)
+                        @include('layouts.partials.sidebar-admin')
+                    @else
+                        @include('layouts.partials.sidebar-employer')
+                    @endif
+                </nav>
+            </aside>
 
             <main class="app-main" id="app-main">
                 <div class="app-content">
@@ -550,68 +641,156 @@
         </div>
 
         <script>
-            const btn = document.getElementById('hamburger-btn');
+            // DOM Elements
+            const mobileHamburger = document.getElementById('mobile-hamburger');
+            const sidebarHamburger = document.getElementById('sidebar-hamburger');
             const sidebar = document.getElementById('app-sidebar');
             const main = document.getElementById('app-main');
             const overlay = document.getElementById('sidebar-overlay');
 
+            // State variables
+            let isOpen = false;
+            let isMobileView = window.innerWidth <= 768;
+
+            // Helper functions
             const isMobile = () => window.innerWidth <= 768;
-            let open = false;
+
+            function updateSidebarState() {
+                const mobile = isMobile();
+                
+                if (mobile) {
+                    // Mobile behavior - sidebar slides in/out
+                    if (isOpen) {
+                        sidebar.classList.add('expanded');
+                        sidebar.classList.remove('collapsed');
+                        overlay.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        sidebar.classList.remove('expanded');
+                        sidebar.classList.remove('collapsed');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                    main.classList.remove('sidebar-open');
+                } else {
+                    // Desktop behavior - sidebar expands/collapses in place
+                    if (isOpen) {
+                        sidebar.classList.add('expanded');
+                        sidebar.classList.remove('collapsed');
+                        main.classList.add('sidebar-open');
+                    } else {
+                        sidebar.classList.remove('expanded');
+                        sidebar.classList.add('collapsed');
+                        main.classList.remove('sidebar-open');
+                    }
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
 
             function openSidebar() {
-                open = true;
-                btn.textContent = '✕';
-                btn.style.transform = 'rotate(90deg)';
-                sidebar.classList.remove('collapsed');
-                sidebar.classList.add('expanded');
-
-                if (isMobile()) {
-                    overlay.classList.add('active');
-                } else {
-                    main.classList.add('sidebar-open');
-                }
+                isOpen = true;
+                updateSidebarState();
+                saveSidebarState();
             }
 
             function closeSidebar() {
-                open = false;
-                btn.textContent = '☰';
-                btn.style.transform = 'rotate(0deg)';
-                sidebar.classList.remove('expanded');
-                overlay.classList.remove('active');
+                isOpen = false;
+                updateSidebarState();
+                saveSidebarState();
+            }
 
-                if (!isMobile()) {
-                    sidebar.classList.add('collapsed');
-                    main.classList.remove('sidebar-open');
+            function toggleSidebar() {
+                if (isOpen) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
                 }
             }
 
-            // Desktop: start collapsed
-            if (!isMobile()) {
-                sidebar.classList.add('collapsed');
+            // Save sidebar state to localStorage
+            function saveSidebarState() {
+                localStorage.setItem('sidebarOpen', isOpen);
             }
 
-            btn.addEventListener('click', () => open ? closeSidebar() : openSidebar());
-            overlay.addEventListener('click', closeSidebar);
-
-            window.addEventListener('resize', () => {
-                if (!isMobile()) {
-                    overlay.classList.remove('active');
-                    if (open) {
-                        sidebar.classList.add('expanded');
-                        main.classList.add('sidebar-open');
-                        sidebar.classList.remove('collapsed');
-                    } else {
-                        sidebar.classList.add('collapsed');
-                        main.classList.remove('sidebar-open');
-                        sidebar.classList.remove('expanded');
-                    }
+            // Load sidebar state from localStorage
+            function loadSidebarState() {
+                const saved = localStorage.getItem('sidebarOpen');
+                const mobile = isMobile();
+                
+                if (saved !== null) {
+                    isOpen = saved === 'true';
                 } else {
-                    main.classList.remove('sidebar-open');
-                    if (!open) {
-                        sidebar.classList.remove('expanded');
+                    // Default: closed on desktop
+                    isOpen = false;
+                }
+                
+                updateSidebarState();
+            }
+
+            // Event Listeners
+            if (sidebarHamburger) {
+                sidebarHamburger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleSidebar();
+                });
+            }
+
+            if (mobileHamburger) {
+                mobileHamburger.addEventListener('click', () => {
+                    toggleSidebar();
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    if (isMobile()) {
+                        closeSidebar();
+                    }
+                });
+            }
+
+            // Handle window resize
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    const wasMobile = isMobileView;
+                    isMobileView = isMobile();
+                    
+                    if (wasMobile !== isMobileView) {
+                        updateSidebarState();
+                    }
+                }, 150);
+            });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                if (isMobile() && isOpen) {
+                    const isClickInsideSidebar = sidebar.contains(e.target);
+                    const isClickOnHamburger = mobileHamburger.contains(e.target);
+                    
+                    if (!isClickInsideSidebar && !isClickOnHamburger) {
+                        closeSidebar();
                     }
                 }
             });
+
+            // Keyboard shortcut: Ctrl/Cmd + B to toggle sidebar
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+                    e.preventDefault();
+                    toggleSidebar();
+                }
+                
+                // Escape key to close sidebar
+                if (e.key === 'Escape' && isOpen) {
+                    closeSidebar();
+                }
+            });
+
+            // Initialize
+            loadSidebarState();
         </script>
     @endauth
 
@@ -624,7 +803,6 @@
             </main>
         </div>
     @endguest
-
 </body>
 
 </html>
