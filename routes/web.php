@@ -98,7 +98,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 // ==================== AUTHENTICATED ROUTES WITH CACHE PREVENTION ====================
 // ✅ Applied 'prevent.back.history' middleware to all authenticated routes
-Route::middleware(['auth', 'prevent.back.history'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // ==================== ADMIN ROUTES ====================
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
