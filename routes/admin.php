@@ -29,7 +29,7 @@ Route::middleware(['auth', 'role:3']) // 3 = Super Admin
 
         Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs');
         Route::get('/activity-logs', function () {
-            $logs = \App\Models\ActivityLog::with('user')->latest()->paginate(20);
+            $logs = \App\Models\ActivityLog::with('user')->latest()->paginate(9);
             return view('admin.activity-logs.index', compact('logs'));
         })->name('activity-logs');
 
