@@ -1,213 +1,305 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-6">
-        <a href="{{ route('admin.employer-profiles.index') }}" class="text-blue-600 hover:text-blue-900 font-semibold">←
-            Back to Profiles</a>
-        <h1 class="text-3xl font-bold text-gray-800 mt-2">Employer Profile Review</h1>
-    </div>
+<div class="min-h-screen bg-gray-50 py-10 lg:py-14">
+    <div class="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12">
 
-    @if (session('success'))
-        <div class="mb-4 bg-green-50 border border-green-200 rounded-lg p-4">
-            <p class="text-green-800">{{ session('success') }}</p>
-        </div>
-    @endif
+        <!-- Header -->
+        <div class="mb-12">
+            <a href="{{ route('admin.employer-profiles.index') }}"
+                class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition duration-200">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Employer Profiles
+            </a>
 
-    @if (session('error'))
-        <div class="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
-            <p class="text-red-800">{{ session('error') }}</p>
-        </div>
-    @endif
+            <div class="mt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
+                        Employer Profile Review
+                    </h1>
+                    <p class="text-lg text-gray-500 mt-3 leading-relaxed">
+                        Review employer registration details, company credentials, and verification documents before approval.
+                    </p>
+                </div>
 
-    <div class="grid grid-cols-3 gap-6">
-        <!-- Profile Information -->
-        <div class="col-span-2 space-y-6">
-            <!-- Status Badge -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-gray-800">Status</h2>
+                <!-- Status Badge -->
+                <div>
                     @if ($employerProfile->isPending())
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                            Pending Review
+                        <span class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-bold bg-yellow-100 text-yellow-800">
+                            ⏳ Pending Review
                         </span>
                     @elseif ($employerProfile->isApproved())
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                            Approved
+                        <span class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-bold bg-green-100 text-green-800">
+                            ✅ Approved
                         </span>
                     @else
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                            Rejected
+                        <span class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-bold bg-red-100 text-red-800">
+                            ❌ Rejected
                         </span>
                     @endif
                 </div>
-
-                @if ($employerProfile->isApproved())
-                    <p class="text-sm text-gray-600">Approved on
-                        {{ $employerProfile->approved_at->format('M d, Y \a\t g:i A') }} by
-                        {{ $employerProfile->approvedByUser->name }}
-                    </p>
-                @elseif ($employerProfile->isRejected())
-                    <div class="bg-red-50 border border-red-200 rounded p-3 mt-3">
-                        <p class="text-sm font-semibold text-red-900">Rejection Reason:</p>
-                        <p class="text-sm text-red-700 mt-1">{{ $employerProfile->rejection_reason }}</p>
-                    </div>
-                @endif
             </div>
-
-            <!-- Employer & Company Information -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Employer Information</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Employer Name</label>
-                        <p class="text-gray-900">{{ $employerProfile->user->name }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <p class="text-gray-900">{{ $employerProfile->user->email }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Company Profile Information -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Company Information</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Company Name</label>
-                        <p class="text-gray-900">{{ $employerProfile->company_name }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Location</label>
-                        <p class="text-gray-900">{{ $employerProfile->location }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Phone</label>
-                        <p class="text-gray-900">{{ $employerProfile->phone }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Website</label>
-                        @if ($employerProfile->website)
-                            <p class="text-gray-900"><a href="{{ $employerProfile->website }}" target="_blank"
-                                    class="text-blue-600 hover:underline">{{ $employerProfile->website }}</a></p>
-                        @else
-                            <p class="text-gray-500">Not provided</p>
-                        @endif
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Description</label>
-                        <p class="text-gray-900 whitespace-pre-line">{{ $employerProfile->description }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Business Permit -->
-            @if ($employerProfile->business_permit)
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Business Permit</h2>
-                    <div>
-                        <a href="{{ asset('storage/' . $employerProfile->business_permit) }}" target="_blank"
-                            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                            </svg>
-                            Download / View Document
-                        </a>
-                    </div>
-                </div>
-            @endif
         </div>
 
-        <!-- Action Panel -->
-        <div class="col-span-1">
-            <div class="bg-white rounded-lg shadow p-6 sticky top-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">Actions</h3>
+        <!-- Alerts -->
+        @if (session('success'))
+            <div class="mb-8 bg-green-50 border border-green-200 rounded-3xl p-5 shadow-sm">
+                <p class="text-green-800 font-medium text-base">{{ session('success') }}</p>
+            </div>
+        @endif
 
-                @if ($employerProfile->isPending())
-                    <!-- Approve Button -->
-                    <form method="POST" action="{{ route('admin.employer-profiles.approve', $employerProfile) }}" class="mb-3">
-                        @csrf
-                        <button type="submit"
-                            class="w-full inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            Approve Profile
-                        </button>
-                    </form>
+        @if (session('error'))
+            <div class="mb-8 bg-red-50 border border-red-200 rounded-3xl p-5 shadow-sm">
+                <p class="text-red-800 font-medium text-base">{{ session('error') }}</p>
+            </div>
+        @endif
 
-                    <!-- Reject Button -->
-                    <button type="button" onclick="document.getElementById('rejectModal').classList.remove('hidden')"
-                        class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-semibold">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        Reject Profile
-                    </button>
-                @else
-                    <!-- Reset Status Button -->
-                    <form method="POST" action="{{ route('admin.employer-profiles.reset', $employerProfile) }}"
-                        onsubmit="return confirm('Are you sure you want to reset this profile to pending status?')">
-                        @csrf
-                        <button type="submit"
-                            class="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-semibold">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                                </path>
-                            </svg>
-                            Reset to Pending
-                        </button>
-                    </form>
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-10 2xl:gap-14">
+
+            <!-- Left Section -->
+            <div class="xl:col-span-2 space-y-10">
+
+                <!-- Employer Information -->
+                <div class="bg-white rounded-[28px] shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-8 py-6 bg-gradient-to-r from-blue-600 to-indigo-600">
+                        <h2 class="text-2xl font-bold tracking-tight text-white">
+                            Employer Information
+                        </h2>
+                    </div>
+
+                    <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-sm uppercase tracking-wide font-semibold text-gray-500 mb-2">
+                                Employer Name
+                            </label>
+                            <p class="text-xl lg:text-2xl font-semibold text-gray-900 leading-snug">
+                                {{ $employerProfile->user->name }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm uppercase tracking-wide font-semibold text-gray-500 mb-2">
+                                Email Address
+                            </label>
+                            <p class="text-base lg:text-lg text-gray-800 leading-relaxed break-all">
+                                {{ $employerProfile->user->email }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Information -->
+                <div class="bg-white rounded-[28px] shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-8 py-6 bg-gradient-to-r from-gray-800 to-gray-700">
+                        <h2 class="text-2xl font-bold tracking-tight text-white">
+                            Company Information
+                        </h2>
+                    </div>
+
+                    <div class="p-8 space-y-8">
+                        <div>
+                            <label class="block text-sm uppercase tracking-wide font-semibold text-gray-500 mb-2">
+                                Company Name
+                            </label>
+                            <p class="text-xl lg:text-2xl font-semibold text-gray-900 leading-snug">
+                                {{ $employerProfile->company_name }}
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label class="block text-sm uppercase tracking-wide font-semibold text-gray-500 mb-2">
+                                    Location
+                                </label>
+                                <p class="text-base lg:text-lg text-gray-800 leading-relaxed">
+                                    {{ $employerProfile->location }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm uppercase tracking-wide font-semibold text-gray-500 mb-2">
+                                    Phone
+                                </label>
+                                <p class="text-base lg:text-lg text-gray-800 leading-relaxed">
+                                    {{ $employerProfile->phone }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm uppercase tracking-wide font-semibold text-gray-500 mb-2">
+                                Website
+                            </label>
+                            @if ($employerProfile->website)
+                                <a href="{{ $employerProfile->website }}" target="_blank"
+                                    class="text-blue-600 hover:text-blue-800 font-semibold break-all text-base lg:text-lg">
+                                    {{ $employerProfile->website }}
+                                </a>
+                            @else
+                                <p class="text-gray-400 italic text-base">Not provided</p>
+                            @endif
+                        </div>
+
+                        <div>
+                            <label class="block text-sm uppercase tracking-wide font-semibold text-gray-500 mb-2">
+                                Company Description
+                            </label>
+                            <div class="bg-gray-50 rounded-3xl p-6 border text-gray-700 text-base lg:text-lg leading-8 whitespace-pre-line">
+                                {{ $employerProfile->description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Permit -->
+                @if ($employerProfile->business_permit)
+                    <div class="bg-white rounded-[28px] shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-8 py-6 bg-gradient-to-r from-green-600 to-emerald-600">
+                            <h2 class="text-2xl font-bold tracking-tight text-white">
+                                Business Permit
+                            </h2>
+                        </div>
+
+                        <div class="p-8">
+                            <a href="{{ asset('storage/' . $employerProfile->business_permit) }}" target="_blank"
+                                class="inline-flex items-center px-6 py-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition duration-200 font-semibold text-lg shadow-sm">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                View / Download Permit
+                            </a>
+                        </div>
+                    </div>
                 @endif
 
-                <div class="mt-6 pt-6 border-t">
-                    <p class="text-sm text-gray-600 mb-2">Submitted:
-                        {{ $employerProfile->created_at->format('M d, Y \a\t g:i A') }}
-                    </p>
-                    <p class="text-sm text-gray-600">Profile ID: #{{ $employerProfile->id }}</p>
+                <!-- Rejection Reason -->
+                @if ($employerProfile->isRejected())
+                    <div class="bg-red-50 border border-red-200 rounded-[28px] p-8">
+                        <h3 class="text-2xl font-bold tracking-tight text-red-800 mb-4">
+                            Rejection Reason
+                        </h3>
+                        <p class="text-red-700 text-lg leading-relaxed">
+                            {{ $employerProfile->rejection_reason }}
+                        </p>
+                    </div>
+                @endif
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-[28px] shadow-sm border border-gray-100 p-8 sticky top-8">
+
+                    <h3 class="text-2xl font-bold tracking-tight text-gray-900 mb-8">
+                        Admin Actions
+                    </h3>
+
+                    @if ($employerProfile->isPending())
+
+                        <!-- Approve -->
+                        <form method="POST"
+                            action="{{ route('admin.employer-profiles.approve', $employerProfile) }}"
+                            class="mb-4">
+                            @csrf
+                            <button type="submit"
+                                class="w-full flex items-center justify-center px-5 py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-bold text-lg transition duration-200 shadow-sm">
+                                ✅ Approve Profile
+                            </button>
+                        </form>
+
+                        <!-- Reject -->
+                        <button type="button"
+                            onclick="document.getElementById('rejectModal').classList.remove('hidden')"
+                            class="w-full flex items-center justify-center px-5 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-lg transition duration-200 shadow-sm">
+                            ❌ Reject Profile
+                        </button>
+
+                    @else
+
+                        <!-- Reset -->
+                        <form method="POST"
+                            action="{{ route('admin.employer-profiles.reset', $employerProfile) }}"
+                            onsubmit="return confirm('Reset this profile back to pending?')">
+                            @csrf
+                            <button type="submit"
+                                class="w-full flex items-center justify-center px-5 py-4 bg-gray-700 hover:bg-gray-800 text-white rounded-2xl font-bold text-lg transition duration-200 shadow-sm">
+                                🔄 Reset to Pending
+                            </button>
+                        </form>
+
+                    @endif
+
+                    <!-- Meta -->
+                    <div class="mt-10 border-t pt-8 space-y-4 text-base text-gray-600 leading-relaxed">
+                        <p>
+                            <span class="font-semibold text-gray-800">Submitted:</span><br>
+                            {{ $employerProfile->created_at->format('M d, Y \a\t g:i A') }}
+                        </p>
+
+                        <p>
+                            <span class="font-semibold text-gray-800">Profile ID:</span><br>
+                            #{{ $employerProfile->id }}
+                        </p>
+
+                        @if ($employerProfile->isApproved())
+                            <p>
+                                <span class="font-semibold text-gray-800">Approved By:</span><br>
+                                {{ $employerProfile->approvedByUser->name }}
+                            </p>
+                        @endif
+                    </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 
     <!-- Reject Modal -->
-    <div id="rejectModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4">
-            <h3 class="text-lg font-bold text-gray-800 mb-4">Reject Profile</h3>
-            <p class="text-gray-600 mb-4">Please provide a reason for rejecting this profile. The employer will receive this
-                feedback.</p>
+    <div id="rejectModal"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+        <div class="bg-white rounded-[30px] shadow-2xl w-full max-w-2xl p-10">
+            <h3 class="text-3xl font-bold tracking-tight text-gray-900 mb-3">
+                Reject Employer Profile
+            </h3>
 
-            <form method="POST" action="{{ route('admin.employer-profiles.reject', $employerProfile) }}">
+            <p class="text-lg text-gray-500 mb-8 leading-relaxed">
+                Provide a clear explanation for rejection. This feedback will be sent directly to the employer.
+            </p>
+
+            <form method="POST"
+                action="{{ route('admin.employer-profiles.reject', $employerProfile) }}">
                 @csrf
-                <div class="mb-4">
-                    <textarea name="rejection_reason" placeholder="Enter rejection reason..." rows="4"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                        required></textarea>
-                    @error('rejection_reason')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                <div class="flex gap-3">
-                    <button type="button" onclick="document.getElementById('rejectModal').classList.add('hidden')"
-                        class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition font-semibold">
+                <textarea name="rejection_reason"
+                    rows="5"
+                    required
+                    placeholder="Enter rejection reason..."
+                    class="w-full border border-gray-300 rounded-3xl p-5 text-lg leading-relaxed focus:ring-2 focus:ring-red-500 focus:outline-none"></textarea>
+
+                @error('rejection_reason')
+                    <p class="text-red-600 text-sm mt-3">{{ $message }}</p>
+                @enderror
+
+                <div class="flex gap-4 mt-8">
+                    <button type="button"
+                        onclick="document.getElementById('rejectModal').classList.add('hidden')"
+                        class="flex-1 px-5 py-4 bg-gray-200 hover:bg-gray-300 rounded-2xl font-semibold text-lg transition">
                         Cancel
                     </button>
+
                     <button type="submit"
-                        class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-semibold">
-                        Reject
+                        class="flex-1 px-5 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-lg transition">
+                        Reject Profile
                     </button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 @endsection
