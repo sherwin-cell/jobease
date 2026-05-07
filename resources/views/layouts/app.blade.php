@@ -2,6 +2,7 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -177,7 +178,7 @@
             cursor: pointer;
             padding: 8px;
             border-radius: 10px;
-            display: flex !important; /* Always show */
+            display: flex !important;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
@@ -291,66 +292,55 @@
         }
 
         /* ============================================================
-           COLLAPSED SIDEBAR STYLES - HIDE TEXT (Hamburger OFF)
+           COLLAPSED SIDEBAR STYLES
         ============================================================ */
-        
-        /* Hide brand name when collapsed */
         .sidebar.collapsed .brand-name {
             display: none;
         }
 
-        /* Center brand icon when collapsed */
         .sidebar.collapsed .sidebar-brand {
             justify-content: center;
         }
 
-        /* Hide all menu labels/section headers when collapsed */
         .sidebar.collapsed .menu-label {
             display: none;
         }
 
-        /* Hide menu text and badges when collapsed */
         .sidebar.collapsed .menu-text,
         .sidebar.collapsed .menu-badge {
             display: none;
         }
 
-        /* Adjust menu section padding when collapsed */
         .sidebar.collapsed .menu-section {
             padding: 12px 0;
         }
 
-        /* Center menu items and remove gap when collapsed */
         .sidebar.collapsed .menu-item {
             justify-content: center;
             padding: 12px;
             gap: 0;
         }
 
-        /* Remove translate effect on hover when collapsed */
         .sidebar.collapsed .menu-item:hover {
             transform: translateX(0);
         }
 
-        /* Adjust active indicator for collapsed mode */
         .sidebar.collapsed .menu-item.active {
             border-right: none;
             border-left: 3px solid var(--primary);
         }
 
-        /* Hide logout button text when collapsed */
         .sidebar.collapsed .logout-btn .btn-label {
             display: none;
         }
 
-        /* Center logout button icon when collapsed */
         .sidebar.collapsed .logout-btn {
             justify-content: center;
             padding: 12px;
             gap: 0;
         }
 
-        /* Tooltips for collapsed mode - show on hover */
+        /* Tooltips for collapsed mode */
         .sidebar.collapsed .menu-item[data-tooltip]:hover::after {
             content: attr(data-tooltip);
             position: absolute;
@@ -381,7 +371,7 @@
         }
 
         /* ============================================================
-           EXPANDED SIDEBAR STYLES - SHOW TEXT (Hamburger ON)
+           EXPANDED SIDEBAR STYLES
         ============================================================ */
         .sidebar.expanded .brand-name {
             display: block;
@@ -453,6 +443,9 @@
             width: 24px;
             height: 24px;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* ============================================================
@@ -481,7 +474,7 @@
             padding: 24px 32px;
         }
 
-        /* Mobile hamburger button (visible only on mobile) */
+        /* Mobile hamburger button */
         .mobile-hamburger {
             position: fixed;
             top: 20px;
@@ -583,10 +576,10 @@
             $isAdmin = Auth::user()->isAdmin();
         @endphp
 
-        <!-- Mobile hamburger button (visible only on mobile) -->
+        <!-- Mobile hamburger button -->
         <button class="mobile-hamburger" id="mobile-hamburger" aria-label="Toggle Sidebar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <path d="M3 12h18M3 6h18M3 18h18"/>
+                <path d="M3 12h18M3 6h18M3 18h18" />
             </svg>
         </button>
 
@@ -615,7 +608,7 @@
                             </div>
                             <button class="sidebar-hamburger" id="sidebar-hamburger" aria-label="Toggle Sidebar">
                                 <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M4 6L20 6M4 12L20 12M4 18L20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M4 6L20 6M4 12L20 12M4 18L20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                                 </svg>
                             </button>
                         </div>
@@ -629,6 +622,25 @@
                     @else
                         @include('layouts.partials.sidebar-employer')
                     @endif
+
+                    <!-- Sidebar Footer with Logout Button -->
+                    <footer class="sidebar-footer">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="logout-btn" onclick="return confirm('Are you sure you want to log out?');">
+                                <span class="btn-icon">
+                                    <lord-icon 
+                                        src="https://cdn.lordicon.com/vfiwitrm.json" 
+                                        trigger="hover" 
+                                        stroke="bold"
+                                        colors="primary:#ef4444,secondary:#f87171" 
+                                        style="width:20px;height:20px">
+                                    </lord-icon>
+                                </span>
+                                <span class="btn-label">Logout</span>
+                            </button>
+                        </form>
+                    </footer>
                 </nav>
             </aside>
 
@@ -657,7 +669,7 @@
 
             function updateSidebarState() {
                 const mobile = isMobile();
-                
+
                 if (mobile) {
                     // Mobile behavior - sidebar slides in/out
                     if (isOpen) {
@@ -717,14 +729,14 @@
             function loadSidebarState() {
                 const saved = localStorage.getItem('sidebarOpen');
                 const mobile = isMobile();
-                
+
                 if (saved !== null) {
                     isOpen = saved === 'true';
                 } else {
                     // Default: closed on desktop
                     isOpen = false;
                 }
-                
+
                 updateSidebarState();
             }
 
@@ -757,7 +769,7 @@
                 resizeTimeout = setTimeout(() => {
                     const wasMobile = isMobileView;
                     isMobileView = isMobile();
-                    
+
                     if (wasMobile !== isMobileView) {
                         updateSidebarState();
                     }
@@ -769,7 +781,7 @@
                 if (isMobile() && isOpen) {
                     const isClickInsideSidebar = sidebar.contains(e.target);
                     const isClickOnHamburger = mobileHamburger.contains(e.target);
-                    
+
                     if (!isClickInsideSidebar && !isClickOnHamburger) {
                         closeSidebar();
                     }
@@ -782,7 +794,7 @@
                     e.preventDefault();
                     toggleSidebar();
                 }
-                
+
                 // Escape key to close sidebar
                 if (e.key === 'Escape' && isOpen) {
                     closeSidebar();
