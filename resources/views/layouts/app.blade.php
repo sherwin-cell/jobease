@@ -364,6 +364,7 @@
                 opacity: 0;
                 transform: translateY(-50%) translateX(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(-50%) translateX(0);
@@ -557,13 +558,14 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .app-content > * {
+        .app-content>* {
             animation: fadeInUp 0.4s ease-out;
         }
     </style>
@@ -591,24 +593,16 @@
                     <header class="sidebar-header">
                         <div class="sidebar-header-inline">
                             <div class="sidebar-brand">
-                                <div class="brand-icon">
-                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                        <rect width="32" height="32" rx="8" fill="url(#gradient)" />
-                                        <path d="M16 8L20 12L16 16L12 12L16 8Z" fill="white" />
-                                        <path d="M16 14L20 18L16 22L12 18L16 14Z" fill="white" />
-                                        <defs>
-                                            <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                                                <stop stop-color="#4361ee" />
-                                                <stop offset="1" stop-color="#7209b7" />
-                                            </linearGradient>
-                                        </defs>
-                                    </svg>
+                                <div class="brand-icon" style="background: transparent; box-shadow: none;">
+                                    <img src="{{ asset('images/dashboard_logo.png') }}" alt="JobEase Logo"
+                                        style="width: 32px; height: 32px; object-fit: contain;">
                                 </div>
                                 <span class="brand-name">JobEase</span>
                             </div>
                             <button class="sidebar-hamburger" id="sidebar-hamburger" aria-label="Toggle Sidebar">
                                 <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M4 6L20 6M4 12L20 12M4 18L20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                    <path d="M4 6L20 6M4 12L20 12M4 18L20 18" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" />
                                 </svg>
                             </button>
                         </div>
@@ -627,14 +621,11 @@
                     <footer class="sidebar-footer">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="logout-btn" onclick="return confirm('Are you sure you want to log out?');">
+                            <button type="submit" class="logout-btn"
+                                onclick="return confirm('Are you sure you want to log out?');">
                                 <span class="btn-icon">
-                                    <lord-icon 
-                                        src="https://cdn.lordicon.com/vfiwitrm.json" 
-                                        trigger="hover" 
-                                        stroke="bold"
-                                        colors="primary:#ef4444,secondary:#f87171" 
-                                        style="width:20px;height:20px">
+                                    <lord-icon src="https://cdn.lordicon.com/vfiwitrm.json" trigger="hover" stroke="bold"
+                                        colors="primary:#ef4444,secondary:#f87171" style="width:20px;height:20px">
                                     </lord-icon>
                                 </span>
                                 <span class="btn-label">Logout</span>

@@ -15,23 +15,21 @@
         <a href="{{ route('jobseeker.jobs.index') }}" data-tooltip="Browse Jobs"
             class="menu-item {{ request()->routeIs('jobseeker.jobs.*') ? 'active' : '' }}">
             <span class="menu-icon">
-                <script src="https://cdn.lordicon.com/lordicon.js"></script>
                 <lord-icon src="https://cdn.lordicon.com/zhiiqoue.json" trigger="loop" stroke="bold" state="loop-cycle"
-                    colors="primary:#110a5c,secondary:#3080e8" style="width:250px;height:250px">
+                    colors="primary:#110a5c,secondary:#3080e8" style="width:20px;height:20px">
                 </lord-icon>
             </span>
             <span class="menu-text">Browse Jobs</span>
         </a>
 
-        <a href="{{ route('jobseeker.jobs.index') }}" data-tooltip="Browse Jobs"
-            class="menu-item {{ request()->routeIs('jobseeker.jobs.*') ? 'active' : '' }}">
+        <a href="{{ route('jobseeker.applications.index') }}" data-tooltip="My Applications"
+            class="menu-item {{ request()->routeIs('jobseeker.applications.*') ? 'active' : '' }}">
             <span class="menu-icon">
-                <script src="https://cdn.lordicon.com/lordicon.js"></script>
                 <lord-icon src="https://cdn.lordicon.com/hmpomorl.json" trigger="hover" stroke="bold"
-                    colors="primary:#110a5c,secondary:#3080e8" style="width:250px;height:250px">
+                    colors="primary:#110a5c,secondary:#3080e8" style="width:20px;height:20px">
                 </lord-icon>
             </span>
-            <span class="menu-text">Browse Jobs</span>
+            <span class="menu-text">My Applications</span>
         </a>
 
         <a href="{{ route('jobseeker.profile.show') }}" data-tooltip="My Profile"
