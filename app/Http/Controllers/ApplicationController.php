@@ -79,10 +79,21 @@ class ApplicationController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $applications = $user->applications()->with('job')->latest()->get();
-        return view('jobseeker.applications.index', compact('applications'));
-    }
 
+        // Use paginate(3) instead of get() - shows 3 items per page
+        $applications = $user->applications()
+            ->with('job.employer.employerProfile')
+            ->latest()
+            ->paginate(3);
+
+        // Optional: Add totals for stats cards
+        $totalPending = $user->applications()->where('status', 'pending')->count();
+        $totalAccepted = $user->applications()->where('status', 'accepted')->count();
+        $totalRejected = $user->applications()->where('status', 'rejected')->count();
+        $totalInterview = $user->applications()->whereIn('status', ['interview', 'interview_scheduled'])->count();
+
+        return view('jobseeker.applications.index', compact('applications', 'totalPending', 'totalAccepted', 'totalRejected', 'totalInterview'));
+    }
     // Show single application
     public function show(Application $application)
     {

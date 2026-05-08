@@ -16,6 +16,7 @@ use App\Models\Answer;
 class JobController extends Controller
 {
     // Job Seeker: Browse & Search Jobs
+    // Job Seeker: Browse & Search Jobs
     public function index(Request $request)
     {
         $query = Job::query();
@@ -48,21 +49,23 @@ class JobController extends Controller
             }
         }
 
+        // ✅ FIX: Paginate with 3 jobs per page
         $jobs = $query
             ->with('employer.employerProfile')
             ->latest()
-            ->paginate(10);
+            ->paginate(3);  // ← Changed from 10 to 3
 
         return view('jobseeker.jobs.index', compact('jobs'));
     }
-// Job Seeker: View single job
+    // Job Seeker: View single job
     public function show(Job $job)
     {
         return view('jobseeker.jobs.show', compact('job'));
     }
 
     // Employer: List my jobs
-    public function employerIndex(Request $request)  // Add Request parameter
+    // Employer: List my jobs with pagination
+    public function employerIndex(Request $request)
     {
         $query = Job::where('employer_id', Auth::id());
 
@@ -71,7 +74,8 @@ class JobController extends Controller
             $query->where('status', $request->status);
         }
 
-        $jobs = $query->latest()->get();
+        // ✅ FIX: Add pagination (5 jobs per page for employer dashboard)
+        $jobs = $query->latest()->paginate(5);
 
         return view('employer.jobs.index', compact('jobs'));
     }

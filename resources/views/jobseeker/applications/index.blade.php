@@ -4,6 +4,23 @@
 
 @section('content')
 <style>
+    /* ===== FULL PAGE CONTAINER ===== */
+    .full-page-container {
+        min-height: 100vh;
+        background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+        padding: 1.5rem;
+    }
+    .content-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0;
+    }
+    @media (max-width: 640px) {
+        .full-page-container {
+            padding: 1rem;
+        }
+    }
+
     /* ===== PAGE HEADER ===== */
     .page-header {
         display: flex;
@@ -294,8 +311,8 @@
     }
 </style>
 
-<div class="py-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="full-page-container">
+    <div class="content-wrapper">
         <!-- Page Header -->
         <div class="page-header">
             <div>
