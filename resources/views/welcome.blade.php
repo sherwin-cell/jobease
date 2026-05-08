@@ -662,19 +662,39 @@
 
         <section class="feature-grid">
             <div class="features-container">
+                <!-- Feature 1: Smart Matching -->
                 <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
+                    <div class="feature-icon">
+                        <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                        <lord-icon src="https://cdn.lordicon.com/weqkkuwt.json" trigger="hover" stroke="bold"
+                            state="hover-enlarge" colors="primary:#2563eb,secondary:#7c3aed"
+                            style="width:80px;height:80px">
+                        </lord-icon>
+                    </div>
                     <h3 class="feature-title">Smart Matching</h3>
-                    <p class="feature-desc">AI-powered recommendations based on your skills, experience, and career
-                        goals</p>
+                    <p class="feature-desc">Get personalized job recommendations based on your skills, experience, and
+                        career goals</p>
                 </div>
+
+                <!-- Feature 2: Quick Apply -->
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
+                    <div class="feature-icon">
+                        <lord-icon src="https://cdn.lordicon.com/evxithfv.json" trigger="hover" stroke="bold"
+                            colors="primary:#2563eb,secondary:#7c3aed" style="width:80px;height:80px">
+                        </lord-icon>
+                    </div>
                     <h3 class="feature-title">Quick Apply</h3>
-                    <p class="feature-desc">One-click applications with instant employer notifications and responses</p>
+                    <p class="feature-desc">Submit applications instantly with one click. Get real-time notifications
+                        and faster responses from employers.</p>
                 </div>
+
+                <!-- Feature 3: Career Growth -->
                 <div class="feature-card">
-                    <div class="feature-icon">📈</div>
+                    <div class="feature-icon">
+                        <lord-icon src="https://cdn.lordicon.com/zkboyyym.json" trigger="hover" stroke="bold"
+                            colors="primary:#2563eb,secondary:#7c3aed" style="width:80px;height:80px">
+                        </lord-icon>
+                    </div>
                     <h3 class="feature-title">Career Growth</h3>
                     <p class="feature-desc">Track progress, get insights, and access resources for professional
                         development</p>
