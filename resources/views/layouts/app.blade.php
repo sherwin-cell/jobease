@@ -330,16 +330,6 @@
             border-left: 3px solid var(--primary);
         }
 
-        .sidebar.collapsed .logout-btn .btn-label {
-            display: none;
-        }
-
-        .sidebar.collapsed .logout-btn {
-            justify-content: center;
-            padding: 12px;
-            gap: 0;
-        }
-
         /* Tooltips for collapsed mode */
         .sidebar.collapsed .menu-item[data-tooltip]:hover::after {
             content: attr(data-tooltip);
@@ -398,55 +388,6 @@
             justify-content: flex-start;
             padding: 10px 12px;
             gap: 12px;
-        }
-
-        .sidebar.expanded .logout-btn .btn-label {
-            display: inline;
-        }
-
-        .sidebar.expanded .logout-btn {
-            justify-content: flex-start;
-            padding: 10px 12px;
-            gap: 12px;
-        }
-
-        /* Footer */
-        .sidebar-footer {
-            padding: 16px;
-            border-top: 1px solid var(--gray-200);
-            flex-shrink: 0;
-        }
-
-        .logout-btn {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            background: transparent;
-            border: none;
-            border-radius: 12px;
-            color: var(--danger);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .logout-btn:hover {
-            background: #fef2f2;
-            transform: translateX(4px);
-        }
-
-        .logout-btn .btn-icon {
-            width: 24px;
-            height: 24px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* ============================================================
@@ -617,21 +558,7 @@
                         @include('layouts.partials.sidebar-employer')
                     @endif
 
-                    <!-- Sidebar Footer with Logout Button -->
-                    <footer class="sidebar-footer">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="logout-btn"
-                                onclick="return confirm('Are you sure you want to log out?');">
-                                <span class="btn-icon">
-                                    <lord-icon src="https://cdn.lordicon.com/vfiwitrm.json" trigger="hover" stroke="bold"
-                                        colors="primary:#ef4444,secondary:#f87171" style="width:20px;height:20px">
-                                    </lord-icon>
-                                </span>
-                                <span class="btn-label">Logout</span>
-                            </button>
-                        </form>
-                    </footer>
+                    <!-- Removed Sidebar Footer with Logout Button -->
                 </nav>
             </aside>
 

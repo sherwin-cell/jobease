@@ -80,23 +80,248 @@
     }
     .btn-ghost:hover { background: #f9fafb; }
 
-    .btn-outline {
-        display: inline-flex;
+    /* ===== PROFILE DROPDOWN ===== */
+    .profile-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-btn {
+        display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 10px;
         background: #fff;
-        color: #2563eb;
+        border: 1px solid #e5e7eb;
+        border-radius: 40px;
+        padding: 6px 6px 6px 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .profile-btn:hover {
+        background: #f9fafb;
+        border-color: #d1d5db;
+        transform: translateY(-1px);
+    }
+
+    .profile-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+
+    .profile-name {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .profile-chevron {
+        width: 16px;
+        height: 16px;
+        color: #9ca3af;
+        transition: transform 0.2s;
+    }
+
+    .profile-dropdown.active .profile-chevron {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 260px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.2s;
+        z-index: 100;
+    }
+
+    .profile-dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-header {
+        padding: 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .dropdown-user-name {
         font-size: 0.875rem;
         font-weight: 600;
-        padding: 9px 18px;
-        border-radius: 10px;
-        border: 1.5px solid #2563eb;
-        text-decoration: none;
-        transition: background 0.15s;
-        white-space: nowrap;
-        flex-shrink: 0;
+        color: #111827;
+        margin-bottom: 2px;
     }
-    .btn-outline:hover { background: #eff6ff; }
+
+    .dropdown-user-email {
+        font-size: 0.75rem;
+        color: #6b7280;
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: #f3f4f6;
+        margin: 8px 0;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        color: #374151;
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: background 0.15s;
+        cursor: pointer;
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+    }
+
+    .dropdown-item:hover {
+        background: #f9fafb;
+    }
+
+    .dropdown-item svg {
+        width: 18px;
+        height: 18px;
+        color: #9ca3af;
+    }
+
+    .dropdown-item.danger {
+        color: #ef4444;
+    }
+
+    .dropdown-item.danger svg {
+        color: #ef4444;
+    }
+
+    .dropdown-item.danger:hover {
+        background: #fef2f2;
+    }
+
+    /* ===== LOGOUT CONFIRMATION MODAL ===== */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-container {
+        background: #fff;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 420px;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-overlay.active .modal-container {
+        transform: scale(1);
+    }
+
+    .modal-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #f3f4f6;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .modal-header svg {
+        width: 28px;
+        height: 28px;
+        color: #ef4444;
+    }
+
+    .modal-header h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .modal-body {
+        padding: 20px 24px;
+    }
+
+    .modal-body p {
+        color: #6b7280;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .modal-btn {
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: none;
+    }
+
+    .modal-btn-cancel {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+    .modal-btn-cancel:hover {
+        background: #e5e7eb;
+    }
+
+    .modal-btn-confirm {
+        background: #ef4444;
+        color: #fff;
+    }
+
+    .modal-btn-confirm:hover {
+        background: #dc2626;
+    }
 
     /* ===== FILTER CARD ===== */
     .filter-card {
@@ -341,10 +566,6 @@
         .page-header {
             flex-direction: column;
         }
-        .btn-outline {
-            width: 100%;
-            justify-content: center;
-        }
         .filter-form {
             flex-direction: column;
         }
@@ -377,23 +598,100 @@
             height: 32px;
             font-size: 0.75rem;
         }
+        .profile-btn .profile-name {
+            display: none;
+        }
+        .profile-btn {
+            padding: 6px;
+        }
+        .modal-container {
+            width: 95%;
+        }
     }
 </style>
 
 <div class="full-page-container">
     <div class="content-wrapper">
-        <!-- Page Header -->
+        <!-- Page Header with Profile Dropdown -->
         <div class="page-header">
             <div>
                 <h1 class="page-title">Browse Jobs</h1>
                 <p class="page-sub">Filter jobs by experience and quickly see your skill match</p>
             </div>
-            <a href="{{ route('jobseeker.profile.show') }}" class="btn-outline">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                My Profile
-            </a>
+
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown" id="profileDropdown">
+                <button class="profile-btn" id="profileBtn">
+                    <div class="profile-avatar">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                    <span class="profile-name">{{ auth()->user()->name }}</span>
+                    <svg class="profile-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <div class="dropdown-menu">
+                    <div class="dropdown-header">
+                        <div class="dropdown-user-name">{{ auth()->user()->name }}</div>
+                        <div class="dropdown-user-email">{{ auth()->user()->email }}</div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Profile Link -->
+                    <a href="{{ route('jobseeker.profile.show') }}" class="dropdown-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        My Profile
+                    </a>
+
+                    <!-- Settings Link -->
+                    <a href="{{ route('jobseeker.profile.edit') }}" class="dropdown-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Edit Profile
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Logout Button (triggers modal) -->
+                    <button type="button" class="dropdown-item danger" id="logoutBtn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Confirmation Modal -->
+        <div class="modal-overlay" id="logoutModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <h3>Confirm Logout</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to log out? You will need to sign in again to access your account.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn modal-btn-cancel" id="cancelLogoutBtn">Cancel</button>
+                    <form method="POST" action="{{ route('logout') }}" id="logoutForm">
+                        @csrf
+                        <button type="submit" class="modal-btn modal-btn-confirm">Yes, Logout</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <!-- Filters -->
@@ -508,4 +806,51 @@
         @endif
     </div>
 </div>
+
+<script>
+    // Profile Dropdown Toggle
+    const profileDropdown = document.getElementById('profileDropdown');
+    const profileBtn = document.getElementById('profileBtn');
+
+    if (profileBtn && profileDropdown) {
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+    }
+
+    // Logout Modal
+    const logoutBtn = document.getElementById('logoutBtn');
+    const logoutModal = document.getElementById('logoutModal');
+    const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            logoutModal.classList.add('active');
+            profileDropdown.classList.remove('active');
+        });
+    }
+
+    if (cancelLogoutBtn) {
+        cancelLogoutBtn.addEventListener('click', () => {
+            logoutModal.classList.remove('active');
+        });
+    }
+
+    // Close modal when clicking outside
+    if (logoutModal) {
+        logoutModal.addEventListener('click', (e) => {
+            if (e.target === logoutModal) {
+                logoutModal.classList.remove('active');
+            }
+        });
+    }
+</script>
 @endsection
