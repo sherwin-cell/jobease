@@ -644,9 +644,6 @@
                                     </div>
                                     <div style="font-size: 0.75rem; color: #6b7280;">{{ auth()->user()->email }}</div>
                                 </div>
-                                <div class="dropdown-divider"></div>
-
-                                <div class="dropdown-divider"></div>
 
                                 <!-- Logout Button (triggers modal) -->
                                 <button type="button" class="dropdown-item danger" id="logoutBtn">

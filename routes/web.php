@@ -96,21 +96,8 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-// ==================== AUTHENTICATED ROUTES WITH CACHE PREVENTION ====================
-// ✅ Applied 'prevent.back.history' middleware to all authenticated routes
+// ==================== AUTHENTICATED ROUTES ====================
 Route::middleware(['auth'])->group(function () {
-
-    // ==================== ADMIN ROUTES ====================
-    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        // Admin dashboard
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
-
-        // Add other admin routes here
-        // Route::get('/users', [AdminController::class, 'users'])->name('users');
-        // Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
-    });
 
     // ==================== EMPLOYER ROUTES ====================
     Route::middleware(['role:employer', 'employer.profile.complete'])
@@ -136,6 +123,9 @@ Route::middleware(['auth'])->group(function () {
         ->name('jobseeker.')
         ->group(function () {
             // Job Seeker dashboard
+            Route::get('/dashboard', function () {
+                return view('jobseeker.dashboard');
+            })->name('dashboard');
     
             // Interview routes
             Route::get('/interviews', [InterviewSessionController::class, 'jobSeekerIndex'])->name('interviews');

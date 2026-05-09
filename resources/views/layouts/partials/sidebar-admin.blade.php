@@ -21,7 +21,7 @@
             <span class="menu-text">Users</span>
         </a>
 
-        <a href="{{ route('admin.jobs') }}" data-tooltip="Job Postings"
+        <a href="{{ route('admin.jobs.index') }}" data-tooltip="Job Postings"
             class="menu-item {{ request()->routeIs('admin.jobs*') ? 'active' : '' }}">
             <span class="menu-icon">
                 <script src="https://cdn.lordicon.com/lordicon.js"></script>

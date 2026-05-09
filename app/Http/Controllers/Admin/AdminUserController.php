@@ -16,11 +16,6 @@ class AdminUserController extends Controller
 
         return view('admin.users.index', compact('users'));
     }
-    public function edit(User $user)
-    {
-        return view('admin.users.edit', compact('user'));
-    }
-
     // BAN METHOD - This will work
     public function ban(User $user)
     {
