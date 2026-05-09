@@ -79,6 +79,7 @@
         cursor: pointer;
         transition: background 0.15s;
         white-space: nowrap;
+        gap: 6px;
     }
     .btn-ghost:hover { background: #f9fafb; }
 
@@ -400,7 +401,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
     }
     .quick-action-title {
         font-size: 1rem;
@@ -437,6 +437,9 @@
         cursor: pointer;
         transition: all 0.2s;
         position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
     .tab-btn.active {
         color: #2563eb;
@@ -610,7 +613,6 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto 16px;
-        font-size: 2rem;
     }
     .empty-title {
         font-size: 1rem;
@@ -694,7 +696,6 @@
                     </div>
                     <div class="dropdown-divider"></div>
 
-                    <!-- Company Profile Link -->
                     <a href="{{ route('employer.profile.edit') }}" class="dropdown-item">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -702,7 +703,6 @@
                         Company Profile
                     </a>
 
-                    <!-- Edit Profile Link -->
                     <a href="{{ route('employer.profile.edit') }}?edit=1" class="dropdown-item">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -712,7 +712,6 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <!-- Logout Button (triggers modal) -->
                     <button type="button" class="dropdown-item danger" id="logoutBtn">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -748,7 +747,11 @@
         <!-- Quick Action Banner -->
         <div class="quick-action">
             <div class="quick-action-content">
-                <div class="quick-action-icon">✨</div>
+                <div class="quick-action-icon">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                </div>
                 <div>
                     <h2 class="quick-action-title">Post your next role</h2>
                     <p class="quick-action-desc">Create a job post and start receiving qualified applications.</p>
@@ -767,7 +770,11 @@
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-value text-blue-600">{{ $activeJobs ?? 0 }}</div>
-                    <div class="stat-icon bg-blue-100">💼</div>
+                    <div class="stat-icon bg-blue-100">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="stat-label">Active Jobs</div>
                 <div class="stat-sub">{{ $activeJobs ?? 0 }} active listings</div>
@@ -776,7 +783,11 @@
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-value text-green-600">{{ $totalApplicants ?? 0 }}</div>
-                    <div class="stat-icon bg-green-100">📋</div>
+                    <div class="stat-icon bg-green-100">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="stat-label">Total Applicants</div>
                 <div class="stat-sub">+{{ $applicantsThisMonth ?? 0 }} this month</div>
@@ -785,7 +796,11 @@
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-value text-amber-600">{{ $shortlisted ?? 0 }}</div>
-                    <div class="stat-icon bg-amber-100">⭐</div>
+                    <div class="stat-icon bg-amber-100">
+                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="stat-label">Shortlisted</div>
                 <div class="stat-sub">Across all jobs</div>
@@ -794,7 +809,11 @@
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-value text-purple-600">{{ $interviews ?? 0 }}</div>
-                    <div class="stat-icon bg-purple-100">🎯</div>
+                    <div class="stat-icon bg-purple-100">
+                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="stat-label">Interviews</div>
                 <div class="stat-sub">Scheduled</div>
@@ -804,8 +823,18 @@
         <!-- Tab Controller -->
         <div class="tab-controller">
             <div class="tab-headers">
-                <button class="tab-btn active" data-tab="jobs">💼 Job Postings</button>
-                <button class="tab-btn" data-tab="applications">📋 Applicants</button>
+                <button class="tab-btn active" data-tab="jobs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Job Postings
+                </button>
+                <button class="tab-btn" data-tab="applications">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Applicants
+                </button>
             </div>
 
             <!-- Jobs Tab -->
@@ -876,7 +905,11 @@
                     </div>
                     @empty
                     <div class="empty-state">
-                        <div class="empty-icon">📭</div>
+                        <div class="empty-icon">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                            </svg>
+                        </div>
                         <div class="empty-title">No job postings yet</div>
                         <p class="empty-sub">Create your first job posting to start receiving applications</p>
                         <a href="{{ route('employer.jobs.create') }}" class="btn-primary">Create Job Posting</a>
@@ -936,7 +969,11 @@
                             @empty
                             <tr>
                                 <td colspan="5" class="text-center py-12 text-gray-500">
-                                    <div class="text-6xl mb-4">📭</div>
+                                    <div class="empty-icon mx-auto mb-4">
+                                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
                                     <p>No applications yet</p>
                                     <p class="text-sm mt-1">Applications will appear here once candidates start applying</p>
                                 </td>
@@ -962,7 +999,6 @@
             profileDropdown.classList.toggle('active');
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!profileDropdown.contains(e.target)) {
                 profileDropdown.classList.remove('active');
@@ -988,7 +1024,6 @@
         });
     }
 
-    // Close modal when clicking outside
     if (logoutModal) {
         logoutModal.addEventListener('click', (e) => {
             if (e.target === logoutModal) {
