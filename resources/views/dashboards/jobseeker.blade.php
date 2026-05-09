@@ -712,7 +712,8 @@
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         Edit Profile
                     </a>
@@ -789,7 +790,8 @@
                 </div>
                 <div class="stat-title">Applied Jobs</div>
                 <div class="stat-sub font-bold text-black ">
-                    {{ $applicationsCount > 0 ? '+' . min(3, $applicationsCount) : '0' }} this week</div>
+                    {{ $applicationsCount > 0 ? '+' . min(3, $applicationsCount) : '0' }} this week
+                </div>
             </div>
 
             <div class="stat-card">
@@ -869,8 +871,9 @@
                         </div>
                         <div class="flex flex-wrap gap-2 mb-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium">
-                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" stroke-width="2"
-                                    viewBox="0 0 24 24">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="#cb0b3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-map-pin-icon lucide-map-pin">
                                     <path
                                         d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
                                     <circle cx="12" cy="10" r="3" />
@@ -878,37 +881,35 @@
                                 <span>{{ $job->location ?? 'N/A' }}</span>
                             </span>
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium">
-                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
-                                    viewBox="0 0 24 24">
-                                    <path d="M12 10h.01" />
-                                    <path d="M12 14h.01" />
-                                    <path d="M12 6h.01" />
-                                    <path d="M16 10h.01" />
-                                    <path d="M16 14h.01" />
-                                    <path d="M16 6h.01" />
-                                    <path d="M8 10h.01" />
-                                    <path d="M8 14h.01" />
-                                    <path d="M8 6h.01" />
-                                    <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
-                                    <rect x="4" y="2" width="16" height="20" rx="2" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="#050505" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-building2-icon lucide-building-2">
+                                    <path d="M10 12h4" />
+                                    <path d="M10 8h4" />
+                                    <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+                                    <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2" />
+                                    <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
                                 </svg>
                                 <span>{{ ucfirst($job->experience_level ?? 'Any') }}</span>
                             </span>
                             @if($job->salary)
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ">
-                                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="#050505" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-philippine-peso-icon lucide-philippine-peso">
+                                        <path d="M20 11H4" />
+                                        <path d="M20 7H4" />
+                                        <path d="M7 21V4a1 1 0 0 1 1-1h4a1 1 0 0 1 0 12H7" />
                                     </svg>
                                     <span class="text-black">${{ number_format($job->salary) }}/year</span>
                                 </span>
                             @endif
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium">
-                                <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" stroke-width="2"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="#050505" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-clock3-icon lucide-clock-3">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6h4" />
                                 </svg>
                                 <span>{{ $job->created_at->diffForHumans() }}</span>
                             </span>

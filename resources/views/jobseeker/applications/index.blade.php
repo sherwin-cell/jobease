@@ -59,6 +59,7 @@
         cursor: pointer;
         transition: background 0.15s, transform 0.1s;
         white-space: nowrap;
+        gap: 6px;
     }
     .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
 
@@ -77,6 +78,7 @@
         cursor: pointer;
         transition: background 0.15s;
         white-space: nowrap;
+        gap: 6px;
     }
     .btn-ghost:hover { background: #f9fafb; }
 
@@ -332,9 +334,9 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-value text-gray-900">{{ $applications->count() }}</div>
+                    <div class="stat-value text-gray-900">{{ $applications->total() }}</div>
                     <div class="stat-icon bg-indigo-100">
-                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
@@ -344,9 +346,9 @@
 
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-value text-yellow-600">{{ $applications->where('status', 'pending')->count() }}</div>
+                    <div class="stat-value text-yellow-600">{{ $totalPending ?? 0 }}</div>
                     <div class="stat-icon bg-yellow-100">
-                        <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
@@ -356,9 +358,9 @@
 
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-value text-green-600">{{ $applications->where('status', 'accepted')->count() }}</div>
+                    <div class="stat-value text-green-600">{{ $totalAccepted ?? 0 }}</div>
                     <div class="stat-icon bg-green-100">
-                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
@@ -368,9 +370,9 @@
 
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-value text-red-600">{{ $applications->where('status', 'rejected')->count() }}</div>
+                    <div class="stat-value text-red-600">{{ $totalRejected ?? 0 }}</div>
                     <div class="stat-icon bg-red-100">
-                        <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
@@ -456,7 +458,7 @@
 
                             <a href="{{ route('jobseeker.applications.show', $application) }}" class="btn-ghost">
                                 View Application
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
                             </a>
