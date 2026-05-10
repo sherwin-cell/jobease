@@ -283,6 +283,34 @@
         font-size: 0.75rem;
         color: #374151;
     }
+    .file-size {
+        font-size: 0.6875rem;
+        color: #9ca3af;
+    }
+    .resume-success-message {
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        background: #dcfce7;
+        border: 1px solid #bbf7d0;
+        border-radius: 0.5rem;
+        color: #15803d;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .resume-placeholder {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background: #fef3c7;
+        border: 1px solid #fde68a;
+        border-radius: 0.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.75rem;
+        color: #92400e;
+    }
 
     /* ===== BUTTONS ===== */
     .btn-primary {
@@ -337,6 +365,10 @@
         grid-column: span 2;
     }
 
+    .hidden {
+        display: none;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
         .form-grid {
@@ -368,6 +400,16 @@
             <h1 class="page-title">Edit Profile</h1>
             <p class="page-sub">Update your professional information and preferences</p>
         </div>
+
+        <!-- Success Message -->
+        @if(session('success'))
+            <div class="resume-success-message" style="margin-bottom: 1rem;">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {{ session('success') }}
+            </div>
+        @endif
 
         <!-- Form Card -->
         <div class="form-card">
@@ -531,8 +573,19 @@
                             </h3>
                         </div>
                         <div class="file-area">
+                            <!-- No Resume Placeholder -->
+                            @if(!$profile->resume_path)
+                                <div class="resume-placeholder" id="resumePlaceholder">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <span>No resume uploaded yet. Please upload your resume/CV.</span>
+                                </div>
+                            @endif
+
+                            <!-- Current Resume Display -->
                             @if($profile->resume_path)
-                                <div class="current-file">
+                                <div class="current-file" id="currentResume">
                                     <div class="file-info">
                                         <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -540,21 +593,38 @@
                                         <div>
                                             <p class="text-sm font-medium text-gray-700">Current resume</p>
                                             <p class="file-name">{{ basename($profile->resume_path) }}</p>
+                                            @if($profile->resume_size)
+                                                <p class="file-size">{{ number_format($profile->resume_size / 1024, 2) }} KB</p>
+                                            @endif
                                         </div>
                                     </div>
-                                    <button type="button" onclick="document.getElementById('resume').click()" class="text-indigo-600 text-sm font-medium">
-                                        Replace
-                                    </button>
+                                    <div class="flex gap-2">
+                                        <a href="{{ asset('storage/' . $profile->resume_path) }}" target="_blank" class="text-indigo-600 text-sm font-medium hover:text-indigo-800">
+                                            View
+                                        </a>
+                                        <button type="button" onclick="document.getElementById('resume').click()" class="text-blue-600 text-sm font-medium">
+                                            Replace
+                                        </button>
+                                    </div>
                                 </div>
                             @endif
-                            <input type="file" name="resume" id="resume" accept=".pdf,.doc,.docx" class="hidden">
+
+                            <!-- Upload Success Message -->
+                            <div id="uploadSuccessMessage" class="resume-success-message" style="display: none;">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span id="uploadSuccessText">Resume uploaded successfully!</span>
+                            </div>
+
+                            <input type="file" name="resume" id="resume" accept=".pdf,.doc,.docx,.txt" class="hidden" onchange="handleResumeUpload(this)">
                             <button type="button" onclick="document.getElementById('resume').click()" class="btn-upload">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                 </svg>
                                 {{ $profile->resume_path ? 'Upload New Resume' : 'Upload Resume' }}
                             </button>
-                            <p class="form-hint mt-2">PDF, DOC, or DOCX format (Max 2MB)</p>
+                            <p class="form-hint mt-2">PDF, DOC, DOCX, or TXT format (Max 5MB)</p>
                         </div>
                     </div>
 
@@ -587,6 +657,8 @@
                                         <input type="date" name="experience[{{ $index }}][end_date]" value="{{ $exp['end_date'] ?? '' }}"
                                             placeholder="End Date" class="form-input">
                                     </div>
+                                    <textarea name="experience[{{ $index }}][description]" rows="2" placeholder="Job description..."
+                                        class="form-textarea">{{ $exp['description'] ?? '' }}</textarea>
                                     <button type="button" onclick="removeExperience(this)" class="entry-remove">
                                         Remove
                                     </button>
@@ -625,6 +697,8 @@
                                         <input type="date" name="education[{{ $index }}][end_date]" value="{{ $edu['end_date'] ?? '' }}"
                                             placeholder="End Date" class="form-input">
                                     </div>
+                                    <textarea name="education[{{ $index }}][description]" rows="2" placeholder="Additional details..."
+                                        class="form-textarea">{{ $edu['description'] ?? '' }}</textarea>
                                     <button type="button" onclick="removeEducation(this)" class="entry-remove">
                                         Remove
                                     </button>
@@ -644,6 +718,43 @@
 </div>
 
 <script>
+    // Resume upload handler with success message
+    function handleResumeUpload(input) {
+        const file = input.files[0];
+        if (file) {
+            const validExtensions = ['.pdf', '.doc', '.docx', '.txt'];
+            const fileName = file.name.toLowerCase();
+            const isValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+            
+            if (isValidExtension) {
+                if (file.size <= 5 * 1024 * 1024) {
+                    // Hide placeholder and current resume
+                    const placeholder = document.getElementById('resumePlaceholder');
+                    const currentResume = document.getElementById('currentResume');
+                    if (placeholder) placeholder.style.display = 'none';
+                    if (currentResume) currentResume.style.display = 'none';
+                    
+                    // Show success message
+                    const successMsg = document.getElementById('uploadSuccessMessage');
+                    const successText = document.getElementById('uploadSuccessText');
+                    successText.textContent = `✓ "${file.name}" (${(file.size / 1024).toFixed(2)} KB) uploaded successfully! Don't forget to save your changes.`;
+                    successMsg.style.display = 'flex';
+                    
+                    // Auto hide after 5 seconds
+                    setTimeout(() => {
+                        successMsg.style.display = 'none';
+                    }, 5000);
+                } else {
+                    alert('File size must be less than 5MB');
+                    input.value = '';
+                }
+            } else {
+                alert('Please upload PDF, DOC, DOCX, or TXT files only');
+                input.value = '';
+            }
+        }
+    }
+
     // Skills handling
     let skills = @json($profile->skills ?? []);
     function updateSkillsInput() { document.getElementById('skills-input').value = JSON.stringify(skills); }
@@ -738,6 +849,7 @@
                 <input type="date" name="experience[${expIndex}][start_date]" placeholder="Start Date" class="form-input">
                 <input type="date" name="experience[${expIndex}][end_date]" placeholder="End Date" class="form-input">
             </div>
+            <textarea name="experience[${expIndex}][description]" rows="2" placeholder="Job description..." class="form-textarea"></textarea>
             <button type="button" onclick="removeExperience(this)" class="entry-remove">Remove</button>
         `;
         container.appendChild(div);
@@ -758,6 +870,7 @@
                 <input type="date" name="education[${eduIndex}][start_date]" placeholder="Start Date" class="form-input">
                 <input type="date" name="education[${eduIndex}][end_date]" placeholder="End Date" class="form-input">
             </div>
+            <textarea name="education[${eduIndex}][description]" rows="2" placeholder="Additional details..." class="form-textarea"></textarea>
             <button type="button" onclick="removeEducation(this)" class="entry-remove">Remove</button>
         `;
         container.appendChild(div);
