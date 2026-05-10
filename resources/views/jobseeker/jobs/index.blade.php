@@ -107,7 +107,6 @@
             padding: 6px 6px 6px 16px;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: var(--shadow-sm);
         }
 
         .profile-btn:hover {
@@ -795,16 +794,17 @@
             </div>
 
             <!-- Filters -->
+            <!-- Filters -->
             <div class="filter-card">
                 <form method="GET" action="{{ route('jobseeker.jobs.index') }}" class="filter-form">
                     <div class="filter-field">
                         <label class="field-label">Experience Level</label>
                         <select name="experience_level" class="field-select">
                             <option value="">Any experience</option>
-                            <option value="Junior" @if(request('experience_level') == 'Junior') selected @endif>Junior
+                            <option value="entry" @if(request('experience_level') == 'entry') selected @endif>Entry Level
                             </option>
-                            <option value="Mid" @if(request('experience_level') == 'Mid') selected @endif>Mid</option>
-                            <option value="Senior" @if(request('experience_level') == 'Senior') selected @endif>Senior
+                            <option value="mid" @if(request('experience_level') == 'mid') selected @endif>Mid Level</option>
+                            <option value="senior" @if(request('experience_level') == 'senior') selected @endif>Senior Level
                             </option>
                         </select>
                     </div>
@@ -819,12 +819,43 @@
             <div class="jobs-list">
                 @forelse($jobs as $job)
                     @php
-                        $candidate = auth()->user()->profile;
-                        $candidateSkills = $candidate && $candidate->skills ? collect($candidate->skills) : collect();
-                        $jobSkills = collect($job->skills_required ?? []);
-                        $matched = $jobSkills->filter(fn($s) => $candidateSkills->contains(fn($cs) => strtolower(trim($cs)) === strtolower(trim($s))))->count();
-                        $match = $jobSkills->count() ? round(($matched / $jobSkills->count()) * 100, 2) : 0;
+                        // FIXED: Use the correct relationship name 'jobseekerProfile' instead of 'profile'
+                        $candidate = auth()->user()->jobseekerProfile;
+
+                        // Clean and normalize candidate skills
+                        $candidateSkills = collect();
+                        if ($candidate && $candidate->skills) {
+                            $candidateSkills = collect($candidate->skills)
+                                ->map(fn($s) => strtolower(trim(is_string($s) ? $s : '')))
+                                ->filter()
+                                ->unique();
+                        }
+
+                        // Clean and normalize job required skills
+                        $jobSkills = collect();
+                        if ($job->skills_required) {
+                            // Handle if skills_required is a string
+                            if (is_string($job->skills_required)) {
+                                $jobSkills = collect(explode(',', $job->skills_required))
+                                    ->map(fn($s) => strtolower(trim($s)))
+                                    ->filter();
+                            } else {
+                                $jobSkills = collect($job->skills_required)
+                                    ->map(fn($s) => strtolower(trim(is_string($s) ? $s : '')))
+                                    ->filter();
+                            }
+                        }
+
+                        // Calculate match using intersection (more efficient)
+                        $matched = $jobSkills->intersect($candidateSkills)->count();
+                        $totalNeeded = $jobSkills->count();
+
+                        // Calculate percentage
+                        $match = $totalNeeded > 0 ? round(($matched / $totalNeeded) * 100, 2) : 0;
+
+                        // Determine match color class
                         $matchColor = $match >= 70 ? 'match-high' : ($match >= 40 ? 'match-mid' : 'match-low');
+                        $matchBarClass = $match >= 70 ? 'match-high' : ($match >= 40 ? 'match-mid' : 'match-low');
                     @endphp
 
                     <div class="job-card">
@@ -843,9 +874,8 @@
 
                         <div class="job-meta">
                             <span class="badge badge-gray">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    stroke="#cb0b3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-map-pin-icon lucide-map-pin">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path
                                         d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
                                     <circle cx="12" cy="10" r="3" />
@@ -853,22 +883,28 @@
                                 {{ $job->location ?? 'N/A' }}
                             </span>
                             <span class="badge badge-gray">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    stroke="#050505" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-building2-icon lucide-building-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M10 12h4" />
                                     <path d="M10 8h4" />
                                     <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
                                     <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2" />
                                     <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
                                 </svg>
-                                {{ $job->experience_level ?? 'Any' }}
+                                @php
+                                    $expLevel = $job->experience_level ?? '';
+                                    $displayLevel = match ($expLevel) {
+                                        'entry' => 'Entry Level',
+                                        'mid' => 'Mid Level',
+                                        'senior' => 'Senior Level',
+                                        default => 'Any Experience',
+                                    };
+                                @endphp
+                                {{ $displayLevel }}
                             </span>
-                            <span class="inline-flex items-center gap-1.5 text-xs font-medium {{ $matchColor }}"
-                                style="background: transparent;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-percent-icon lucide-percent text-black">
+                            <span class="badge {{ $matchColor }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="19" x2="5" y1="5" y2="19" />
                                     <circle cx="6.5" cy="6.5" r="2.5" />
                                     <circle cx="17.5" cy="17.5" r="2.5" />
@@ -879,24 +915,24 @@
 
                         <div class="match-bar-wrap">
                             <div class="match-bar-track">
-                                <div class="match-bar-fill {{ $matchColor }}" style="width: {{ $match }}%"></div>
+                                <div class="match-bar-fill {{ $matchBarClass }}" style="width: {{ $match }}%"></div>
                             </div>
                         </div>
 
                         <div class="job-skills">
                             <p class="skills-label">Skills Required</p>
                             <div class="skills-wrap">
-                                @if($job->skills_required && count($job->skills_required) > 0)
-                                    @foreach(array_slice($job->skills_required, 0, 5) as $skill)
+                                @if($jobSkills->count() > 0)
+                                    @foreach($jobSkills->take(5) as $skill)
                                         @php
-                                            $isMatch = $candidateSkills->contains(fn($cs) => strtolower(trim($cs)) === strtolower(trim($skill)));
+                                            $isMatch = $candidateSkills->contains($skill);
                                         @endphp
                                         <span class="skill-tag {{ $isMatch ? 'skill-matched' : '' }}">
-                                            {{ $isMatch ? '✓' : '' }} {{ trim($skill) }}
+                                            {{ $isMatch ? '✓' : '' }} {{ ucfirst($skill) }}
                                         </span>
                                     @endforeach
-                                    @if(count($job->skills_required) > 5)
-                                        <span class="skill-tag">+{{ count($job->skills_required) - 5 }} more</span>
+                                    @if($jobSkills->count() > 5)
+                                        <span class="skill-tag">+{{ $jobSkills->count() - 5 }} more</span>
                                     @endif
                                 @else
                                     <span class="no-skills">No specific skills required</span>

@@ -91,6 +91,96 @@
             transform: translateY(0);
         }
 
+        /* ===== MATCH CARD ===== */
+        .match-card {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .match-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .match-score {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .match-percentage {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e40af;
+        }
+
+        .match-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .match-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .match-high {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .match-mid {
+            background: #fef9c3;
+            color: #a16207;
+        }
+
+        .match-low {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .match-message {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #1e3a8a;
+            margin: 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .matched-skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .matched-skill {
+            background: #fff;
+            color: #1e40af;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         /* ===== DIVIDER ===== */
         .divider {
             border: none;
@@ -186,6 +276,12 @@
             border: 1px solid #bfdbfe;
         }
 
+        .skill-tag.matched {
+            background: #16a34a;
+            color: #fff;
+            border-color: #16a34a;
+        }
+
         /* ===== APPLY FOOTER ===== */
         .apply-footer {
             display: flex;
@@ -208,14 +304,32 @@
             border-radius: 12px;
         }
 
-        /* ===== RESPONSIVE: TABLET (≤ 900px) ===== */
+        /* ===== WARNING MESSAGE ===== */
+        .warning-message {
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .warning-text {
+            font-size: 0.875rem;
+            color: #92400e;
+            margin: 0;
+            flex: 1;
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
             .job-meta-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        /* ===== RESPONSIVE: MOBILE (≤ 600px) ===== */
         @media (max-width: 600px) {
             .job-card {
                 padding: 20px 16px;
@@ -250,6 +364,11 @@
             .apply-btn-lg {
                 width: 100%;
                 justify-content: center;
+            }
+
+            .match-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -293,12 +412,206 @@
 
             <div class="divider"></div>
 
+            {{-- Match Analysis Card --}}
+            @php
+                $candidate = auth()->user()->jobseekerProfile;
+                
+                // Clean and normalize candidate skills
+                $candidateSkills = collect();
+                if ($candidate && $candidate->skills) {
+                    $candidateSkills = collect($candidate->skills)
+                        ->map(fn($s) => strtolower(trim(is_string($s) ? $s : '')))
+                        ->filter()
+                        ->unique();
+                }
+                
+                // Clean and normalize job required skills
+                $jobSkills = collect();
+                if ($job->skills_required) {
+                    if (is_string($job->skills_required)) {
+                        $jobSkills = collect(explode(',', $job->skills_required))
+                            ->map(fn($s) => strtolower(trim($s)))
+                            ->filter();
+                    } else {
+                        $jobSkills = collect($job->skills_required)
+                            ->map(fn($s) => strtolower(trim(is_string($s) ? $s : '')))
+                            ->filter();
+                    }
+                }
+                
+                // Calculate matched skills
+                $matchedSkills = $jobSkills->filter(function($jobSkill) use ($candidateSkills) {
+                    return $candidateSkills->contains($jobSkill);
+                });
+                
+                $matched = $matchedSkills->count();
+                $totalNeeded = $jobSkills->count();
+                $match = $totalNeeded > 0 ? round(($matched / $totalNeeded) * 100, 2) : 0;
+                $matchColorClass = $match >= 70 ? 'match-high' : ($match >= 40 ? 'match-mid' : 'match-low');
+                
+                // Generate personalized message with Lucide icons
+                if ($match >= 80) {
+                    $matchMessage = "Excellent match! Your skills align perfectly with this role. You're a top candidate!";
+                    $matchIcon = "🏆";
+                } elseif ($match >= 60) {
+                    $matchMessage = "Good match! You have most of the required skills. Strong chance of getting shortlisted.";
+                    $matchIcon = "✨";
+                } elseif ($match >= 40) {
+                    $matchMessage = "Decent match! You have some relevant skills. Consider highlighting transferable skills in your application.";
+                    $matchIcon = "📊";
+                } elseif ($match >= 20) {
+                    $matchMessage = "Opportunity to grow! This role could help you develop new skills. Emphasize your learning ability.";
+                    $matchIcon = "🌱";
+                } else {
+                    $matchMessage = "Potential fit! While your skills differ, your background may still bring value. Tailor your application to highlight relevant experience.";
+                    $matchIcon = "💡";
+                }
+                
+                // Add specific skill insights
+                $missingSkills = $jobSkills->diff($candidateSkills);
+                $hasProfile = $candidate && $candidateSkills->count() > 0;
+            @endphp
+
+            @if(!$hasProfile)
+                <div class="warning-message">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" x2="12" y1="8" y2="12" />
+                        <line x1="12" x2="12.01" y1="16" y2="16" />
+                    </svg>
+                    <p class="warning-text">
+                        <strong>Profile incomplete!</strong> Add your skills to see how well you match with this job.
+                        <a href="{{ route('jobseeker.profile.edit') }}" style="color: #92400e; text-decoration: underline;">Update your profile</a>
+                    </p>
+                </div>
+            @elseif($totalNeeded === 0)
+                <div class="match-card" style="background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);">
+                    <div class="match-header">
+                        <div class="match-score">
+                            <span class="match-percentage" style="color: #6b21a5;">N/A</span>
+                            <span class="match-label" style="color: #6b21a5;">Match Score</span>
+                        </div>
+                        <span class="match-badge" style="background: #f3e8ff; color: #6b21a5;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" x2="12" y1="8" y2="12" />
+                                <line x1="12" x2="12.01" y1="16" y2="16" />
+                            </svg>
+                            No skills required
+                        </span>
+                    </div>
+                    <div class="match-message">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b21a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" x2="12" y1="15" y2="3" />
+                        </svg>
+                        <span>This job doesn't specify any required skills. Your application will be evaluated based on your overall profile and experience.</span>
+                    </div>
+                </div>
+            @else
+                <div class="match-card">
+                    <div class="match-header">
+                        <div class="match-score">
+                            <span class="match-percentage">{{ $match }}%</span>
+                            <span class="match-label">Match Score</span>
+                        </div>
+                        <span class="match-badge {{ $matchColorClass }}">
+                            @if($match >= 70)
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                            @elseif($match >= 40)
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="12" x2="12" y1="8" y2="12" />
+                                    <line x1="12" x2="12.01" y1="16" y2="16" />
+                                </svg>
+                            @else
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="12" x2="12" y1="8" y2="12" />
+                                    <line x1="12" x2="12.01" y1="16" y2="16" />
+                                </svg>
+                            @endif
+                            @if($match >= 70) Strong Match
+                            @elseif($match >= 40) Partial Match
+                            @else Low Match
+                            @endif
+                        </span>
+                    </div>
+                    <div class="match-message">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                        <span>{{ $matchMessage }}</span>
+                    </div>
+                    
+                    @if($matchedSkills->count() > 0)
+                        <div style="margin-top: 16px;">
+                            <p style="font-size: 0.75rem; font-weight: 600; color: #1e3a8a; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                Your matched skills:
+                            </p>
+                            <div class="matched-skills-list">
+                                @foreach($matchedSkills as $skill)
+                                    <span class="matched-skill">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                        {{ ucfirst($skill) }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                    
+                    @if($missingSkills->count() > 0 && $match < 100)
+                        <div style="margin-top: 12px;">
+                            <p style="font-size: 0.75rem; font-weight: 600; color: #78350f; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                                </svg>
+                                Skills to develop:
+                            </p>
+                            <div class="matched-skills-list">
+                                @foreach($missingSkills->take(5) as $skill)
+                                    <span style="background: #fffbeb; color: #92400e; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px;">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="12" x2="12" y1="8" y2="12" />
+                                            <line x1="12" x2="12.01" y1="16" y2="16" />
+                                        </svg>
+                                        {{ ucfirst($skill) }}
+                                    </span>
+                                @endforeach
+                                @if($missingSkills->count() > 5)
+                                    <span style="background: #fffbeb; color: #92400e; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem;">+{{ $missingSkills->count() - 5 }} more</span>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                    
+                    @if($match == 100 && $totalNeeded > 0)
+                        <div style="margin-top: 12px; padding: 8px 12px; background: #dcfce7; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                            <p style="font-size: 0.75rem; color: #15803d; margin: 0;">Perfect match! You have all the required skills. Apply now for the best chance!</p>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
             {{-- Details grid --}}
             <div class="job-meta-grid">
                 <div class="meta-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#2c2a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-building-icon lucide-building">
+                        stroke="#2c2a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 10h.01" />
                         <path d="M12 14h.01" />
                         <path d="M12 6h.01" />
@@ -370,16 +683,20 @@
                     </svg>
                     Skills Required
                 </h2>
-                @if($job->skills_required && count($job->skills_required) > 0)
+                @if($jobSkills->count() > 0)
                     <div class="skills-list">
-                        @foreach($job->skills_required as $skill)
-                            <span class="skill-tag">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polygon
-                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                </svg>
-                                {{ $skill }}
+                        @foreach($jobSkills as $skill)
+                            @php
+                                $isMatched = $candidateSkills->contains($skill);
+                            @endphp
+                            <span class="skill-tag {{ $isMatched ? 'matched' : '' }}">
+                                @if($isMatched)
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                    </svg>
+                                @endif
+                                {{ ucfirst($skill) }}
                             </span>
                         @endforeach
                     </div>
