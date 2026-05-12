@@ -3,8 +3,13 @@ FROM php:8.5-apache
 # Set environment variables
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-# Fix MPM conflict first
-RUN a2dismod mpm_event mpm_worker mpm_prefork || true && a2enmod mpm_prefork
+# Fix MPM conflict by directly removing conflicting module configs
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf \
+          /etc/apache2/mods-enabled/mpm_event.load \
+          /etc/apache2/mods-enabled/mpm_worker.conf \
+          /etc/apache2/mods-enabled/mpm_worker.load && \
+    ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf && \
+    ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -71,5 +76,4 @@ RUN mkdir -p /var/www/html/storage/logs && \
 # Expose port 80
 EXPOSE 80
 
-# Start Apache
 CMD ["apache2-foreground"]
