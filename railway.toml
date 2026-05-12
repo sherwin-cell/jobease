@@ -1,2 +1,2 @@
 [deploy]
-startCommand = "/bin/sh /start.sh"
+startCommand = "/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"

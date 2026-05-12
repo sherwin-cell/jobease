@@ -1,8 +1,9 @@
 FROM php:8.4-fpm
 
-# Install system dependencies
+# Install system dependencies + supervisord
 RUN apt-get update && apt-get install -y \
     nginx \
+    supervisor \
     git \
     unzip \
     libpng-dev \
@@ -36,6 +37,9 @@ RUN echo 'server { \n\
     } \n\
 }' > /etc/nginx/sites-available/default
 
+# Configure supervisord
+RUN echo '[supervisord]\nnodaemon=true\n\n[program:php-fpm]\ncommand=php-fpm\nautostart=true\nautorestart=true\n\n[program:nginx]\ncommand=nginx -g "daemon off;"\nautostart=true\nautorestart=true\n' > /etc/supervisor/conf.d/supervisord.conf
+
 # Set working directory
 WORKDIR /var/www/html
 
@@ -54,11 +58,9 @@ RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 775 /var/www/html/storage && \
     chmod -R 775 /var/www/html/bootstrap/cache
 
-# Create startup script
-RUN printf '#!/bin/sh\nphp-fpm -D\nexec nginx -g "daemon off;"\n' > /start.sh && \
-    chmod +x /start.sh
+RUN mkdir -p /var/www/html/storage/logs && \
+    chown -R www-data:www-data /var/www/html/storage/logs
 
-# Expose port 80
 EXPOSE 80
 
-CMD ["/bin/sh", "/start.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
