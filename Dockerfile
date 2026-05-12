@@ -1,10 +1,8 @@
-FROM php:8.4-apache
-
-# Set environment variables
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+FROM php:8.4-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    nginx \
     git \
     unzip \
     libpng-dev \
@@ -23,25 +21,20 @@ RUN docker-php-ext-install \
     bcmath \
     gd
 
-# Enable Apache modules
-RUN a2enmod rewrite headers
-
-# Configure Apache to use Laravel public directory
-RUN sed -i "s|/var/www/html|${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/000-default.conf
-
-# Create Apache configuration for Laravel
-RUN echo '<Directory /var/www/html/public>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-    <IfModule mod_rewrite.c>\n\
-        RewriteEngine On\n\
-        RewriteCond %{REQUEST_FILENAME} !-f\n\
-        RewriteCond %{REQUEST_FILENAME} !-d\n\
-        RewriteRule ^ index.php [QSA,L]\n\
-    </IfModule>\n\
-</Directory>' > /etc/apache2/conf-available/laravel.conf && \
-    a2enconf laravel
+# Configure Nginx for Laravel
+RUN echo 'server { \n\
+    listen 80; \n\
+    root /var/www/html/public; \n\
+    index index.php; \n\
+    location / { \n\
+        try_files $uri $uri/ /index.php?$query_string; \n\
+    } \n\
+    location ~ \.php$ { \n\
+        fastcgi_pass 127.0.0.1:9000; \n\
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name; \n\
+        include fastcgi_params; \n\
+    } \n\
+}' > /etc/nginx/sites-available/default
 
 # Set working directory
 WORKDIR /var/www/html
@@ -68,4 +61,5 @@ RUN mkdir -p /var/www/html/storage/logs && \
 # Expose port 80
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+# Start Nginx + PHP-FPM
+CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
