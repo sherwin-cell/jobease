@@ -54,12 +54,11 @@ RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 775 /var/www/html/storage && \
     chmod -R 775 /var/www/html/bootstrap/cache
 
-# Create necessary directories
-RUN mkdir -p /var/www/html/storage/logs && \
-    chown -R www-data:www-data /var/www/html/storage/logs
+# Create startup script
+RUN echo '#!/bin/sh\nphp-fpm -D\nnginx -g "daemon off;"' > /start.sh && \
+    chmod +x /start.sh
 
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx + PHP-FPM
-CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
+CMD ["/start.sh"]
