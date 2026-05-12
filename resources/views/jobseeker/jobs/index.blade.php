@@ -26,21 +26,21 @@
         /* ===== PAGE HEADER ===== */
         /* ===== PAGE HEADER ===== */
         .page-header {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: start;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: nowrap;
             margin-bottom: 24px;
         }
 
         .page-header>div:first-child {
-            grid-column: 1;
-            grid-row: 1;
+            flex: 1;
+            min-width: 0;
         }
 
         .page-header .profile-dropdown {
-            grid-column: 2;
-            grid-row: 1;
-            justify-self: end;
+            flex-shrink: 0;
         }
 
         .page-title {
@@ -658,13 +658,33 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
+
+            /* ===== PAGE HEADER - STACK ON MOBILE ===== */
             .page-header {
                 display: flex;
                 flex-direction: column;
                 align-items: stretch;
                 gap: 16px;
+                margin-bottom: 20px;
             }
 
+            .page-header>div:first-child {
+                flex: none;
+            }
+
+            .page-header .profile-dropdown {
+                align-self: flex-end;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .page-sub {
+                font-size: 0.75rem;
+            }
+
+            /* ===== FILTERS ===== */
             .filter-form {
                 flex-direction: column;
             }
@@ -680,14 +700,24 @@
             .filter-actions .btn-primary,
             .filter-actions .btn-ghost {
                 flex: 1;
+                justify-content: center;
             }
 
+            /* ===== JOB CARDS ===== */
             .job-card {
                 padding: 16px;
             }
 
             .job-top {
                 flex-direction: column;
+            }
+
+            .job-title {
+                font-size: 1rem;
+            }
+
+            .job-desc {
+                font-size: 0.75rem;
             }
 
             .job-actions {
@@ -698,15 +728,49 @@
             .job-actions .btn-primary {
                 flex: 1;
                 justify-content: center;
+                padding: 8px 12px;
+                font-size: 0.75rem;
             }
 
+            /* ===== JOB META BADGES ===== */
+            .job-meta {
+                gap: 6px;
+            }
+
+            .badge {
+                font-size: 0.65rem;
+                padding: 3px 8px;
+            }
+
+            .badge svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            /* ===== SKILL TAGS ===== */
+            .skills-wrap {
+                gap: 4px;
+            }
+
+            .skill-tag {
+                font-size: 0.65rem;
+                padding: 2px 8px;
+            }
+
+            /* ===== PAGINATION ===== */
             .pagination a,
             .pagination span {
                 min-width: 32px;
                 height: 32px;
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
 
+            .pagination svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+
+            /* ===== PROFILE DROPDOWN ===== */
             .profile-btn .profile-name {
                 display: none;
             }
@@ -715,8 +779,87 @@
                 padding: 6px;
             }
 
+            .dropdown-menu {
+                width: 240px;
+                right: -10px;
+            }
+
+            /* ===== MODAL ===== */
             .modal-container {
                 width: 95%;
+            }
+
+            /* ===== EMPTY STATE ===== */
+            .empty-icon svg {
+                width: 40px;
+                height: 40px;
+            }
+
+            .empty-title {
+                font-size: 0.875rem;
+            }
+
+            .empty-sub {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* ===== VERY SMALL PHONES (480px AND BELOW) ===== */
+        @media (max-width: 480px) {
+
+            /* Page Header */
+            .page-title {
+                font-size: 1.125rem;
+            }
+
+            .page-sub {
+                font-size: 0.7rem;
+            }
+
+            /* Badges */
+            .badge {
+                font-size: 0.6rem;
+                padding: 2px 6px;
+            }
+
+            .badge svg {
+                width: 10px;
+                height: 10px;
+            }
+
+            /* Skill Tags */
+            .skill-tag {
+                font-size: 0.6rem;
+                padding: 2px 6px;
+            }
+
+            /* Job Actions Buttons */
+            .job-actions .btn-ghost,
+            .job-actions .btn-primary {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+            }
+
+            /* Empty State */
+            .empty-icon svg {
+                width: 32px;
+                height: 32px;
+            }
+
+            /* Profile Dropdown */
+            .dropdown-menu {
+                width: 220px;
+                right: -5px;
+            }
+
+            .dropdown-item {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+
+            .dropdown-item svg {
+                width: 16px;
+                height: 16px;
             }
         }
     </style>
