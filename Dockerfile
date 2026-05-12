@@ -1,6 +1,6 @@
 FROM php:8.4-fpm
 
-# Install system dependencies + supervisord
+# Install system dependencies + supervisord + Node.js
 RUN apt-get update && apt-get install -y \
     nginx \
     supervisor \
@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -22,7 +24,6 @@ RUN docker-php-ext-install \
     bcmath \
     gd
 
-# Configure Nginx for Laravel
 # Configure Nginx for Laravel
 RUN echo 'server { \n\
     listen 80; \n\
@@ -39,6 +40,7 @@ RUN echo 'server { \n\
         include fastcgi_params; \n\
     } \n\
 }' > /etc/nginx/sites-available/default
+
 # Configure supervisord
 RUN echo '[supervisord]\nnodaemon=true\n\n[program:php-fpm]\ncommand=php-fpm\nautostart=true\nautorestart=true\n\n[program:nginx]\ncommand=nginx -g "daemon off;"\nautostart=true\nautorestart=true\n' > /etc/supervisor/conf.d/supervisord.conf
 
@@ -47,6 +49,9 @@ WORKDIR /var/www/html
 
 # Copy application files
 COPY . /var/www/html
+
+# Install Node dependencies and build frontend assets
+RUN npm install && npm run build
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
