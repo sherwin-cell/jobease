@@ -26,6 +26,9 @@ RUN docker-php-ext-install \
 # Enable Apache modules
 RUN a2enmod rewrite headers
 
+# Fix MPM conflict (PHP requires prefork)
+RUN a2dismod mpm_event mpm_worker && a2enmod mpm_prefork
+
 # Configure Apache to use Laravel public directory
 RUN sed -i "s|/var/www/html|${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/000-default.conf
 
