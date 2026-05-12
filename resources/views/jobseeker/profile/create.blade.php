@@ -1,21 +1,23 @@
 @extends('layouts.standalone')
 
 @section('content')
-
 <style>
+    /* ============================================================
+       BASE STYLES
+    ============================================================ */
     .profile-card {
         background: #fff;
         border-radius: 18px;
         box-shadow: 0 4px 24px 0 rgba(60, 72, 88, .08);
-        padding: 2.5rem 2rem;
+        padding: 2rem 1.5rem;
         max-width: 900px;
         margin: 2rem auto;
     }
 
     .profile-section {
         border-bottom: 1px solid #e5e7eb;
-        padding-bottom: 1.5rem;
-        margin-bottom: 2rem;
+        padding-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
     }
 
     .profile-section:last-child {
@@ -29,6 +31,7 @@
         color: #374151;
         margin-bottom: 0.5rem;
         display: block;
+        font-size: 0.875rem;
     }
 
     .profile-input,
@@ -37,10 +40,10 @@
         width: 100%;
         border: 1px solid #d1d5db;
         border-radius: 8px;
-        padding: 0.75rem 1rem;
+        padding: 0.5rem 0.875rem;
         background: #f9fafb;
         transition: border-color 0.2s, box-shadow 0.2s;
-        font-size: 1rem;
+        font-size: 0.875rem;
         margin-bottom: 0.75rem;
     }
 
@@ -59,10 +62,10 @@
         font-weight: 600;
         border: none;
         border-radius: 8px;
-        padding: 0.75rem 2rem;
+        padding: 0.625rem 1.5rem;
         margin-top: 1.5rem;
         width: 100%;
-        font-size: 1.1rem;
+        font-size: 0.9375rem;
         transition: background 0.2s;
         cursor: pointer;
     }
@@ -77,10 +80,10 @@
         font-weight: 500;
         border: none;
         border-radius: 6px;
-        padding: 0.5rem 1.2rem;
+        padding: 0.375rem 1rem;
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         transition: background 0.2s;
         cursor: pointer;
     }
@@ -94,8 +97,8 @@
         color: #b91c1c;
         border: none;
         border-radius: 6px;
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
+        padding: 0.375rem 0.875rem;
+        font-size: 0.75rem;
         font-weight: 500;
         transition: background 0.2s;
         cursor: pointer;
@@ -117,7 +120,7 @@
     }
 
     .profile-section-title {
-        font-size: 1.15rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #1e293b;
         margin-bottom: 1rem;
@@ -128,14 +131,15 @@
     .education-item {
         background: #f3f4f6;
         border-radius: 10px;
-        padding: 1rem 1.2rem;
-        margin-bottom: 1.2rem;
+        padding: 0.875rem 1rem;
+        margin-bottom: 1rem;
     }
 
     .date-row {
         display: flex;
         gap: 1rem;
         margin-bottom: 0.75rem;
+        flex-wrap: wrap;
     }
 
     .date-row input {
@@ -151,7 +155,7 @@
     }
 
     .current-checkbox label {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: normal;
         color: #374151;
         cursor: pointer;
@@ -163,17 +167,19 @@
     }
 
     .form-hint {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         color: #6b7280;
         margin-top: -0.5rem;
         margin-bottom: 0.5rem;
     }
 
-    /* Resume Upload Styles */
+    /* ============================================================
+       RESUME UPLOAD STYLES - COMPACT
+    ============================================================ */
     .resume-upload-area {
         border: 2px dashed #d1d5db;
-        border-radius: 12px;
-        padding: 2rem;
+        border-radius: 10px;
+        padding: 1rem;
         text-align: center;
         cursor: pointer;
         transition: all 0.2s;
@@ -194,26 +200,32 @@
         display: none;
     }
 
-    .resume-upload-icon {
-        width: 48px;
-        height: 48px;
-        margin: 0 auto 1rem;
+    .resume-upload-icon svg {
+        width: 32px;
+        height: 32px;
+        margin: 0 auto 0.5rem;
         color: #9ca3af;
     }
 
     .resume-upload-text {
         color: #6b7280;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
+    }
+
+    .resume-upload-text strong {
+        font-size: 0.8rem;
     }
 
     .resume-file-info {
-        margin-top: 1rem;
-        padding: 0.75rem;
+        margin-top: 0.5rem;
+        padding: 0.5rem 0.75rem;
         background: #f3f4f6;
         border-radius: 8px;
         display: none;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     .resume-file-info.show {
@@ -224,12 +236,19 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         color: #374151;
+        flex-wrap: wrap;
+    }
+
+    .resume-file-name svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
     }
 
     .resume-file-size {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
         color: #6b7280;
     }
 
@@ -238,8 +257,8 @@
         color: #dc2626;
         border: none;
         border-radius: 6px;
-        padding: 0.25rem 0.75rem;
-        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.65rem;
         cursor: pointer;
         transition: background 0.2s;
     }
@@ -251,19 +270,28 @@
     .current-resume {
         background: #e0e7ff;
         border-radius: 8px;
-        padding: 0.75rem;
-        margin-bottom: 1rem;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     .current-resume-info {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         color: #3730a3;
+        flex-wrap: wrap;
+    }
+
+    .current-resume-info svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
     }
 
     .current-resume-btn {
@@ -271,8 +299,8 @@
         color: #3730a3;
         border: none;
         border-radius: 6px;
-        padding: 0.25rem 0.75rem;
-        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.65rem;
         cursor: pointer;
         transition: background 0.2s;
         text-decoration: none;
@@ -282,31 +310,289 @@
         background: #a5b4fc;
     }
 
-    /* Resume Upload Success Message */
+    /* ===== FIX BIG CHECKMARK - COMPACT SUCCESS MESSAGE ===== */
     .resume-success-message {
-        margin-top: 0.75rem;
-        padding: 0.5rem 0.75rem;
+        margin-top: 0.5rem;
+        padding: 0.375rem 0.625rem;
         background: #dcfce7;
         border: 1px solid #bbf7d0;
         border-radius: 8px;
         color: #15803d;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .resume-success-message svg {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    /* Fix general success/error messages */
+    .bg-green-100,
+    .bg-blue-50,
+    .bg-red-50 {
+        font-size: 0.75rem !important;
+        padding: 0.5rem 0.75rem !important;
+        border-radius: 8px !important;
+    }
+
+    .bg-green-100 svg,
+    .bg-blue-50 svg,
+    .bg-red-50 svg {
+        width: 14px !important;
+        height: 14px !important;
     }
 
     .resume-placeholder {
         background: #fef3c7;
         border: 1px solid #fde68a;
         border-radius: 8px;
-        padding: 0.75rem;
-        margin-bottom: 1rem;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        font-size: 0.875rem;
+        gap: 0.5rem;
+        font-size: 0.75rem;
         color: #92400e;
+        flex-wrap: wrap;
+    }
+
+    .resume-placeholder svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+    }
+
+    /* ============================================================
+       RESPONSIVE DESIGN
+    ============================================================ */
+    
+    /* Tablet (768px and below) */
+    @media (max-width: 768px) {
+        .profile-card {
+            padding: 1.5rem;
+            margin: 1rem;
+            border-radius: 14px;
+        }
+        
+        .profile-section-title {
+            font-size: 0.9375rem;
+        }
+        
+        .profile-btn-primary {
+            padding: 0.5rem 1.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .profile-flex-col {
+            min-width: 180px;
+        }
+    }
+    
+    /* Mobile (640px and below) */
+    @media (max-width: 640px) {
+        .profile-card {
+            padding: 1rem;
+            margin: 0.75rem;
+            border-radius: 12px;
+        }
+        
+        h1.text-3xl {
+            font-size: 1.25rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .profile-section {
+            padding-bottom: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-label {
+            font-size: 0.8125rem;
+        }
+        
+        .profile-input,
+        .profile-textarea,
+        .profile-select {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+        
+        .profile-section-title {
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .profile-flex-row {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .profile-flex-col {
+            min-width: 100%;
+        }
+        
+        .date-row {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .date-row input {
+            width: 100%;
+        }
+        
+        .experience-item,
+        .education-item {
+            padding: 0.75rem;
+        }
+        
+        .profile-btn-add,
+        .profile-btn-remove {
+            padding: 0.3125rem 0.75rem;
+            font-size: 0.75rem;
+        }
+        
+        .profile-btn-primary {
+            padding: 0.4375rem 1rem;
+            font-size: 0.8125rem;
+            margin-top: 0.875rem;
+        }
+        
+        /* Resume upload area mobile */
+        .resume-upload-area {
+            padding: 0.875rem;
+        }
+        
+        .resume-upload-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+        
+        .resume-upload-text {
+            font-size: 0.7rem;
+        }
+        
+        .resume-file-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .resume-file-name {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .current-resume {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .current-resume-info {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .form-hint {
+            font-size: 0.6rem;
+        }
+        
+        /* Success message mobile */
+        .resume-success-message,
+        .bg-green-100,
+        .bg-blue-50,
+        .bg-red-50 {
+            font-size: 0.7rem !important;
+            padding: 0.375rem 0.625rem !important;
+        }
+        
+        .resume-success-message svg,
+        .bg-green-100 svg {
+            width: 12px !important;
+            height: 12px !important;
+        }
+    }
+    
+    /* Very Small Phones (480px and below) */
+    @media (max-width: 480px) {
+        .profile-card {
+            padding: 0.75rem;
+            margin: 0.5rem;
+            border-radius: 10px;
+        }
+        
+        h1.text-3xl {
+            font-size: 1.125rem !important;
+        }
+        
+        .profile-label {
+            font-size: 0.75rem;
+        }
+        
+        .profile-input,
+        .profile-textarea,
+        .profile-select {
+            padding: 0.4375rem 0.625rem;
+            font-size: 0.75rem;
+        }
+        
+        .profile-section-title {
+            font-size: 0.8125rem;
+        }
+        
+        .profile-btn-add,
+        .profile-btn-remove {
+            padding: 0.25rem 0.625rem;
+            font-size: 0.7rem;
+        }
+        
+        .profile-btn-primary {
+            padding: 0.375rem 0.875rem;
+            font-size: 0.75rem;
+        }
+        
+        .resume-upload-area {
+            padding: 0.75rem;
+        }
+        
+        .resume-upload-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .resume-upload-text {
+            font-size: 0.65rem;
+        }
+        
+        .current-resume-info {
+            font-size: 0.7rem;
+        }
+        
+        .current-resume-info svg {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .resume-placeholder {
+            font-size: 0.7rem;
+            padding: 0.5rem 0.625rem;
+        }
+        
+        .resume-placeholder svg {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .resume-success-message {
+            font-size: 0.65rem !important;
+        }
+        
+        .resume-success-message svg {
+            width: 10px !important;
+            height: 10px !important;
+        }
     }
 </style>
 
@@ -329,7 +615,7 @@
 
     @if(session('resume_uploaded'))
         <div class="resume-success-message">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
             {{ session('resume_uploaded') }}
@@ -391,7 +677,7 @@
             {{-- Show placeholder if no resume exists --}}
             @if(!($profile->exists && $profile->resume_path))
                 <div class="resume-placeholder">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <span>No resume uploaded yet. Please upload your resume/CV.</span>
@@ -401,7 +687,7 @@
             @if($profile->exists && $profile->resume_path)
                 <div class="current-resume">
                     <div class="current-resume-info">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         <span>Current Resume: {{ basename($profile->resume_path) }}</span>
@@ -425,7 +711,7 @@
 
             <div class="resume-file-info" id="resumeFileInfo">
                 <div class="resume-file-name">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <span id="resumeFileName"></span>
@@ -611,27 +897,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showSuccessMessage(fileName) {
-        // Check if success message already exists
         let successMsg = document.querySelector('.resume-upload-success');
         if (successMsg) {
             successMsg.remove();
         }
         
-        // Create new success message
         const msgDiv = document.createElement('div');
         msgDiv.className = 'resume-success-message resume-upload-success';
         msgDiv.innerHTML = `
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
             <span>✓ Resume "${fileName}" uploaded successfully! Ready to save.</span>
         `;
         
-        // Insert after the resume file info
         const profileSection = document.querySelector('.profile-section:has(.resume-upload-area)');
         profileSection.appendChild(msgDiv);
         
-        // Auto remove after 5 seconds
         setTimeout(() => {
             if (msgDiv) msgDiv.remove();
         }, 5000);
@@ -644,17 +926,14 @@ document.addEventListener('DOMContentLoaded', () => {
             resumeFileInfo.classList.add('show');
             resumeUploadArea.style.display = 'none';
             
-            // Hide placeholder if exists
             if (resumePlaceholder) {
                 resumePlaceholder.style.display = 'none';
             }
             
-            // Hide current resume if exists
             if (currentResume) {
                 currentResume.style.display = 'none';
             }
             
-            // Show success message
             showSuccessMessage(file.name);
             
             const submitBtn = document.querySelector('.profile-btn-primary');
@@ -672,17 +951,14 @@ document.addEventListener('DOMContentLoaded', () => {
         resumeUploadArea.style.display = 'block';
         resumeFileInput.value = '';
         
-        // Show placeholder if exists and no resume in database
         if (resumePlaceholder && !currentResume) {
             resumePlaceholder.style.display = 'flex';
         }
         
-        // Show current resume if exists
         if (currentResume) {
             currentResume.style.display = 'flex';
         }
         
-        // Remove success message
         const successMsg = document.querySelector('.resume-upload-success');
         if (successMsg) {
             successMsg.remove();

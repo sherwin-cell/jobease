@@ -4,393 +4,964 @@
 
 @section('content')
 <style>
-    /* ===== PAGE CONTAINER ===== */
+/* ============================================================
+   PAGE CONTAINER
+============================================================ */
+.full-page-container {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+    padding: 2rem 0;
+}
+
+.content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+.page-header {
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.25rem;
+    line-height: 1.2;
+}
+
+.page-sub {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* ============================================================
+   FORM CARD
+============================================================ */
+.form-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+}
+
+.card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.card-sub {
+    font-size: 0.75rem;
+    color: #e0e7ff;
+    margin-top: 0.25rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    padding: 1rem 1.5rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   FORM SECTIONS
+============================================================ */
+.form-section {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+}
+
+.section-title svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.section-badge {
+    font-size: 0.6875rem;
+    color: #9ca3af;
+    font-weight: normal;
+}
+
+.add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #2563eb;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.add-btn:hover {
+    color: #1d4ed8;
+}
+
+/* ============================================================
+   FORM ELEMENTS
+============================================================ */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #374151;
+    transition: all 0.15s;
+    background: #fff;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-hint {
+    font-size: 0.6875rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+/* ============================================================
+   TAGS CONTAINER
+============================================================ */
+.tags-container {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.tag-skill {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.tag-cert {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.tag-interest {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.tag-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+    opacity: 0.6;
+}
+
+.tag-remove:hover {
+    opacity: 1;
+}
+
+.tag-remove svg {
+    width: 12px;
+    height: 12px;
+}
+
+.tag-input-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tag-input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    outline: none;
+    min-width: 120px;
+}
+
+.tag-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.tag-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.tag-btn-skill {
+    background: #2563eb;
+    color: #fff;
+}
+
+.tag-btn-skill:hover {
+    background: #1d4ed8;
+}
+
+.tag-btn-cert {
+    background: #059669;
+    color: #fff;
+}
+
+.tag-btn-cert:hover {
+    background: #047857;
+}
+
+.tag-btn-interest {
+    background: #d97706;
+    color: #fff;
+}
+
+.tag-btn-interest:hover {
+    background: #b45309;
+}
+
+/* ============================================================
+   ENTRY CARD
+============================================================ */
+.entry-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.entry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.entry-remove {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: #ef4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.entry-remove:hover {
+    color: #dc2626;
+}
+
+/* ============================================================
+   FILE UPLOAD - COMPACT
+============================================================ */
+.file-area {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+}
+
+.resume-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fafbfc;
+}
+
+.resume-upload-area:hover {
+    border-color: #2563eb;
+    background: #f0f9ff;
+}
+
+.resume-upload-icon svg {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 0.5rem;
+    color: #9ca3af;
+}
+
+.resume-upload-text {
+    color: #6b7280;
+    font-size: 0.75rem;
+}
+
+.resume-upload-text strong {
+    font-size: 0.8rem;
+}
+
+.current-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.file-info svg {
+    width: 16px;
+    height: 16px;
+}
+
+.file-name {
+    font-size: 0.7rem;
+    color: #374151;
+    word-break: break-all;
+}
+
+.file-size {
+    font-size: 0.625rem;
+    color: #9ca3af;
+}
+
+.resume-success-message {
+    margin-top: 0.5rem;
+    padding: 0.375rem 0.625rem;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    border-radius: 0.5rem;
+    color: #15803d;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.resume-success-message svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.resume-placeholder {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    color: #92400e;
+    flex-wrap: wrap;
+}
+
+.resume-placeholder svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.resume-file-info {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f3f4f6;
+    border-radius: 0.5rem;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.resume-file-info.show {
+    display: flex;
+}
+
+.resume-file-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    color: #374151;
+    flex-wrap: wrap;
+}
+
+.resume-file-name svg {
+    width: 12px;
+    height: 12px;
+}
+
+.resume-file-size {
+    font-size: 0.65rem;
+    color: #6b7280;
+}
+
+.resume-remove-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.resume-remove-btn:hover {
+    background: #fecaca;
+}
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.btn-primary svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #f9fafb;
+}
+
+.btn-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    font-size: 0.7rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-upload:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.btn-upload svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ============================================================
+   ALERT STYLES
+============================================================ */
+.alert-slide-success,
+.alert-slide-error {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-left-width: 4px;
+    border-radius: 0.5rem;
+}
+
+.alert-slide-success {
+    background: #f0fdf4;
+    border-left-color: #22c55e;
+}
+
+.alert-slide-error {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+}
+
+.alert-flex-container {
+    display: flex;
+    align-items: center;
+}
+
+.alert-icon-wrapper {
+    flex-shrink: 0;
+}
+
+.alert-success-icon {
+    width: 18px;
+    height: 18px;
+    color: #22c55e;
+}
+
+.alert-error-icon {
+    width: 18px;
+    height: 18px;
+    color: #ef4444;
+}
+
+.alert-message-wrapper {
+    margin-left: 0.75rem;
+}
+
+.alert-success-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #15803d;
+}
+
+.alert-error-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #b91c1c;
+}
+
+/* Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert-slide-success,
+.alert-slide-error {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* ============================================================
+   UTILITY
+============================================================ */
+.hidden {
+    display: none;
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN
+============================================================ */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
     .full-page-container {
-        min-height: 100vh;
-        background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
-        padding: 1.5rem 0;
+        padding: 1rem 0;
     }
+
     .content-wrapper {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 0 1.5rem;
-    }
-    @media (max-width: 640px) {
-        .content-wrapper {
-            padding: 0 1rem;
-        }
+        padding: 0 1rem;
     }
 
-    /* ===== PAGE HEADER ===== */
-    .page-header {
-        margin-bottom: 1.5rem;
-    }
     .page-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #111827;
-        margin: 0 0 0.25rem;
-        line-height: 1.2;
+        font-size: 1.25rem;
     }
+
     .page-sub {
-        font-size: 0.875rem;
-        color: #6b7280;
-        margin: 0;
+        font-size: 0.75rem;
     }
 
-    /* ===== FORM CARD ===== */
-    .form-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 1rem;
-        overflow: hidden;
-    }
     .card-header {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
-        background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+        padding: 1rem 1.25rem;
     }
-    .card-title {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #fff;
-        margin: 0;
-    }
-    .card-sub {
-        font-size: 0.75rem;
-        color: #e0e7ff;
-        margin-top: 0.25rem;
-    }
+
     .card-body {
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
+
     .card-footer {
-        padding: 1rem 1.5rem;
-        background: #f9fafb;
-        border-top: 1px solid #e5e7eb;
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-        flex-wrap: wrap;
+        padding: 0.875rem 1.25rem;
     }
 
-    /* ===== FORM SECTIONS ===== */
-    .form-section {
-        margin-bottom: 1.75rem;
-        padding-bottom: 1.75rem;
-        border-bottom: 1px solid #f3f4f6;
-    }
-    .form-section:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-    .section-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-    }
     .section-title {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #111827;
-        margin: 0;
-    }
-    .section-badge {
-        font-size: 0.6875rem;
-        color: #9ca3af;
-        font-weight: normal;
-    }
-    .add-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: #2563eb;
-        background: none;
-        border: none;
-        cursor: pointer;
-        transition: color 0.15s;
-    }
-    .add-btn:hover {
-        color: #1d4ed8;
+        font-size: 0.9375rem;
     }
 
-    /* ===== FORM ELEMENTS ===== */
+    .section-title svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Mobile (640px and below) */
+@media (max-width: 640px) {
     .form-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-    .form-group {
-        margin-bottom: 1rem;
-    }
-    .form-label {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #6b7280;
-        margin-bottom: 0.25rem;
-    }
-    .form-input, .form-textarea, .form-select {
-        width: 100%;
-        padding: 0.5rem 0.75rem;
-        border: 1px solid #d1d5db;
-        border-radius: 0.5rem;
-        font-size: 0.875rem;
-        color: #374151;
-        transition: all 0.15s;
-        background: #fff;
-    }
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
-        outline: none;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-    }
-    .form-textarea {
-        resize: vertical;
-        min-height: 80px;
-    }
-    .form-hint {
-        font-size: 0.6875rem;
-        color: #9ca3af;
-        margin-top: 0.25rem;
-    }
-
-    /* ===== TAGS CONTAINER ===== */
-    .tags-container {
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 0.75rem;
-        padding: 1rem;
-    }
-    .tags-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 0.75rem;
-    }
-    .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 500;
-    }
-    .tag-skill { background: #eff6ff; color: #1d4ed8; }
-    .tag-cert { background: #ecfdf5; color: #047857; }
-    .tag-interest { background: #fffbeb; color: #b45309; }
-    .tag-remove {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        color: inherit;
-        opacity: 0.6;
-    }
-    .tag-remove:hover { opacity: 1; }
-    .tag-input-group {
-        display: flex;
-        gap: 0.5rem;
-    }
-    .tag-input {
-        flex: 1;
-        padding: 0.5rem 0.75rem;
-        border: 1px solid #d1d5db;
-        border-radius: 0.5rem;
-        font-size: 0.75rem;
-        outline: none;
-    }
-    .tag-input:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-    }
-    .tag-btn {
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 500;
-        border: none;
-        cursor: pointer;
-        transition: all 0.15s;
-    }
-    .tag-btn-skill { background: #2563eb; color: #fff; }
-    .tag-btn-skill:hover { background: #1d4ed8; }
-    .tag-btn-cert { background: #059669; color: #fff; }
-    .tag-btn-cert:hover { background: #047857; }
-    .tag-btn-interest { background: #d97706; color: #fff; }
-    .tag-btn-interest:hover { background: #b45309; }
-
-    /* ===== ENTRY CARD ===== */
-    .entry-card {
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 0.75rem;
-        padding: 1rem;
-        margin-bottom: 0.75rem;
-    }
-    .entry-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
         gap: 0.75rem;
     }
-    .entry-remove {
-        margin-top: 0.75rem;
-        font-size: 0.75rem;
-        color: #ef4444;
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
-    .entry-remove:hover { color: #dc2626; }
 
-    /* ===== FILE UPLOAD ===== */
-    .file-area {
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 0.75rem;
-        padding: 1rem;
-    }
-    .current-file {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        padding: 0.75rem;
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
-        margin-bottom: 0.75rem;
-    }
-    .file-info {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .file-name {
-        font-size: 0.75rem;
-        color: #374151;
-    }
-    .file-size {
-        font-size: 0.6875rem;
-        color: #9ca3af;
-    }
-    .resume-success-message {
-        margin-top: 0.75rem;
-        padding: 0.5rem 0.75rem;
-        background: #dcfce7;
-        border: 1px solid #bbf7d0;
-        border-radius: 0.5rem;
-        color: #15803d;
-        font-size: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .resume-placeholder {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem;
-        background: #fef3c7;
-        border: 1px solid #fde68a;
-        border-radius: 0.5rem;
-        margin-bottom: 0.75rem;
-        font-size: 0.75rem;
-        color: #92400e;
-    }
-
-    /* ===== BUTTONS ===== */
-    .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #2563eb;
-        color: #fff;
-        font-size: 0.875rem;
-        font-weight: 600;
-        padding: 0.5rem 1.25rem;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: all 0.15s;
-    }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-secondary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #fff;
-        color: #374151;
-        font-size: 0.875rem;
-        font-weight: 500;
-        padding: 0.5rem 1.25rem;
-        border-radius: 0.5rem;
-        border: 1px solid #e5e7eb;
-        text-decoration: none;
-        cursor: pointer;
-        transition: all 0.15s;
-    }
-    .btn-secondary:hover { background: #f9fafb; }
-    .btn-upload {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: #fff;
-        border: 1px solid #d1d5db;
-        color: #374151;
-        font-size: 0.75rem;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: all 0.15s;
-    }
-    .btn-upload:hover { background: #f9fafb; border-color: #9ca3af; }
-
-    /* ===== FULL WIDTH ===== */
     .full-width {
-        grid-column: span 2;
+        grid-column: span 1;
     }
 
-    .hidden {
-        display: none;
+    .entry-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 640px) {
-        .form-grid {
-            grid-template-columns: 1fr;
-            gap: 0.75rem;
-        }
-        .full-width {
-            grid-column: span 1;
-        }
-        .entry-grid {
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
-        }
-        .card-footer {
-            flex-direction: column;
-        }
-        .card-footer .btn-primary,
-        .card-footer .btn-secondary {
-            width: 100%;
-            justify-content: center;
-        }
+    .card-footer {
+        flex-direction: column;
     }
+
+    .card-footer .btn-primary,
+    .card-footer .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tag-input-group {
+        flex-direction: column;
+    }
+
+    .tag-input {
+        width: 100%;
+    }
+
+    .tag-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .current-file {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .file-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .form-section {
+        margin-bottom: 1.25rem;
+        padding-bottom: 1.25rem;
+    }
+
+    .section-header {
+        margin-bottom: 0.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+        padding: 0.5rem 0.625rem;
+        font-size: 0.8125rem;
+    }
+
+    .tag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.625rem;
+    }
+
+    .entry-card {
+        padding: 0.75rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.5rem 1rem;
+        font-size: 0.8125rem;
+    }
+
+    .btn-primary svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .btn-upload {
+        padding: 0.375rem 0.875rem;
+        font-size: 0.65rem;
+    }
+
+    .btn-upload svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .resume-upload-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .resume-upload-text {
+        font-size: 0.7rem;
+    }
+    
+    /* Alert mobile */
+    .alert-slide-success,
+    .alert-slide-error {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .alert-success-icon,
+    .alert-error-icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .alert-success-text,
+    .alert-error-text {
+        font-size: 0.75rem;
+    }
+}
+
+/* Very Small Phones (480px and below) */
+@media (max-width: 480px) {
+    .full-page-container {
+        padding: 0.5rem 0;
+    }
+
+    .content-wrapper {
+        padding: 0 0.75rem;
+    }
+
+    .page-title {
+        font-size: 1.125rem;
+    }
+
+    .page-sub {
+        font-size: 0.7rem;
+    }
+
+    .card-header {
+        padding: 0.875rem 1rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-sub {
+        font-size: 0.7rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-footer {
+        padding: 0.75rem 1rem;
+    }
+
+    .section-title {
+        font-size: 0.875rem;
+    }
+
+    .section-title svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .form-label {
+        font-size: 0.7rem;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+        padding: 0.4375rem 0.5625rem;
+        font-size: 0.75rem;
+    }
+
+    .tag {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .tag-remove svg {
+        width: 10px;
+        height: 10px;
+    }
+
+    .resume-placeholder {
+        font-size: 0.65rem;
+        padding: 0.5rem 0.625rem;
+    }
+
+    .resume-placeholder svg {
+        width: 10px;
+        height: 10px;
+    }
+
+    .file-name {
+        font-size: 0.65rem;
+    }
+
+    .resume-upload-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .resume-upload-text {
+        font-size: 0.65rem;
+    }
+
+    .resume-upload-text strong {
+        font-size: 0.7rem;
+    }
+    
+    /* Alert very small */
+    .alert-slide-success,
+    .alert-slide-error {
+        padding: 0.375rem 0.625rem;
+    }
+    
+    .alert-success-icon,
+    .alert-error-icon {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .alert-success-text,
+    .alert-error-text {
+        font-size: 0.7rem;
+    }
+}
 </style>
 
 <div class="full-page-container">
@@ -401,13 +972,54 @@
             <p class="page-sub">Update your professional information and preferences</p>
         </div>
 
-        <!-- Success Message -->
+        <!-- Alert Messages -->
         @if(session('success'))
-            <div class="resume-success-message" style="margin-bottom: 1rem;">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                {{ session('success') }}
+            <div class="alert-slide-success">
+                <div class="alert-flex-container">
+                    <div class="alert-icon-wrapper">
+                        <svg class="alert-success-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="alert-message-wrapper">
+                        <p class="alert-success-text">{{ session('success') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert-slide-error">
+                <div class="alert-flex-container">
+                    <div class="alert-icon-wrapper">
+                        <svg class="alert-error-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="alert-message-wrapper">
+                        <p class="alert-error-text">{{ session('error') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="alert-slide-error">
+                <div class="alert-flex-container">
+                    <div class="alert-icon-wrapper">
+                        <svg class="alert-error-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="alert-message-wrapper">
+                        <p class="alert-error-text font-medium">Please fix the following errors:</p>
+                        <ul class="list-disc list-inside mt-1">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
         @endif
 
@@ -427,7 +1039,7 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h3 class="section-title">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 Basic Information
@@ -472,7 +1084,7 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h3 class="section-title">
-                                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                                 Skills
@@ -485,7 +1097,7 @@
                                     <span class="tag tag-skill">
                                         {{ $skill }}
                                         <button type="button" onclick="removeSkill(this)" class="tag-remove">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
@@ -504,7 +1116,7 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h3 class="section-title">
-                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                 </svg>
                                 Certifications
@@ -516,7 +1128,7 @@
                                     <span class="tag tag-cert">
                                         {{ $cert }}
                                         <button type="button" onclick="removeCertification(this)" class="tag-remove">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
@@ -535,7 +1147,7 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h3 class="section-title">
-                                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                 </svg>
                                 Professional Interests
@@ -547,7 +1159,7 @@
                                     <span class="tag tag-interest">
                                         {{ $interest }}
                                         <button type="button" onclick="removeInterest(this)" class="tag-remove">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
@@ -566,28 +1178,26 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h3 class="section-title">
-                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                                 Resume / CV
                             </h3>
                         </div>
                         <div class="file-area">
-                            <!-- No Resume Placeholder -->
                             @if(!$profile->resume_path)
                                 <div class="resume-placeholder" id="resumePlaceholder">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
                                     <span>No resume uploaded yet. Please upload your resume/CV.</span>
                                 </div>
                             @endif
 
-                            <!-- Current Resume Display -->
                             @if($profile->resume_path)
                                 <div class="current-file" id="currentResume">
                                     <div class="file-info">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                         <div>
@@ -609,9 +1219,8 @@
                                 </div>
                             @endif
 
-                            <!-- Upload Success Message -->
                             <div id="uploadSuccessMessage" class="resume-success-message" style="display: none;">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span id="uploadSuccessText">Resume uploaded successfully!</span>
@@ -619,7 +1228,7 @@
 
                             <input type="file" name="resume" id="resume" accept=".pdf,.doc,.docx,.txt" class="hidden" onchange="handleResumeUpload(this)">
                             <button type="button" onclick="document.getElementById('resume').click()" class="btn-upload">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                 </svg>
                                 {{ $profile->resume_path ? 'Upload New Resume' : 'Upload Resume' }}
@@ -632,13 +1241,13 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h3 class="section-title">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
                                 Work Experience
                             </h3>
                             <button type="button" onclick="addExperience()" class="add-btn">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
                                 Add Experience
@@ -671,14 +1280,14 @@
                     <div class="form-section">
                         <div class="section-header">
                             <h3 class="section-title">
-                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 14l9-5-9-5-9 5 9 5z" />
                                     <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                                 </svg>
                                 Education
                             </h3>
                             <button type="button" onclick="addEducation()" class="add-btn">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
                                 Add Education
@@ -710,7 +1319,12 @@
 
                 <div class="card-footer">
                     <a href="{{ route('jobseeker.profile.show') }}" class="btn-secondary">Cancel</a>
-                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="submit" class="btn-primary">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Save Changes
+                    </button>
                 </div>
             </form>
         </div>
@@ -718,7 +1332,6 @@
 </div>
 
 <script>
-    // Resume upload handler with success message
     function handleResumeUpload(input) {
         const file = input.files[0];
         if (file) {
@@ -728,19 +1341,16 @@
             
             if (isValidExtension) {
                 if (file.size <= 5 * 1024 * 1024) {
-                    // Hide placeholder and current resume
                     const placeholder = document.getElementById('resumePlaceholder');
                     const currentResume = document.getElementById('currentResume');
                     if (placeholder) placeholder.style.display = 'none';
                     if (currentResume) currentResume.style.display = 'none';
                     
-                    // Show success message
                     const successMsg = document.getElementById('uploadSuccessMessage');
                     const successText = document.getElementById('uploadSuccessText');
                     successText.textContent = `✓ "${file.name}" (${(file.size / 1024).toFixed(2)} KB) uploaded successfully! Don't forget to save your changes.`;
                     successMsg.style.display = 'flex';
                     
-                    // Auto hide after 5 seconds
                     setTimeout(() => {
                         successMsg.style.display = 'none';
                     }, 5000);
@@ -755,7 +1365,6 @@
         }
     }
 
-    // Skills handling
     let skills = @json($profile->skills ?? []);
     function updateSkillsInput() { document.getElementById('skills-input').value = JSON.stringify(skills); }
     function addSkill() {
@@ -777,12 +1386,11 @@
         skills.forEach(skill => {
             const span = document.createElement('span');
             span.className = 'tag tag-skill';
-            span.innerHTML = `${skill} <button type="button" onclick="removeSkill(this)" class="tag-remove"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>`;
+            span.innerHTML = `${skill} <button type="button" onclick="removeSkill(this)" class="tag-remove"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>`;
             container.appendChild(span);
         });
     }
 
-    // Certifications
     let certifications = @json($profile->certifications ?? []);
     function updateCertsInput() { document.getElementById('certifications-input').value = JSON.stringify(certifications); }
     function addCertification() {
@@ -804,12 +1412,11 @@
         certifications.forEach(cert => {
             const span = document.createElement('span');
             span.className = 'tag tag-cert';
-            span.innerHTML = `${cert} <button type="button" onclick="removeCertification(this)" class="tag-remove"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>`;
+            span.innerHTML = `${cert} <button type="button" onclick="removeCertification(this)" class="tag-remove"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>`;
             container.appendChild(span);
         });
     }
 
-    // Interests
     let interests = @json($profile->interests ?? []);
     function updateInterestsInput() { document.getElementById('interests-input').value = JSON.stringify(interests); }
     function addInterest() {
@@ -831,12 +1438,11 @@
         interests.forEach(interest => {
             const span = document.createElement('span');
             span.className = 'tag tag-interest';
-            span.innerHTML = `${interest} <button type="button" onclick="removeInterest(this)" class="tag-remove"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>`;
+            span.innerHTML = `${interest} <button type="button" onclick="removeInterest(this)" class="tag-remove"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>`;
             container.appendChild(span);
         });
     }
 
-    // Experience
     let expIndex = {{ count($profile->experience ?? []) }};
     function addExperience() {
         const container = document.getElementById('experience-list');
@@ -857,7 +1463,6 @@
     }
     function removeExperience(btn) { btn.parentElement.remove(); }
 
-    // Education
     let eduIndex = {{ count($profile->education ?? []) }};
     function addEducation() {
         const container = document.getElementById('education-list');
@@ -878,7 +1483,6 @@
     }
     function removeEducation(btn) { btn.parentElement.remove(); }
 
-    // Initialize
     document.addEventListener('DOMContentLoaded', function() {
         renderSkills(); renderCerts(); renderInterests();
         updateSkillsInput(); updateCertsInput(); updateInterestsInput();

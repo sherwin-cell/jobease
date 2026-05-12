@@ -25,7 +25,9 @@
     @endphp
 
     <style>
-        /* ===== FULL PAGE CONTAINER ===== */
+        /* ============================================================
+           FULL PAGE CONTAINER
+        ============================================================ */
         .full-page-container {
             min-height: 100vh;
             background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
@@ -37,16 +39,12 @@
             margin: 0 auto;
         }
 
-        @media (max-width: 640px) {
-            .full-page-container {
-                padding: 1rem;
-            }
-        }
-
-        /* ===== PAGE HEADER ===== */
+        /* ============================================================
+           PAGE HEADER
+        ============================================================ */
         .page-header {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             gap: 1rem;
             flex-wrap: wrap;
@@ -67,7 +65,9 @@
             margin: 0;
         }
 
-        /* ===== BUTTONS ===== */
+        /* ============================================================
+           BUTTONS
+        ============================================================ */
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -111,7 +111,9 @@
             background: #eff6ff;
         }
 
-        /* ===== PROFILE CARD ===== */
+        /* ============================================================
+           PROFILE CARD
+        ============================================================ */
         .profile-card {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -141,7 +143,7 @@
             .profile-header {
                 flex-direction: row;
                 align-items: flex-end;
-                justify-content: space-between;
+                justify-content: flex-start;
             }
         }
 
@@ -191,11 +193,18 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid #e5e7eb;
             transition: all 0.2s;
+            text-decoration: none;
         }
 
         .edit-avatar-btn:hover {
             background: #f9fafb;
             transform: scale(1.05);
+        }
+
+        .edit-avatar-btn svg {
+            width: 14px;
+            height: 14px;
+            color: #4b5563;
         }
 
         .profile-info {
@@ -243,6 +252,11 @@
             color: #6b7280;
         }
 
+        .meta-item svg {
+            width: 14px;
+            height: 14px;
+        }
+
         .resume-btn {
             margin-top: 0.75rem;
         }
@@ -250,10 +264,13 @@
         @media (min-width: 768px) {
             .resume-btn {
                 margin-top: 0;
+                margin-left: auto;
             }
         }
 
-        /* ===== BIO SECTION ===== */
+        /* ============================================================
+           BIO SECTION
+        ============================================================ */
         .bio-section {
             background: #f9fafb;
             border-radius: 0.75rem;
@@ -277,7 +294,9 @@
             margin: 0;
         }
 
-        /* ===== CONTACT GRID ===== */
+        /* ============================================================
+           CONTACT GRID
+        ============================================================ */
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -302,6 +321,11 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+        }
+
+        .contact-icon svg {
+            width: 18px;
+            height: 18px;
         }
 
         .contact-icon.phone {
@@ -350,6 +374,7 @@
             font-weight: 500;
             color: #374151;
             margin: 0;
+            word-break: break-word;
         }
 
         .contact-link {
@@ -361,7 +386,9 @@
             text-decoration: underline;
         }
 
-        /* ===== SECTION STYLES ===== */
+        /* ============================================================
+           SECTION STYLES
+        ============================================================ */
         .section {
             margin-bottom: 1.75rem;
         }
@@ -371,6 +398,8 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .section-title {
@@ -381,6 +410,11 @@
             font-weight: 600;
             color: #111827;
             margin: 0;
+        }
+
+        .section-title svg {
+            width: 20px;
+            height: 20px;
         }
 
         .section-count {
@@ -462,7 +496,9 @@
             margin: 0.5rem 0 0;
         }
 
-        /* ===== TWO COLUMN GRID ===== */
+        /* ============================================================
+           TWO COLUMN GRID
+        ============================================================ */
         .two-column {
             display: grid;
             grid-template-columns: 1fr;
@@ -476,7 +512,9 @@
             }
         }
 
-        /* ===== INTERESTS & CERTIFICATIONS ===== */
+        /* ============================================================
+           INTERESTS & CERTIFICATIONS
+        ============================================================ */
         .interests-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -491,6 +529,298 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        
+        /* Tablet (768px and below) */
+        @media (max-width: 768px) {
+            .full-page-container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 1.25rem;
+            }
+            
+            .page-sub {
+                font-size: 0.75rem;
+            }
+            
+            .profile-content {
+                padding: 0 1rem 1rem;
+            }
+            
+            .cover-image {
+                height: 80px;
+            }
+            
+            .avatar {
+                width: 72px;
+                height: 72px;
+                font-size: 1.5rem;
+            }
+            
+            .edit-avatar-btn {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .edit-avatar-btn svg {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .profile-name {
+                font-size: 1.25rem;
+            }
+            
+            .profile-headline {
+                font-size: 0.75rem;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+            
+            .section-title svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        
+        /* Mobile (640px and below) */
+        @media (max-width: 640px) {
+            .full-page-container {
+                padding: 0.75rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.125rem;
+            }
+            
+            .profile-content {
+                padding: 0 0.75rem 0.75rem;
+            }
+            
+            .cover-image {
+                height: 60px;
+            }
+            
+            .profile-avatar-section {
+                margin-top: -36px;
+            }
+            
+            .avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.25rem;
+                border-width: 3px;
+            }
+            
+            .edit-avatar-btn {
+                width: 24px;
+                height: 24px;
+                bottom: -2px;
+                right: -2px;
+            }
+            
+            .edit-avatar-btn svg {
+                width: 10px;
+                height: 10px;
+            }
+            
+            .profile-name {
+                font-size: 1.125rem;
+            }
+            
+            .profile-headline {
+                font-size: 0.7rem;
+            }
+            
+            .meta-item {
+                font-size: 0.65rem;
+            }
+            
+            .meta-item svg {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .bio-section {
+                padding: 0.75rem;
+                margin-bottom: 1rem;
+            }
+            
+            .bio-icon {
+                width: 16px;
+                height: 16px;
+            }
+            
+            .bio-text {
+                font-size: 0.75rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .contact-card {
+                padding: 0.625rem;
+            }
+            
+            .contact-icon {
+                width: 1.75rem;
+                height: 1.75rem;
+            }
+            
+            .contact-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .contact-label {
+                font-size: 0.6rem;
+            }
+            
+            .contact-value {
+                font-size: 0.75rem;
+            }
+            
+            .section {
+                margin-bottom: 1.25rem;
+            }
+            
+            .section-header {
+                margin-bottom: 0.75rem;
+            }
+            
+            .section-title {
+                font-size: 0.9375rem;
+            }
+            
+            .section-title svg {
+                width: 16px;
+                height: 16px;
+            }
+            
+            .skill-tag {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.625rem;
+            }
+            
+            .timeline-item {
+                padding: 0.75rem;
+            }
+            
+            .timeline-title {
+                font-size: 0.875rem;
+            }
+            
+            .timeline-date {
+                font-size: 0.6rem;
+            }
+            
+            .timeline-subtitle {
+                font-size: 0.7rem;
+            }
+            
+            .timeline-description {
+                font-size: 0.65rem;
+            }
+            
+            .empty-state-small {
+                padding: 1rem;
+                font-size: 0.75rem;
+            }
+            
+            .two-column {
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .interests-grid {
+                gap: 1rem;
+                margin-top: 0.75rem;
+                padding-top: 0.75rem;
+            }
+            
+            .btn-primary {
+                padding: 0.375rem 0.875rem;
+                font-size: 0.75rem;
+            }
+            
+            .btn-primary svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+        
+        /* Very Small Phones (480px and below) */
+        @media (max-width: 480px) {
+            .full-page-container {
+                padding: 0.5rem;
+            }
+            
+            .page-title {
+                font-size: 1rem;
+            }
+            
+            .page-sub {
+                font-size: 0.65rem;
+            }
+            
+            .avatar {
+                width: 52px;
+                height: 52px;
+                font-size: 1rem;
+            }
+            
+            .profile-name {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 0.875rem;
+            }
+            
+            .section-title svg {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .skill-tag {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+            
+            .contact-icon {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+            
+            .contact-icon svg {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .contact-value {
+                font-size: 0.7rem;
+            }
+            
+            .timeline-title {
+                font-size: 0.8125rem;
+            }
+        }
     </style>
 
     <div class="full-page-container">
@@ -501,6 +831,7 @@
                     <h1 class="page-title">My Profile</h1>
                     <p class="page-sub">Manage your professional identity and work preferences</p>
                 </div>
+                <!-- Edit Profile button removed from here - only in avatar now -->
             </div>
 
             <!-- Profile Card -->
@@ -516,10 +847,8 @@
                             <div class="avatar">
                                 {{ strtoupper(substr($profile->user->name, 0, 1)) }}
                                 <a href="{{ route('jobseeker.profile.edit') }}" class="edit-avatar-btn">
-                                    <svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    <svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                     </svg>
                                 </a>
                             </div>
@@ -529,19 +858,16 @@
                                 <div class="profile-meta">
                                     @if($profile->location)
                                         <span class="meta-item">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                             </svg>
                                             {{ $profile->location }}
                                         </span>
                                     @endif
                                     <span class="meta-item">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
                                         {{ $profile->user->email }}
                                     </span>
@@ -554,8 +880,7 @@
                             <div class="resume-btn">
                                 <a href="{{ Storage::url($profile->resume_path) }}" target="_blank" class="btn-primary">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     Download Resume
                                 </a>
@@ -567,8 +892,7 @@
                     @if($profile->bio)
                         <div class="bio-section">
                             <svg class="bio-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                             </svg>
                             <p class="bio-text">{{ $profile->bio }}</p>
                         </div>
@@ -579,9 +903,8 @@
                         @if($profile->phone)
                             <div class="contact-card">
                                 <div class="contact-icon phone">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                     </svg>
                                 </div>
                                 <div>
@@ -594,11 +917,9 @@
                         @if($profile->location)
                             <div class="contact-card">
                                 <div class="contact-icon location">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                 </div>
                                 <div>
@@ -611,9 +932,8 @@
                         @if($profile->website)
                             <div class="contact-card">
                                 <div class="contact-icon website">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9" />
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9" />
                                     </svg>
                                 </div>
                                 <div>
@@ -627,9 +947,8 @@
 
                         <div class="contact-card">
                             <div class="contact-icon member">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
                             <div>
@@ -643,9 +962,8 @@
                     <div class="section">
                         <div class="section-header">
                             <h2 class="section-title">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                                 Core Skills
                             </h2>
@@ -668,10 +986,8 @@
                         <div>
                             <div class="section-header">
                                 <h2 class="section-title">
-                                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                     Work Experience
                                 </h2>
@@ -696,15 +1012,12 @@
                         </div>
 
                         <!-- Education Column -->
-                        <!-- Education Column -->
                         <div>
                             <div class="section-header">
                                 <h2 class="section-title">
-                                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                                        <path
-                                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                                     </svg>
                                     Education
                                 </h2>
@@ -739,18 +1052,15 @@
                                 <div>
                                     <div class="section-header">
                                         <h2 class="section-title">
-                                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                             </svg>
                                             Certifications
                                         </h2>
                                     </div>
                                     <div class="skills-wrap">
                                         @foreach($certifications as $cert)
-                                            <span class="skill-tag"
-                                                style="background:#fef3c7; color:#b45309; border-color:#fde68a;">{{ $cert }}</span>
+                                            <span class="skill-tag" style="background:#fef3c7; color:#b45309; border-color:#fde68a;">{{ $cert }}</span>
                                         @endforeach
                                     </div>
                                 </div>
@@ -760,18 +1070,15 @@
                                 <div>
                                     <div class="section-header">
                                         <h2 class="section-title">
-                                            <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                             </svg>
                                             Professional Interests
                                         </h2>
                                     </div>
                                     <div class="skills-wrap">
                                         @foreach($interests as $interest)
-                                            <span class="skill-tag"
-                                                style="background:#fdf2f8; color:#be185d; border-color:#fbcfe8;">{{ $interest }}</span>
+                                            <span class="skill-tag" style="background:#fdf2f8; color:#be185d; border-color:#fbcfe8;">{{ $interest }}</span>
                                         @endforeach
                                     </div>
                                 </div>

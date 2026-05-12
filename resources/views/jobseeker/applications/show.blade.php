@@ -53,12 +53,14 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        flex-wrap: wrap;
     }
     
     .card-title svg {
         width: 1.25rem;
         height: 1.25rem;
         color: #3b82f6;
+        flex-shrink: 0;
     }
     
     /* Header Card */
@@ -77,6 +79,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
+        font-size: 0.875rem;
     }
     
     .header-card a:hover {
@@ -87,6 +90,15 @@
     .header-card svg {
         width: 18px;
         height: 18px;
+        flex-shrink: 0;
+    }
+    
+    .header-card > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
 
     /* ============================================================
@@ -122,6 +134,7 @@
         font-size: 0.95rem;
         font-weight: 600;
         color: #0f172a;
+        word-break: break-word;
     }
 
     /* ============================================================
@@ -135,6 +148,7 @@
         border-radius: 999px;
         font-size: 0.875rem;
         font-weight: 600;
+        flex-wrap: wrap;
     }
     
     .status-pending { background: #fef3c7; color: #92400e; }
@@ -154,6 +168,7 @@
         border: 1px solid #e2e8f0;
         line-height: 1.6;
         white-space: pre-wrap;
+        word-break: break-word;
     }
 
     /* ============================================================
@@ -175,12 +190,22 @@
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        flex-wrap: wrap;
+        min-width: 0;
     }
     
     .resume-info svg {
         width: 24px;
         height: 24px;
         flex-shrink: 0;
+    }
+    
+    .resume-info div {
+        min-width: 0;
+    }
+    
+    .resume-info p {
+        word-break: break-all;
     }
 
     /* ============================================================
@@ -253,11 +278,13 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        flex-wrap: wrap;
     }
     
     .alert-success svg {
         width: 20px;
         height: 20px;
+        flex-shrink: 0;
     }
 
     /* ============================================================
@@ -294,6 +321,7 @@
     .skill-tag svg {
         width: 12px;
         height: 12px;
+        flex-shrink: 0;
     }
     
     .skill-tag.matched {
@@ -329,6 +357,7 @@
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        flex-wrap: wrap;
     }
     
     .match-percentage {
@@ -382,11 +411,12 @@
         }
         
         .card {
-            padding: 1.5rem;
+            padding: 1.25rem;
         }
         
         .card-title {
             font-size: 1.125rem;
+            margin-bottom: 1rem;
         }
         
         .card-title svg {
@@ -403,41 +433,6 @@
             font-size: 1.75rem;
         }
         
-        .header-card a svg {
-            width: 16px;
-            height: 16px;
-        }
-    }
-    
-    /* Mobile (640px and below) */
-    @media (max-width: 640px) {
-        .details-container {
-            padding: 0.75rem;
-        }
-        
-        .card {
-            padding: 1rem;
-            border-radius: 16px;
-        }
-        
-        .card-title {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .card-title svg {
-            width: 1rem;
-            height: 1rem;
-        }
-        
-        .header-card h1 {
-            font-size: 1.25rem !important;
-        }
-        
-        .header-card p {
-            font-size: 0.75rem !important;
-        }
-        
         .header-card a {
             font-size: 0.75rem;
             padding: 0.375rem 0.75rem;
@@ -448,27 +443,68 @@
             height: 14px;
         }
         
+        .header-card h1 {
+            font-size: 1.25rem !important;
+        }
+        
+        .header-card p {
+            font-size: 0.75rem !important;
+        }
+    }
+    
+    /* Mobile (640px and below) */
+    @media (max-width: 640px) {
+        .details-container {
+            padding: 0.5rem;
+        }
+        
+        .card {
+            padding: 1rem;
+            border-radius: 14px;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            margin-bottom: 0.875rem;
+            padding-bottom: 0.5rem;
+        }
+        
+        .card-title svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        
         .info-grid {
             grid-template-columns: 1fr;
             gap: 0.5rem;
         }
         
         .info-item {
-            padding: 0.625rem;
+            padding: 0.5rem;
+        }
+        
+        .info-label {
+            font-size: 0.65rem;
         }
         
         .info-value {
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
+        }
+        
+        h2[style*="font-size: 1.5rem"] {
+            font-size: 1.125rem !important;
+            margin-bottom: 0.75rem !important;
         }
         
         .status-badge {
-            font-size: 0.75rem;
-            padding: 0.375rem 1rem;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.875rem;
         }
         
         .status-badge svg {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
         }
         
         .match-card {
@@ -484,12 +520,16 @@
         }
         
         .match-badge {
-            font-size: 0.65rem;
-            padding: 0.2rem 0.75rem;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.625rem;
         }
         
         .match-message {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+        }
+        
+        .progress-bar {
+            height: 4px;
         }
         
         .skills-container {
@@ -497,28 +537,34 @@
         }
         
         .skill-tag {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             padding: 0.25rem 0.625rem;
         }
         
         .skill-tag svg {
-            width: 10px;
-            height: 10px;
+            width: 9px;
+            height: 9px;
         }
         
         .resume-card {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
+            gap: 0.75rem;
         }
         
         .resume-info svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .resume-info p {
+            font-size: 0.75rem;
         }
         
         .btn-primary, .btn-outline {
             padding: 0.5rem 1rem;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            justify-content: center;
         }
         
         .btn-primary svg, .btn-outline svg {
@@ -528,86 +574,128 @@
         
         .action-buttons {
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.625rem;
         }
         
         .action-buttons a {
-            justify-content: center;
             width: 100%;
+            justify-content: center;
         }
         
         .content-box {
             padding: 0.75rem;
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
+        }
+        
+        .content-box h3 {
+            font-size: 0.875rem !important;
         }
         
         .alert-success {
-            padding: 0.75rem;
-            font-size: 0.75rem;
+            padding: 0.625rem;
+            font-size: 0.7rem;
         }
         
         .alert-success svg {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
         }
         
         .meta-text {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
         }
         
         .match-header {
             flex-direction: column;
             align-items: flex-start;
         }
+        
+        .header-card > div {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .header-card .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            width: auto;
+        }
+        
+        [style*="background: #fffbeb"] {
+            padding: 0.625rem !important;
+        }
+        
+        [style*="background: #fffbeb"] span {
+            font-size: 0.65rem !important;
+            padding: 0.2rem 0.5rem !important;
+        }
     }
     
     /* Very Small Phones (480px and below) */
     @media (max-width: 480px) {
         .details-container {
-            padding: 0.5rem;
+            padding: 0.375rem;
         }
         
         .card {
-            padding: 0.875rem;
-            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 12px;
         }
         
         .card-title {
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
+        }
+        
+        .card-title svg {
+            width: 0.875rem;
+            height: 0.875rem;
         }
         
         .header-card h1 {
-            font-size: 1.125rem !important;
+            font-size: 1rem !important;
+        }
+        
+        .header-card p {
+            font-size: 0.65rem !important;
         }
         
         .info-item {
-            padding: 0.5rem;
+            padding: 0.375rem;
         }
         
         .info-label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
         }
         
         .info-value {
-            font-size: 0.8125rem;
+            font-size: 0.75rem;
         }
         
-        .status-badge {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.875rem;
-        }
-        
-        .match-percentage {
-            font-size: 1.25rem;
+        h2[style*="font-size: 1.5rem"] {
+            font-size: 1rem !important;
         }
         
         .skill-tag {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             padding: 0.2rem 0.5rem;
         }
         
+        .match-percentage {
+            font-size: 1.125rem;
+        }
+        
         .btn-primary, .btn-outline {
-            padding: 0.375rem 0.875rem;
+            padding: 0.375rem 0.75rem;
+            font-size: 0.65rem;
+        }
+        
+        .btn-primary svg, .btn-outline svg {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .status-badge {
+            font-size: 0.6rem;
+            padding: 0.2rem 0.6875rem;
         }
     }
 </style>
@@ -616,7 +704,7 @@
     <div class="details-content">
         <!-- Header Card -->
         <div class="card header-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
                 <div>
                     <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0 0 0.25rem;">Application Details</h1>
                     <p style="opacity: 0.9; margin: 0;">Track your application status and review your submission</p>
@@ -635,7 +723,7 @@
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                {{ session('success') }}
+                <span>{{ session('success') }}</span>
             </div>
         @endif
 
@@ -681,7 +769,6 @@
 
         <!-- Skills Match Analysis Card -->
         @php
-            // Get job skills - handle both array and string formats
             $jobSkillsList = [];
             if ($application->job->skills_required) {
                 if (is_string($application->job->skills_required)) {
@@ -692,7 +779,6 @@
             }
             $jobSkillsList = array_filter($jobSkillsList);
             
-            // Get candidate skills from profile
             $candidateProfile = auth()->user()->jobseekerProfile;
             $candidateSkillsList = [];
             if ($candidateProfile && $candidateProfile->skills) {
@@ -704,11 +790,9 @@
             }
             $candidateSkillsList = array_filter($candidateSkillsList);
             
-            // Normalize to lowercase for comparison
             $jobSkillsLower = array_map('strtolower', $jobSkillsList);
             $candidateSkillsLower = array_map('strtolower', $candidateSkillsList);
             
-            // Calculate matched and missing skills
             $matchedSkillsList = [];
             $missingSkillsList = [];
             
@@ -726,7 +810,6 @@
             $matchPercentage = $totalRequired > 0 ? round(($matchedCount / $totalRequired) * 100) : 0;
             $matchLevel = $matchPercentage >= 70 ? 'high' : ($matchPercentage >= 40 ? 'medium' : 'low');
             
-            // Generate match message
             if ($matchPercentage >= 80) {
                 $matchMessage = "Excellent match! Your skills align perfectly with this role.";
             } elseif ($matchPercentage >= 60) {
@@ -770,14 +853,11 @@
                 <p style="font-size: 0.875rem; color: #1e3a8a; margin: 0.5rem 0 0;">{{ $matchMessage }}</p>
             </div>
             
-            <!-- Required Skills Section -->
             <div style="margin-top: 1rem;">
                 <div class="info-label" style="margin-bottom: 0.5rem;">Required Skills ({{ $totalRequired }})</div>
                 <div class="skills-container">
                     @foreach($jobSkillsList as $skill)
-                        @php
-                            $isMatched = in_array(strtolower($skill), $candidateSkillsLower);
-                        @endphp
+                        @php $isMatched = in_array(strtolower($skill), $candidateSkillsLower); @endphp
                         <span class="skill-tag {{ $isMatched ? 'matched' : 'missing' }}">
                             @if($isMatched)
                                 <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -794,7 +874,6 @@
                 </div>
             </div>
             
-            <!-- Your Skills Section -->
             @if(!empty($candidateSkillsList))
             <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
                 <div class="info-label" style="margin-bottom: 0.5rem;">Your Skills ({{ count($candidateSkillsList) }})</div>
@@ -875,7 +954,8 @@
                 @endphp
                 
                 <span class="status-badge {{ $statusClass }}">
-                    {{ $statusIcon }} {{ ucfirst(str_replace('_', ' ', $application->status)) }}
+                    <span>{{ $statusIcon }}</span>
+                    <span>{{ ucfirst(str_replace('_', ' ', $application->status)) }}</span>
                 </span>
                 <p style="color: #64748b; font-size: 0.875rem; margin-top: 0.75rem;">{{ $statusMessage }}</p>
             </div>
@@ -891,7 +971,7 @@
                 Your Cover Letter
             </div>
             <div class="content-box">
-                {{ $application->cover_letter }}
+                <p>{{ $application->cover_letter }}</p>
             </div>
         </div>
         @endif
@@ -920,7 +1000,7 @@
                         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        Download Resume
+                        Download
                     </a>
                 </div>
             @else
@@ -970,13 +1050,13 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                View Full Job Post
+                View Job
             </a>
             <a href="{{ route('jobseeker.applications.index') }}" class="btn-outline">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
-                View All Applications
+                All Applications
             </a>
         </div>
         

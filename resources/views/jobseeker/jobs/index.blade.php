@@ -4,7 +4,9 @@
 
 @section('content')
     <style>
-        /* ===== FULL PAGE CONTAINER ===== */
+        /* ============================================================
+           GLOBAL CONTAINER
+        ============================================================ */
         .full-page-container {
             min-height: 100vh;
             background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
@@ -23,18 +25,19 @@
             }
         }
 
-        /* ===== PAGE HEADER ===== */
-        /* ===== PAGE HEADER ===== */
+        /* ============================================================
+           PAGE HEADER
+        ============================================================ */
         .page-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             gap: 16px;
             flex-wrap: nowrap;
             margin-bottom: 24px;
         }
 
-        .page-header>div:first-child {
+        .page-header > div:first-child {
             flex: 1;
             min-width: 0;
         }
@@ -57,7 +60,9 @@
             margin: 0;
         }
 
-        /* ===== BUTTONS ===== */
+        /* ============================================================
+           BUTTONS
+        ============================================================ */
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -71,7 +76,7 @@
             text-decoration: none;
             border: none;
             cursor: pointer;
-            transition: background 0.15s, transform 0.1s;
+            transition: all 0.2s;
             white-space: nowrap;
         }
 
@@ -93,7 +98,7 @@
             border: 1px solid #e5e7eb;
             text-decoration: none;
             cursor: pointer;
-            transition: background 0.15s;
+            transition: all 0.2s;
             white-space: nowrap;
         }
 
@@ -101,7 +106,9 @@
             background: #f9fafb;
         }
 
-        /* ===== PROFILE DROPDOWN ===== */
+        /* ============================================================
+           PROFILE DROPDOWN
+        ============================================================ */
         .profile-dropdown {
             position: relative;
             display: inline-block;
@@ -238,7 +245,9 @@
             background: #fef2f2;
         }
 
-        /* ===== LOGOUT CONFIRMATION MODAL ===== */
+        /* ============================================================
+           LOGOUT CONFIRMATION MODAL
+        ============================================================ */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -343,7 +352,9 @@
             background: #dc2626;
         }
 
-        /* ===== FILTER CARD ===== */
+        /* ============================================================
+           FILTER CARD
+        ============================================================ */
         .filter-card {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -399,7 +410,9 @@
             flex-wrap: wrap;
         }
 
-        /* ===== JOB CARD ===== */
+        /* ============================================================
+           JOB CARD
+        ============================================================ */
         .job-card {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -570,7 +583,9 @@
             color: #9ca3af;
         }
 
-        /* ===== EMPTY STATE ===== */
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
         .empty-state {
             text-align: center;
             padding: 48px 24px;
@@ -579,8 +594,10 @@
             border-radius: 16px;
         }
 
-        .empty-icon {
-            font-size: 3rem;
+        .empty-icon svg {
+            width: 48px;
+            height: 48px;
+            color: #9ca3af;
             margin-bottom: 12px;
         }
 
@@ -597,7 +614,9 @@
             margin-bottom: 20px;
         }
 
-        /* ===== PAGINATION STYLES ===== */
+        /* ============================================================
+           PAGINATION STYLES
+        ============================================================ */
         .pagination-wrap {
             margin-top: 24px;
             display: flex;
@@ -656,35 +675,18 @@
             cursor: not-allowed;
         }
 
-        /* ===== RESPONSIVE ===== */
+        .pagination svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+        
+        /* Tablet (768px and below) */
         @media (max-width: 768px) {
-
-            /* ===== PAGE HEADER - STACK ON MOBILE ===== */
-            .page-header {
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 16px;
-                margin-bottom: 20px;
-            }
-
-            .page-header>div:first-child {
-                flex: none;
-            }
-
-            .page-header .profile-dropdown {
-                align-self: flex-end;
-            }
-
-            .page-title {
-                font-size: 1.25rem;
-            }
-
-            .page-sub {
-                font-size: 0.75rem;
-            }
-
-            /* ===== FILTERS ===== */
+            /* Filters */
             .filter-form {
                 flex-direction: column;
             }
@@ -703,7 +705,7 @@
                 justify-content: center;
             }
 
-            /* ===== JOB CARDS ===== */
+            /* Job Cards */
             .job-card {
                 padding: 16px;
             }
@@ -732,7 +734,7 @@
                 font-size: 0.75rem;
             }
 
-            /* ===== JOB META BADGES ===== */
+            /* Job Meta Badges */
             .job-meta {
                 gap: 6px;
             }
@@ -747,7 +749,7 @@
                 height: 12px;
             }
 
-            /* ===== SKILL TAGS ===== */
+            /* Skill Tags */
             .skills-wrap {
                 gap: 4px;
             }
@@ -757,7 +759,7 @@
                 padding: 2px 8px;
             }
 
-            /* ===== PAGINATION ===== */
+            /* Pagination */
             .pagination a,
             .pagination span {
                 min-width: 32px;
@@ -770,7 +772,7 @@
                 height: 14px !important;
             }
 
-            /* ===== PROFILE DROPDOWN ===== */
+            /* Profile Dropdown */
             .profile-btn .profile-name {
                 display: none;
             }
@@ -784,12 +786,12 @@
                 right: -10px;
             }
 
-            /* ===== MODAL ===== */
+            /* Modal */
             .modal-container {
                 width: 95%;
             }
 
-            /* ===== EMPTY STATE ===== */
+            /* Empty State */
             .empty-icon svg {
                 width: 40px;
                 height: 40px;
@@ -804,10 +806,8 @@
             }
         }
 
-        /* ===== VERY SMALL PHONES (480px AND BELOW) ===== */
-        @media (max-width: 480px) {
-
-            /* Page Header */
+        /* Mobile (640px and below) */
+        @media (max-width: 640px) {
             .page-title {
                 font-size: 1.125rem;
             }
@@ -815,7 +815,10 @@
             .page-sub {
                 font-size: 0.7rem;
             }
+        }
 
+        /* Very Small Phones (480px and below) */
+        @media (max-width: 480px) {
             /* Badges */
             .badge {
                 font-size: 0.6rem;
@@ -833,7 +836,7 @@
                 padding: 2px 6px;
             }
 
-            /* Job Actions Buttons */
+            /* Job Actions */
             .job-actions .btn-ghost,
             .job-actions .btn-primary {
                 padding: 6px 10px;
@@ -892,33 +895,26 @@
                         </div>
                         <div class="dropdown-divider"></div>
 
-                        <!-- Profile Link -->
                         <a href="{{ route('jobseeker.profile.show') }}" class="dropdown-item">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             My Profile
                         </a>
 
-                        <!-- Settings Link -->
                         <a href="{{ route('jobseeker.profile.edit') }}" class="dropdown-item">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             Edit Profile
                         </a>
 
                         <div class="dropdown-divider"></div>
 
-                        <!-- Logout Button (triggers modal) -->
                         <button type="button" class="dropdown-item danger" id="logoutBtn">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             Logout
                         </button>
@@ -931,8 +927,7 @@
                 <div class="modal-container">
                     <div class="modal-header">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
                         <h3>Confirm Logout</h3>
                     </div>
@@ -950,18 +945,15 @@
             </div>
 
             <!-- Filters -->
-            <!-- Filters -->
             <div class="filter-card">
                 <form method="GET" action="{{ route('jobseeker.jobs.index') }}" class="filter-form">
                     <div class="filter-field">
                         <label class="field-label">Experience Level</label>
                         <select name="experience_level" class="field-select">
                             <option value="">Any experience</option>
-                            <option value="entry" @if(request('experience_level') == 'entry') selected @endif>Entry Level
-                            </option>
+                            <option value="entry" @if(request('experience_level') == 'entry') selected @endif>Entry Level</option>
                             <option value="mid" @if(request('experience_level') == 'mid') selected @endif>Mid Level</option>
-                            <option value="senior" @if(request('experience_level') == 'senior') selected @endif>Senior Level
-                            </option>
+                            <option value="senior" @if(request('experience_level') == 'senior') selected @endif>Senior Level</option>
                         </select>
                     </div>
                     <div class="filter-actions">
@@ -975,10 +967,8 @@
             <div class="jobs-list">
                 @forelse($jobs as $job)
                     @php
-                        // FIXED: Use the correct relationship name 'jobseekerProfile' instead of 'profile'
                         $candidate = auth()->user()->jobseekerProfile;
 
-                        // Clean and normalize candidate skills
                         $candidateSkills = collect();
                         if ($candidate && $candidate->skills) {
                             $candidateSkills = collect($candidate->skills)
@@ -987,10 +977,8 @@
                                 ->unique();
                         }
 
-                        // Clean and normalize job required skills
                         $jobSkills = collect();
                         if ($job->skills_required) {
-                            // Handle if skills_required is a string
                             if (is_string($job->skills_required)) {
                                 $jobSkills = collect(explode(',', $job->skills_required))
                                     ->map(fn($s) => strtolower(trim($s)))
@@ -1002,14 +990,9 @@
                             }
                         }
 
-                        // Calculate match using intersection (more efficient)
                         $matched = $jobSkills->intersect($candidateSkills)->count();
                         $totalNeeded = $jobSkills->count();
-
-                        // Calculate percentage
                         $match = $totalNeeded > 0 ? round(($matched / $totalNeeded) * 100, 2) : 0;
-
-                        // Determine match color class
                         $matchColor = $match >= 70 ? 'match-high' : ($match >= 40 ? 'match-mid' : 'match-low');
                         $matchBarClass = $match >= 70 ? 'match-high' : ($match >= 40 ? 'match-mid' : 'match-low');
                     @endphp
@@ -1030,17 +1013,14 @@
 
                         <div class="job-meta">
                             <span class="badge badge-gray">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path
-                                        d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
                                     <circle cx="12" cy="10" r="3" />
                                 </svg>
                                 {{ $job->location ?? 'N/A' }}
                             </span>
                             <span class="badge badge-gray">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M10 12h4" />
                                     <path d="M10 8h4" />
                                     <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
@@ -1059,8 +1039,7 @@
                                 {{ $displayLevel }}
                             </span>
                             <span class="badge {{ $matchColor }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="19" x2="5" y1="5" y2="19" />
                                     <circle cx="6.5" cy="6.5" r="2.5" />
                                     <circle cx="17.5" cy="17.5" r="2.5" />
@@ -1080,9 +1059,7 @@
                             <div class="skills-wrap">
                                 @if($jobSkills->count() > 0)
                                     @foreach($jobSkills->take(5) as $skill)
-                                        @php
-                                            $isMatch = $candidateSkills->contains($skill);
-                                        @endphp
+                                        @php $isMatch = $candidateSkills->contains($skill); @endphp
                                         <span class="skill-tag {{ $isMatch ? 'skill-matched' : '' }}">
                                             {{ $isMatch ? '✓' : '' }} {{ ucfirst($skill) }}
                                         </span>
@@ -1099,8 +1076,7 @@
                 @empty
                     <div class="empty-state">
                         <div class="empty-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8" />
                                 <path d="m21 21-4.3-4.3" />
                             </svg>
@@ -1132,7 +1108,6 @@
                 profileDropdown.classList.toggle('active');
             });
 
-            // Close dropdown when clicking outside
             document.addEventListener('click', (e) => {
                 if (!profileDropdown.contains(e.target)) {
                     profileDropdown.classList.remove('active');
@@ -1158,7 +1133,6 @@
             });
         }
 
-        // Close modal when clicking outside
         if (logoutModal) {
             logoutModal.addEventListener('click', (e) => {
                 if (e.target === logoutModal) {
