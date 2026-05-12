@@ -62,4 +62,4 @@ RUN mkdir -p /var/www/html/storage/logs && \
 EXPOSE 80
 
 # Start Nginx + PHP-FPM
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
