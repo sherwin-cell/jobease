@@ -10,12 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->text('answer');
-            $table->timestamps();
+        Schema::table('applications', function (Blueprint $table) {
+            $table->text('skill_notes')->nullable()->after('status');
         });
     }
 
@@ -24,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::table('applications', function (Blueprint $table) {
+            //
+        });
     }
 };

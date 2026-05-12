@@ -451,6 +451,10 @@
         /* ============================================================
            RESPONSIVE DESIGN
         ============================================================ */
+        /* ===== ALL YOUR EXISTING CSS ===== */
+        /* (keep everything you already have) */
+
+        /* ===== YOUR EXISTING RESPONSIVE LAYOUT ===== */
         @media (max-width: 1024px) {
             .app-content {
                 padding: 20px 24px;
@@ -493,7 +497,70 @@
             }
         }
 
-        /* Loading Animation */
+        /* ===== ADD THESE NEW SIDEBAR MENU STYLES ===== */
+        @media (max-width: 768px) {
+            .sidebar-menu {
+                padding: 16px 0;
+            }
+
+            .menu-item {
+                padding: 12px 16px;
+                margin: 4px 12px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .menu-icon lord-icon {
+                width: 20px !important;
+                height: 20px !important;
+            }
+
+            .menu-text {
+                font-size: 0.875rem;
+            }
+
+            .menu-item[data-tooltip]:hover::after {
+                display: none;
+            }
+
+            .menu-label {
+                font-size: 0.7rem;
+                padding: 8px 16px;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-item {
+                padding: 10px 14px;
+                margin: 3px 10px;
+            }
+
+            .menu-text {
+                font-size: 0.813rem;
+            }
+
+            .menu-icon lord-icon {
+                width: 18px !important;
+                height: 18px !important;
+            }
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #1e40af;
+        }
+
+        /* Hide mobile hamburger when sidebar is open */
+        @media (max-width: 768px) {
+            body.sidebar-open .mobile-hamburger {
+                display: none !important;
+            }
+        }
+
+        /* Loading Animation - KEEP ONLY ONE COPY */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -571,39 +638,36 @@
         </div>
 
         <script>
-            // DOM Elements
             const mobileHamburger = document.getElementById('mobile-hamburger');
             const sidebarHamburger = document.getElementById('sidebar-hamburger');
             const sidebar = document.getElementById('app-sidebar');
             const main = document.getElementById('app-main');
             const overlay = document.getElementById('sidebar-overlay');
 
-            // State variables
             let isOpen = false;
             let isMobileView = window.innerWidth <= 768;
 
-            // Helper functions
             const isMobile = () => window.innerWidth <= 768;
 
             function updateSidebarState() {
                 const mobile = isMobile();
 
                 if (mobile) {
-                    // Mobile behavior - sidebar slides in/out
                     if (isOpen) {
                         sidebar.classList.add('expanded');
                         sidebar.classList.remove('collapsed');
                         overlay.classList.add('active');
                         document.body.style.overflow = 'hidden';
+                        document.body.classList.add('sidebar-open');
                     } else {
                         sidebar.classList.remove('expanded');
                         sidebar.classList.remove('collapsed');
                         overlay.classList.remove('active');
                         document.body.style.overflow = '';
+                        document.body.classList.remove('sidebar-open');
                     }
                     main.classList.remove('sidebar-open');
                 } else {
-                    // Desktop behavior - sidebar expands/collapses in place
                     if (isOpen) {
                         sidebar.classList.add('expanded');
                         sidebar.classList.remove('collapsed');
@@ -612,6 +676,7 @@
                         sidebar.classList.remove('expanded');
                         sidebar.classList.add('collapsed');
                         main.classList.remove('sidebar-open');
+                        document.body.classList.remove('sidebar-open');
                     }
                     overlay.classList.remove('active');
                     document.body.style.overflow = '';
@@ -631,34 +696,19 @@
             }
 
             function toggleSidebar() {
-                if (isOpen) {
-                    closeSidebar();
-                } else {
-                    openSidebar();
-                }
+                isOpen ? closeSidebar() : openSidebar();
             }
 
-            // Save sidebar state to localStorage
             function saveSidebarState() {
                 localStorage.setItem('sidebarOpen', isOpen);
             }
 
-            // Load sidebar state from localStorage
             function loadSidebarState() {
                 const saved = localStorage.getItem('sidebarOpen');
-                const mobile = isMobile();
-
-                if (saved !== null) {
-                    isOpen = saved === 'true';
-                } else {
-                    // Default: closed on desktop
-                    isOpen = false;
-                }
-
+                isOpen = saved === 'true';
                 updateSidebarState();
             }
 
-            // Event Listeners
             if (sidebarHamburger) {
                 sidebarHamburger.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -667,59 +717,41 @@
             }
 
             if (mobileHamburger) {
-                mobileHamburger.addEventListener('click', () => {
-                    toggleSidebar();
-                });
+                mobileHamburger.addEventListener('click', () => toggleSidebar());
             }
 
             if (overlay) {
                 overlay.addEventListener('click', () => {
-                    if (isMobile()) {
-                        closeSidebar();
-                    }
+                    if (isMobile()) closeSidebar();
                 });
             }
 
-            // Handle window resize
             let resizeTimeout;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(() => {
                     const wasMobile = isMobileView;
                     isMobileView = isMobile();
-
-                    if (wasMobile !== isMobileView) {
-                        updateSidebarState();
-                    }
+                    if (wasMobile !== isMobileView) updateSidebarState();
                 }, 150);
             });
 
-            // Close sidebar when clicking outside on mobile
             document.addEventListener('click', (e) => {
                 if (isMobile() && isOpen) {
                     const isClickInsideSidebar = sidebar.contains(e.target);
                     const isClickOnHamburger = mobileHamburger.contains(e.target);
-
-                    if (!isClickInsideSidebar && !isClickOnHamburger) {
-                        closeSidebar();
-                    }
+                    if (!isClickInsideSidebar && !isClickOnHamburger) closeSidebar();
                 }
             });
 
-            // Keyboard shortcut: Ctrl/Cmd + B to toggle sidebar
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
                     e.preventDefault();
                     toggleSidebar();
                 }
-
-                // Escape key to close sidebar
-                if (e.key === 'Escape' && isOpen) {
-                    closeSidebar();
-                }
+                if (e.key === 'Escape' && isOpen) closeSidebar();
             });
 
-            // Initialize
             loadSidebarState();
         </script>
     @endauth

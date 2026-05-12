@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\LogsActivity;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -38,7 +39,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'role_id' => 'required|in:1,2',
             'company_name' => 'nullable|string|max:255',
-            'terms' => 'required|accepted', // ✅ ADDED - validates the checkbox
+            'terms' => 'required|accepted',
         ], [
             'terms.accepted' => 'You must agree to the Terms of Service and Privacy Policy.',
             'terms.required' => 'Please accept the Terms of Service and Privacy Policy to continue.',
@@ -54,8 +55,8 @@ class RegisterController extends Controller
         // Refresh the user to ensure it's fully saved
         $user = $user->fresh();
 
-        // Send email verification link
-        $user->sendEmailVerificationNotification();
+        // Send email verification link using Laravel's event system
+        event(new Registered($user));
 
         // Create profile based on role
         if ($user->isJobSeeker()) {
@@ -69,7 +70,6 @@ class RegisterController extends Controller
                 'description' => "New Job Seeker registered: {$user->name} ({$user->email})",
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
-                // ✅ No 'terms' here - removed the bug
             ]);
         }
 
@@ -88,7 +88,6 @@ class RegisterController extends Controller
                 'description' => "New Employer registered: {$user->name} - Company: {$request->company_name} ({$user->email})",
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
-                // ✅ No 'terms' here - removed the bug
             ]);
         }
 

@@ -24,13 +24,23 @@
         }
 
         /* ===== PAGE HEADER ===== */
+        /* ===== PAGE HEADER ===== */
         .page-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: start;
             margin-bottom: 24px;
+        }
+
+        .page-header>div:first-child {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .page-header .profile-dropdown {
+            grid-column: 2;
+            grid-row: 1;
+            justify-self: end;
         }
 
         .page-title {
@@ -649,7 +659,10 @@
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .page-header {
+                display: flex;
                 flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
             }
 
             .filter-form {
@@ -942,7 +955,13 @@
                     </div>
                 @empty
                     <div class="empty-state">
-                        <div class="empty-icon">🔍</div>
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
+                        </div>
                         <div class="empty-title">No jobs found</div>
                         <p class="empty-sub">Try adjusting your filters or check back later for new opportunities</p>
                         <a href="{{ route('jobseeker.jobs.index') }}" class="btn-primary">Clear Filters</a>

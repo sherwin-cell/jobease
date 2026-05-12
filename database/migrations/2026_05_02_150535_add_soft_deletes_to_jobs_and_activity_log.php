@@ -22,12 +22,14 @@ return new class extends Migration
             }
         });
         
-        // Add soft deletes to activity_log table (Spatie's table - singular)
-        Schema::table('activity_log', function (Blueprint $table) {
-            if (!Schema::hasColumn('activity_log', 'deleted_at')) {
-                $table->softDeletes();
-            }
-        });
+        // Check if activity_log table exists before adding soft deletes
+        if (Schema::hasTable('activity_log')) {
+            Schema::table('activity_log', function (Blueprint $table) {
+                if (!Schema::hasColumn('activity_log', 'deleted_at')) {
+                    $table->softDeletes();
+                }
+            });
+        }
     }
     
     public function down()
@@ -40,8 +42,11 @@ return new class extends Migration
             $table->dropSoftDeletes();
         });
         
-        Schema::table('activity_log', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        // Check if activity_log table exists before dropping soft deletes
+        if (Schema::hasTable('activity_log')) {
+            Schema::table('activity_log', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };

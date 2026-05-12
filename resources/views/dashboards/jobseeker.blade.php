@@ -626,7 +626,9 @@
             color: #6b7280;
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* ===== RESPONSIVE STYLES ===== */
+
+        /* Tablet styles */
         @media (max-width: 768px) {
             .stats-grid {
                 gap: 12px;
@@ -667,6 +669,190 @@
 
             .modal-container {
                 width: 95%;
+            }
+        }
+
+        /* Mobile phones (640px and below) */
+        @media (max-width: 640px) {
+
+            /* Stats Cards - Stack vertically */
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            /* Profile Completion Banner */
+            .bg-gradient-to-r {
+                text-align: center;
+            }
+
+            .bg-gradient-to-r .flex.items-start.gap-3 {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .bg-gradient-to-r .w-64 {
+                width: 100%;
+            }
+
+            /* Job Cards - Full width buttons */
+            .job-card .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Search Form - Full width button */
+            .search-form .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Page Header - Stack on mobile */
+            .page-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: nowrap;
+                margin-bottom: 24px;
+            }
+
+            .page-header>div:first-child {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .page-header .profile-dropdown {
+                flex-shrink: 0;
+            }
+
+            /* Job Card Badges - Smaller text */
+            .job-card .inline-flex.items-center {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            /* Skills Tags - Smaller */
+            .skill-tag {
+                font-size: 0.65rem;
+                padding: 2px 8px;
+            }
+
+            /* ===== APPLICATIONS TABLE - MOBILE CARD LAYOUT ===== */
+            /* Hide table headers on mobile */
+            .applications-table thead {
+                display: none;
+            }
+
+            /* Make each row a card */
+            .applications-table tbody tr {
+                display: block;
+                border: 1px solid #e5e7eb;
+                border-radius: 16px;
+                margin-bottom: 16px;
+                padding: 16px;
+                background: #fff;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            }
+
+            /* Make each cell a flex row with label on left, value on right */
+            .applications-table tbody td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 0;
+                border-bottom: 1px solid #f3f4f6;
+                gap: 12px;
+            }
+
+            /* Remove border from last cell */
+            .applications-table tbody td:last-child {
+                border-bottom: none;
+            }
+
+            /* Add label before each cell content using data-label attribute */
+            .applications-table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                font-size: 0.7rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #6b7280;
+                min-width: 90px;
+            }
+
+            /* Remove default padding that conflicts with new layout */
+            .applications-table tbody td:first-child,
+            .applications-table tbody td:last-child {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            /* Job title styling in card view */
+            .applications-table tbody td:first-child a {
+                font-weight: 600;
+                font-size: 0.875rem;
+                color: #1f2937;
+                text-align: right;
+                flex: 1;
+            }
+
+            /* Status badge alignment */
+            .applications-table tbody td .status-badge {
+                white-space: nowrap;
+            }
+
+            /* Action link styling */
+            .applications-table tbody td:last-child a {
+                font-weight: 500;
+            }
+        }
+
+        /* Very small phones (400px and below) */
+        @media (max-width: 400px) {
+
+            /* Tab buttons - Hide text, show only icons */
+            .tab-btn span {
+                display: none;
+            }
+
+            .tab-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            /* Stats - Smaller font */
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .stat-title {
+                font-size: 0.875rem;
+            }
+
+            /* Card layout - Smaller padding */
+            .applications-table tbody tr {
+                padding: 12px;
+            }
+
+            .applications-table tbody td {
+                padding: 8px 0;
+            }
+
+            .applications-table tbody td::before {
+                min-width: 75px;
+                font-size: 0.65rem;
+            }
+
+            .applications-table tbody td:first-child a {
+                font-size: 0.75rem;
+            }
+
+            /* Status badge - Smaller */
+            .status-badge {
+                padding: 2px 6px;
+                font-size: 0.6rem;
             }
         }
     </style>
@@ -959,15 +1145,17 @@
                         <tbody>
                             @forelse($recentApplications as $application)
                                 <tr>
-                                    <td>
+                                    <td data-label="Job Title">
                                         <a href="{{ route('jobseeker.jobs.show', $application->job) }}"
                                             class="font-medium text-gray-900 hover:text-blue-600">
                                             {{ $application->job->title }}
                                         </a>
                                     </td>
-                                    <td>{{ $application->job->employer->employerProfile->company_name ?? 'N/A' }}</td>
-                                    <td>{{ $application->created_at->format('M d, Y') }}</td>
-                                    <td>
+                                    <td data-label="Company">
+                                        {{ $application->job->employer->employerProfile->company_name ?? 'N/A' }}
+                                    </td>
+                                    <td data-label="Applied On">{{ $application->created_at->format('M d, Y') }}</td>
+                                    <td data-label="Status">
                                         @php
                                             $statusClass = match ($application->status) {
                                                 'pending' => 'status-pending',
@@ -982,16 +1170,16 @@
                                             {{ ucfirst(str_replace('_', ' ', $application->status)) }}
                                         </span>
                                     </td>
-                                    <td>
+                                    <td data-label="Action">
                                         @if(in_array($application->status, ['interview_scheduled', 'interview']))
                                             <a href="{{ route('jobseeker.interviews.join', $application->interview_session_id ?? '#') }}"
-                                                class="text-blue-600 text-sm font-medium">Join Interview →</a>
+                                                class="text-blue-600 text-sm font-medium">Join →</a>
                                         @elseif($application->status == 'offered')
                                             <a href="{{ route('jobseeker.applications.show', $application) }}"
-                                                class="text-green-600 text-sm font-medium">View Offer →</a>
+                                                class="text-green-600 text-sm font-medium">View →</a>
                                         @else
                                             <a href="{{ route('jobseeker.applications.show', $application) }}"
-                                                class="text-gray-500 text-sm font-medium hover:text-blue-600">View Details →</a>
+                                                class="text-gray-500 text-sm font-medium hover:text-blue-600">View →</a>
                                         @endif
                                     </td>
                                 </tr>

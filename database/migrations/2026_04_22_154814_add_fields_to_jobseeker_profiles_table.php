@@ -8,24 +8,39 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('jobseeker_profiles', function (Blueprint $table) {
-            $table->json('skills')->nullable()->after('user_id');
-            $table->json('experience')->nullable();
-            $table->json('education')->nullable();
-            $table->json('certifications')->nullable();
-            $table->json('interests')->nullable();
+            // Check and add each column only if it doesn't exist
+            if (!Schema::hasColumn('jobseeker_profiles', 'skills')) {
+                $table->json('skills')->nullable()->after('user_id');
+            }
+            
+            if (!Schema::hasColumn('jobseeker_profiles', 'experience')) {
+                $table->json('experience')->nullable();
+            }
+            
+            if (!Schema::hasColumn('jobseeker_profiles', 'education')) {
+                $table->json('education')->nullable();
+            }
+            
+            if (!Schema::hasColumn('jobseeker_profiles', 'certifications')) {
+                $table->json('certifications')->nullable();
+            }
+            
+            if (!Schema::hasColumn('jobseeker_profiles', 'interests')) {
+                $table->json('interests')->nullable();
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('jobseeker_profiles', function (Blueprint $table) {
-            $table->dropColumn([
-                'skills',
-                'experience',
-                'education',
-                'certifications',
-                'interests'
-            ]);
+            $columns = ['skills', 'experience', 'education', 'certifications', 'interests'];
+            
+            foreach ($columns as $column) {
+                if (Schema::hasColumn('jobseeker_profiles', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 };

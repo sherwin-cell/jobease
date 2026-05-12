@@ -4,15 +4,34 @@
 
 @section('content')
 <style>
+    /* ===== PAGE CONTAINER ===== */
+    .apply-container {
+        min-height: 100vh;
+        background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+    }
+    
+    .apply-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+
     /* ===== PAGE HEADER ===== */
     .page-header {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
         gap: 16px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         margin-bottom: 24px;
     }
+
+    .page-header > div:first-child {
+        flex: 1;
+        min-width: 0;
+    }
+
     .page-title {
         font-size: 1.5rem;
         font-weight: 700;
@@ -20,6 +39,7 @@
         margin: 0 0 4px;
         line-height: 1.2;
     }
+
     .page-sub {
         font-size: 0.875rem;
         color: #6b7280;
@@ -46,25 +66,6 @@
     }
     .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
 
-    .btn-secondary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #6b7280;
-        color: #fff;
-        font-size: 0.875rem;
-        font-weight: 600;
-        padding: 10px 20px;
-        border-radius: 10px;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: background 0.15s;
-        white-space: nowrap;
-        gap: 8px;
-    }
-    .btn-secondary:hover { background: #4b5563; }
-
     .btn-outline {
         display: inline-flex;
         align-items: center;
@@ -78,8 +79,16 @@
         border: 1px solid #e5e7eb;
         text-decoration: none;
         transition: background 0.15s;
+        flex-shrink: 0;
     }
     .btn-outline:hover { background: #f9fafb; }
+
+    /* Button Icons - Default size */
+    .btn-primary svg,
+    .btn-outline svg {
+        width: 18px;
+        height: 18px;
+    }
 
     /* ===== JOB SUMMARY CARD ===== */
     .job-summary {
@@ -119,6 +128,14 @@
         font-weight: 600;
         color: #0f172a;
     }
+    
+    /* Job Summary Icons - Default size */
+    .job-summary-item svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
     .skills-container {
         display: flex;
         flex-wrap: wrap;
@@ -201,31 +218,6 @@
         background: #eff6ff;
     }
 
-    /* ===== QUESTION CARD ===== */
-    .question-card {
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        padding: 16px;
-        margin-bottom: 16px;
-        transition: all 0.2s;
-    }
-    .question-card:hover {
-        border-color: #cbd5e1;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .question-title {
-        font-size: 0.9375rem;
-        font-weight: 600;
-        color: #111827;
-        margin: 0 0 4px;
-    }
-    .question-desc {
-        font-size: 0.8125rem;
-        color: #6b7280;
-        margin: 0 0 12px;
-    }
-
     /* ===== ACTION BUTTONS ===== */
     .action-buttons {
         display: flex;
@@ -236,54 +228,176 @@
         border-top: 1px solid #e5e7eb;
     }
 
-    /* ===== RESPONSIVE ===== */
-    /* Main content wrapper to handle sidebar */
-    .apply-container {
-        min-height: 100vh;
-        background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+    /* ===== YOUR SKILLS SECTION ===== */
+    .your-skills-card {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border: 1px solid #bbf7d0;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 24px;
     }
-    .apply-content {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-        transition: all 0.3s ease;
+    .your-skills-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #166534;
+        margin: 0 0 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #bbf7d0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
     
-    /* When sidebar is open on mobile, adjust content */
-    body.sidebar-open .apply-content {
-        opacity: 0.5;
-        pointer-events: none;
+    /* Your Skills Title Icon */
+    .your-skills-title svg {
+        width: 20px;
+        height: 20px;
     }
     
-    @media (max-width: 640px) {
-        .job-summary-grid {
-            grid-template-columns: 1fr;
-        }
-        .action-buttons {
-            flex-direction: column;
-        }
-        .action-buttons .btn-primary,
-        .action-buttons .btn-outline {
-            justify-content: center;
-        }
-        .form-card {
-            padding: 16px;
-        }
+    .your-skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .your-skill-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 12px;
+        background: #dcfce7;
+        color: #166534;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border-radius: 999px;
+        border: 1px solid #bbf7d0;
+    }
+    
+    /* Your Skill Badge Icons */
+    .your-skill-badge svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    /* ===== RESPONSIVE - TABLET & MOBILE ===== */
+    @media (max-width: 768px) {
         .apply-content {
             padding: 1rem;
         }
+        
         .page-header {
             flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
         }
+        
         .page-header .btn-outline {
             width: 100%;
             justify-content: center;
         }
+        
+        /* Smaller button icons on mobile */
+        .page-header .btn-outline svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .job-summary-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        /* Smaller job summary icons on mobile */
+        .job-summary-item svg {
+            width: 18px !important;
+            height: 18px !important;
+        }
+        
+        /* Smaller section title icon on mobile */
+        .your-skills-title svg {
+            width: 18px !important;
+            height: 18px !important;
+        }
+        
+        /* Smaller skill badge icons on mobile */
+        .your-skill-badge svg {
+            width: 11px !important;
+            height: 11px !important;
+        }
+        
+        /* Smaller action button icons on mobile */
+        .btn-primary svg,
+        .btn-outline svg {
+            width: 16px !important;
+            height: 16px !important;
+        }
+        
+        .form-card {
+            padding: 16px;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .action-buttons .btn-primary,
+        .action-buttons .btn-outline {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .your-skills-card {
+            padding: 16px;
+        }
     }
-    
-    @media (min-width: 1024px) {
+
+    /* ===== RESPONSIVE - VERY SMALL PHONES ===== */
+    @media (max-width: 480px) {
         .apply-content {
-            padding: 2rem;
+            padding: 0.75rem;
+        }
+        
+        .job-summary {
+            padding: 16px;
+        }
+        
+        .job-summary-item {
+            padding: 4px 0;
+        }
+        
+        /* Even smaller icons on very small phones */
+        .job-summary-item svg {
+            width: 16px !important;
+            height: 16px !important;
+        }
+        
+        .your-skills-title svg {
+            width: 16px !important;
+            height: 16px !important;
+        }
+        
+        .your-skill-badge svg {
+            width: 10px !important;
+            height: 10px !important;
+        }
+        
+        .btn-primary svg,
+        .btn-outline svg {
+            width: 14px !important;
+            height: 14px !important;
+        }
+        
+        .skills-container {
+            gap: 4px;
+        }
+        
+        .skill-badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+        }
+        
+        .your-skill-badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
         }
     }
 </style>
@@ -347,17 +461,56 @@
                 </div>
             </div>
             
+            @php
+                $skills = $job->skills_required ?? [];
+                if (is_string($skills)) {
+                    $skills = array_map('trim', explode(',', $skills));
+                }
+            @endphp
+            
             @if(!empty($skills) && count($skills) > 0)
             <div class="mt-3 pt-3 border-t border-gray-200">
                 <div class="job-summary-label mb-2">Skills Required</div>
                 <div class="skills-container">
                     @foreach($skills as $skill)
-                    <span class="skill-badge">{{ $skill }}</span>
+                    <span class="skill-badge">{{ ucfirst($skill) }}</span>
                     @endforeach
                 </div>
             </div>
             @endif
         </div>
+
+        <!-- Your Skills Card -->
+        @php
+            $userSkills = auth()->user()->jobseekerProfile->skills ?? [];
+            if (is_string($userSkills)) {
+                $userSkills = array_map('trim', explode(',', $userSkills));
+            }
+        @endphp
+        
+        @if(!empty($userSkills))
+        <div class="your-skills-card">
+            <h2 class="your-skills-title">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Your Skills Profile
+            </h2>
+            <div class="your-skills-container">
+                @foreach($userSkills as $skill)
+                    <span class="your-skill-badge">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {{ ucfirst($skill) }}
+                    </span>
+                @endforeach
+            </div>
+            <p class="form-hint" style="margin-top: 12px; color: #166534;">
+                These skills from your profile will be visible to employers when you apply.
+            </p>
+        </div>
+        @endif
 
         <!-- Application Form -->
         <div class="form-card">
@@ -389,29 +542,6 @@
                     @enderror
                 </div>
 
-                <!-- Q&A Section -->
-                @if(!empty($questions) && count($questions) > 0)
-                <div class="form-group">
-                    <label class="form-label">Additional Questions</label>
-                    <div class="mt-2">
-                        @foreach($questions as $question)
-                        <div class="question-card">
-                            <div class="question-title">{{ $question->title }}</div>
-                            @if($question->description)
-                            <div class="question-desc">{{ $question->description }}</div>
-                            @endif
-                            <textarea name="answers[{{ $question->id }}]" rows="3"
-                                class="form-textarea @error('answers.' . $question->id) error @enderror"
-                                placeholder="Your answer...">{{ old('answers.' . $question->id) }}</textarea>
-                            @error('answers.' . $question->id)
-                                <p class="form-error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button type="submit" class="btn-primary">
@@ -430,9 +560,7 @@
 </div>
 
 <script>
-    // Handle sidebar state to adjust content when hamburger menu is open
     document.addEventListener('DOMContentLoaded', function() {
-        // Listen for sidebar toggle events
         const sidebar = document.getElementById('mobileSidebar');
         const menuBtn = document.getElementById('mobileMenuBtn');
         
@@ -441,7 +569,6 @@
                 document.body.classList.toggle('sidebar-open');
             });
             
-            // Close sidebar when clicking outside (optional)
             const overlay = document.getElementById('sidebarOverlay');
             if (overlay) {
                 overlay.addEventListener('click', function() {
@@ -450,7 +577,6 @@
             }
         }
         
-        // Adjust layout when window resizes
         window.addEventListener('resize', function() {
             if (window.innerWidth >= 1024) {
                 document.body.classList.remove('sidebar-open');

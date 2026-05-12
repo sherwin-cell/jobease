@@ -39,10 +39,6 @@ class ApplicationController extends Controller
         ];
 
         // Validate Skill Questions
-        $job->load('skillQuestions');
-        foreach ($job->skillQuestions as $question) {
-            $rules['answers.' . $question->id] = 'required|string|max:1000';
-        }
 
         $validated = $request->validate($rules);
 

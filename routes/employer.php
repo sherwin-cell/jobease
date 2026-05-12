@@ -50,8 +50,11 @@ Route::middleware(['auth', 'role:employer', 'verified', 'employer.profile.comple
         Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
 
         // Applications
+        // Applications
         Route::get('/applications', [ApplicationController::class, 'employerIndex'])->name('applications.index');
         Route::get('/applications/{application}', [ApplicationController::class, 'employerShow'])->name('applications.show');
-        Route::post('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+        Route::put('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus'); // Changed POST to PUT
+        Route::put('/applications/{application}/skill-review', [ApplicationController::class, 'updateSkillReview'])->name('applications.updateSkillReview'); // ADD THIS LINE
         Route::post('/applications/{application}/schedule-interview', [ApplicationController::class, 'scheduleInterview'])->name('interviews.schedule');
+        Route::get('/applications/{application}/schedule-interview-form', [ApplicationController::class, 'showScheduleInterviewForm'])->name('interviews.schedule.form');
     });

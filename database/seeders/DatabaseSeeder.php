@@ -13,9 +13,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::firstOrCreate(['name' => 'job_seeker']);
-        Role::firstOrCreate(['name' => 'employer']);
-        Role::firstOrCreate(['name' => 'admin']);
+        // Create roles with specific IDs to ensure consistency with middleware
+        Role::firstOrCreate(
+            ['id' => 1, 'name' => 'job_seeker']
+        );
+        
+        Role::firstOrCreate(
+            ['id' => 2, 'name' => 'employer']
+        );
+        
+        Role::firstOrCreate(
+            ['id' => 3, 'name' => 'admin']
+        );
 
         // No dummy users created here
     }
