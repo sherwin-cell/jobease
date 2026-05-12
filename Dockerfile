@@ -55,10 +55,10 @@ RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 775 /var/www/html/bootstrap/cache
 
 # Create startup script
-RUN echo '#!/bin/sh\nphp-fpm -D\nnginx -g "daemon off;"' > /start.sh && \
+RUN printf '#!/bin/sh\nphp-fpm -D\nexec nginx -g "daemon off;"\n' > /start.sh && \
     chmod +x /start.sh
 
 # Expose port 80
 EXPOSE 80
 
-CMD ["/start.sh"]
+CMD ["/bin/sh", "/start.sh"]
