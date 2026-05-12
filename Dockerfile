@@ -3,6 +3,9 @@ FROM php:8.5-apache
 # Set environment variables
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
+# Fix MPM conflict first
+RUN a2dismod mpm_event mpm_worker mpm_prefork || true && a2enmod mpm_prefork
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -25,9 +28,6 @@ RUN docker-php-ext-install \
 
 # Enable Apache modules
 RUN a2enmod rewrite headers
-
-# Fix MPM conflict (PHP requires prefork)
-RUN a2dismod mpm_event mpm_worker && a2enmod mpm_prefork
 
 # Configure Apache to use Laravel public directory
 RUN sed -i "s|/var/www/html|${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/000-default.conf
