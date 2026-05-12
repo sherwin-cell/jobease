@@ -23,12 +23,12 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => null,
-            'host' => '127.0.0.1',
-            'port' => 3306,
-            'database' => 'jobease_db',
-            'username' => 'root',
-            'password' => '',
-            'unix_socket' => '',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'jobease_db'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -37,7 +37,6 @@ return [
             'engine' => null,
             'options' => [],
         ],
-
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => null,
