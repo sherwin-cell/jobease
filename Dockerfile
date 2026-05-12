@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.5-apache
 
 # Set environment variables
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
