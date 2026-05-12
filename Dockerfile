@@ -23,10 +23,13 @@ RUN docker-php-ext-install \
     gd
 
 # Configure Nginx for Laravel
+# Configure Nginx for Laravel
 RUN echo 'server { \n\
     listen 80; \n\
     root /var/www/html/public; \n\
     index index.php; \n\
+    large_client_header_buffers 4 32k; \n\
+    client_header_buffer_size 32k; \n\
     location / { \n\
         try_files $uri $uri/ /index.php?$query_string; \n\
     } \n\
@@ -36,7 +39,6 @@ RUN echo 'server { \n\
         include fastcgi_params; \n\
     } \n\
 }' > /etc/nginx/sites-available/default
-
 # Configure supervisord
 RUN echo '[supervisord]\nnodaemon=true\n\n[program:php-fpm]\ncommand=php-fpm\nautostart=true\nautorestart=true\n\n[program:nginx]\ncommand=nginx -g "daemon off;"\nautostart=true\nautorestart=true\n' > /etc/supervisor/conf.d/supervisord.conf
 
