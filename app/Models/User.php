@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\Notifications\VerifyEmail; 
 
 use App\Models\Role;
 use App\Models\Application;
@@ -109,4 +110,9 @@ class User extends Authenticatable implements MustVerifyEmail
             default => '/',
         };
     }
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify((new VerifyEmail)->onQueue('emails'));
+    }
+
 }
