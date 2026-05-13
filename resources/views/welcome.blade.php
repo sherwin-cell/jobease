@@ -4,15 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'JobEase') }} - Smart Job Matching</title>
-
-    <!-- Fonts: Premium typefaces -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700|playfair-display:700"
-        rel="stylesheet">
-
+    <title>{{ config('app.name', 'JobEase') }} - Smart Job Matching Platform</title>
+    <meta name="description" content="Find your perfect job opportunity with JobEase - Intelligent job matching for professionals">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    
     <style>
-        /* Eye-friendly, Simple, Blue-themed Design */
         * {
             margin: 0;
             padding: 0;
@@ -20,718 +20,667 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #2d3748;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1f2937;
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
-        /* Softer Blue Background Pattern */
-        .gradient-bg {
+        /* Animated Background */
+        .animated-bg {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
-            background:
-                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            overflow: hidden;
         }
 
-        /* Subtle Floating Elements */
-        .floating-shapes {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .shape {
+        .animated-bg::before {
+            content: '';
             position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            opacity: 0.08;
-            animation: float 25s infinite linear;
-        }
-
-        .shape-1 {
-            width: 60px;
-            height: 60px;
-            top: 15%;
-            left: 10%;
-            background: rgba(99, 102, 241, 0.3);
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 100px;
-            height: 100px;
-            top: 70%;
-            right: 15%;
-            background: rgba(59, 130, 246, 0.2);
-            animation-delay: -8s;
-        }
-
-        .shape-3 {
-            width: 40px;
-            height: 40px;
-            bottom: 15%;
-            left: 25%;
-            background: rgba(147, 51, 234, 0.2);
-            animation-delay: -15s;
+            animation: float 20s infinite ease-in-out;
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            33% {
-                transform: translateY(-15px) rotate(120deg);
-            }
-
-            66% {
-                transform: translateY(10px) rotate(240deg);
-            }
+            0%, 100% { transform: translateY(0) translateX(0); }
+            33% { transform: translateY(-30px) translateX(20px); }
+            66% { transform: translateY(20px) translateX(-15px); }
         }
 
-        /* Header - Clean & Simple */
-        header {
-            width: 100%;
-            padding: 1rem 1.25rem;
+        /* Header */
+        .header {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        nav {
-            max-width: 90rem;
+        .nav-container {
+            max-width: 1280px;
             margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .nav-brand {
+        .logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #1e40af;
-            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        @media (min-width: 1024px) {
-            .nav-brand {
-                font-size: 2.25rem;
-            }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
         }
 
-        /* Logo sizing - applies on ALL screen sizes */
-        .nav-logo {
-            height: 36px;
-            width: auto;
-            object-fit: contain;
-            display: block;
-        }
-
-        @media (min-width: 1024px) {
-            .nav-logo {
-                height: 44px;
-            }
-        }
-
-        /* Desktop Navigation */
-        [class*="hidden md:flex"] {
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            [class*="hidden md:flex"] {
-                display: flex;
-                align-items: center;
-                gap: 1.5rem;
-            }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
 
         .nav-link {
-            color: #475569;
-            font-weight: 500;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
         .nav-link:hover {
-            color: #1e40af;
-            background: rgba(30, 64, 175, 0.05);
+            color: #667eea;
         }
 
-        /* Mobile Hamburger */
-        .hamburger {
+        .btn-outline {
+            padding: 0.5rem 1.25rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(102,126,234,0.3);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
             display: none;
-            flex-direction: column;
-            gap: 4px;
-            width: 24px;
-            height: 24px;
-            padding: 4px;
             background: none;
             border: none;
             cursor: pointer;
+            padding: 0.5rem;
         }
 
-        @media (max-width: 767px) {
-            .hamburger {
-                display: flex;
-            }
-        }
-
-        .hamburger span {
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
             height: 3px;
-            background: #475569;
-            border-radius: 3px;
-            transition: all 0.3s ease;
+            background: #4b5563;
+            margin: 5px 0;
+            transition: 0.3s;
         }
 
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .nav-container {
+                padding: 1rem;
+            }
         }
 
         /* Mobile Menu */
         .mobile-menu {
-            position: absolute;
-            top: 100%;
-            right: 1.25rem;
-            width: 280px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e2e8f0;
-            padding: 12px;
-            margin-top: 8px;
             display: none;
+            background: white;
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .mobile-menu.active {
+            display: block;
         }
 
         .mobile-nav-link {
             display: block;
-            padding: 12px 16px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #374151;
+            padding: 0.75rem 1rem;
             text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            margin: 4px 0;
+            color: #4b5563;
+            font-weight: 500;
+            border-radius: 8px;
         }
 
         .mobile-nav-link:hover {
-            background: #eff6ff;
-            color: #1e40af;
-            transform: translateX(4px);
-        }
-
-        .mobile-nav-link:last-child {
-            background: linear-gradient(135deg, #1e40af, #2563eb);
-            color: white;
-            margin-top: 8px;
-        }
-
-        .mobile-nav-link:last-child:hover {
-            background: linear-gradient(135deg, #1d4ed8, #1e40af);
-            transform: translateX(4px) scale(1.02);
+            background: #f3f4f6;
+            color: #667eea;
         }
 
         /* Main Content */
-        main {
-            max-width: 90rem;
+        .main {
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 2rem 1.25rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: calc(100vh - 140px);
-        }
-
-        @media (min-width: 640px) {
-            main {
-                padding: 3rem 1.5rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            main {
-                padding: 4rem 2rem;
-            }
+            padding: 4rem 2rem;
         }
 
         /* Hero Section */
-        .hero-section {
+        .hero {
             text-align: center;
-            margin-bottom: 5rem;
-            max-width: 48rem;
+            margin-bottom: 6rem;
         }
 
-        @media (min-width: 1024px) {
-            .hero-section {
-                margin-bottom: 7rem;
-            }
-        }
-
-        .display-font {
-            font-family: 'Playfair Display', serif;
+        .hero-badge {
+            display: inline-block;
+            background: rgba(102,126,234,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
         }
 
         .hero-title {
-            font-size: clamp(2.25rem, 6vw, 4.5rem);
-            font-weight: 700;
-            line-height: 1.1;
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
             margin-bottom: 1.5rem;
-            color: #1e293b;
+            background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-title span {
-            display: block;
-            background: linear-gradient(135deg, #1e40af, #2563eb);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .hero-subtitle {
-            font-size: clamp(1.1rem, 3vw, 1.5rem);
-            color: #64748b;
-            margin-bottom: 2.5rem;
-            padding: 0 1rem;
+            font-size: 1.25rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto 2rem;
         }
 
-        /* CTA Buttons */
-        .cta-buttons {
+        .hero-buttons {
             display: flex;
-            flex-direction: column;
             gap: 1rem;
-            max-width: 20rem;
-            margin: 0 auto;
-        }
-
-        @media (min-width: 480px) {
-            .cta-buttons {
-                flex-direction: row;
-                justify-content: center;
-                max-width: none;
-            }
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
             justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            flex-wrap: wrap;
         }
 
-        @media (min-width: 480px) {
-            .btn {
-                width: auto;
-            }
+        .btn-large {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 6rem;
+            text-align: center;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .btn-secondary {
-            background: white;
-            color: #1e40af;
-            border: 2px solid #e2e8f0;
-        }
-
-        .btn-secondary:hover {
-            background: #eff6ff;
-            border-color: #3b82f6;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            margin-top: 3rem;
-            padding: 1rem;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 2px solid #e2e8f0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-        }
-
-        .scroll-indicator:hover {
-            background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Divider */
-        .divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, #cbd5e1 20%, #cbd5e1 80%, transparent);
-            margin: 4rem auto;
-            width: 80%;
-            max-width: 32rem;
+        .stat-label {
+            color: #6b7280;
+            font-weight: 500;
+            margin-top: 0.5rem;
         }
 
         /* Features Grid */
-        .feature-grid {
-            width: 100%;
-            max-width: 64rem;
-            margin: 0 auto;
+        .features {
+            margin-bottom: 6rem;
         }
 
-        .features-container {
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-        }
-
-        @media (min-width: 640px) {
-            .features-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2.5rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .features-container {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 3rem;
-            }
         }
 
         .feature-card {
             background: white;
-            padding: 2.5rem 2rem;
+            padding: 2rem;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            border: 1px solid #f1f5f9;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @media (min-width: 1024px) {
-            .feature-card {
-                padding: 3rem 2.5rem;
-            }
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
         }
 
         .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-            border-color: #dbeafe;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border-color: #667eea;
         }
 
         .feature-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 28px;
         }
 
         .feature-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            color: #1e293b;
+            margin-bottom: 0.75rem;
         }
 
         .feature-desc {
-            color: #64748b;
-            font-size: 1rem;
-            line-height: 1.7;
+            color: #6b7280;
+            line-height: 1.6;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            padding: 4rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 4rem;
         }
 
-        .feature-card {
-            opacity: 0;
-            animation: fadeInUp 0.6s ease-out forwards;
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
         }
 
-        .feature-card:nth-child(1) {
-            animation-delay: 0.1s;
+        .cta-subtitle {
+            margin-bottom: 2rem;
+            opacity: 0.95;
         }
 
-        .feature-card:nth-child(2) {
-            animation-delay: 0.2s;
+        .btn-cta {
+            background: white;
+            color: #667eea;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s;
+            display: inline-block;
         }
 
-        .feature-card:nth-child(3) {
-            animation-delay: 0.3s;
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        /* Responsive Typography */
-        @media (max-width: 480px) {
-            main {
-                padding: 1.5rem 1rem;
-            }
-
-            .hero-section {
-                margin-bottom: 3rem;
-            }
-
-            .cta-buttons {
-                gap: 0.75rem;
-            }
-
-            .btn {
-                padding: 0.875rem 1.5rem;
-                font-size: 0.95rem;
-            }
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
         }
 
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-                color: #f1f5f9;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main {
+                padding: 2rem 1rem;
             }
-
-            .gradient-bg {
-                background:
-                    radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-                    linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            }
-
-            header {
-                background: rgba(15, 23, 42, 0.95);
-                border-color: rgba(30, 41, 59, 0.5);
-            }
-
-            .nav-brand {
-                color: #60a5fa;
-            }
-
-            .nav-link {
-                color: #94a3b8;
-            }
-
-            .nav-link:hover {
-                color: #60a5fa;
-                background: rgba(96, 165, 250, 0.1);
-            }
-
             .hero-title {
-                color: #f8fafc;
+                font-size: 2rem;
             }
-
             .hero-subtitle {
-                color: #cbd5e1;
+                font-size: 1rem;
             }
+            .cta-section {
+                padding: 2rem;
+            }
+            .cta-title {
+                font-size: 1.5rem;
+            }
+            .features-grid {
+                gap: 1rem;
+            }
+        }
 
+        @media (max-width: 640px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn-large {
+                width: 100%;
+                max-width: 280px;
+            }
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .header {
+                background: rgba(17,24,39,0.98);
+            }
             .feature-card {
-                background: rgba(30, 41, 59, 0.8);
-                border-color: rgba(51, 65, 85, 0.5);
-                color: #f1f5f9;
+                background: #1f2937;
+                border-color: #374151;
             }
-
-            .feature-title {
-                color: #f8fafc;
+            .hero-title {
+                background: linear-gradient(135deg, #f3f4f6 0%, #9ca3af 100%);
+                -webkit-background-clip: text;
             }
-
-            .feature-desc {
-                color: #cbd5e1;
-            }
-
-            .btn-secondary {
-                background: rgba(30, 41, 59, 0.8);
-                color: #60a5fa;
-                border-color: rgba(51, 65, 85, 0.5);
+            .mobile-menu {
+                background: #1f2937;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Subtle Background -->
-    <div class="gradient-bg">
-        <div class="floating-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-        </div>
-    </div>
+    <div class="animated-bg"></div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
 
-    <!-- Clean Header -->
-    <header>
-        <nav>
-            <div class="nav-brand">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="nav-logo">
-                {{ config('app.name', 'obEase') }}
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">JE</div>
+                {{ config('app.name', 'JobEase') }}
             </div>
-
-            <div class="hidden md:flex">
-                <a href="{{ route('login') }}" class="nav-link">Log in</a>
+            
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="{{ route('login') }}" class="btn-outline">Log In</a>
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn btn-secondary">Sign up</a>
+                    <a href="{{ route('register') }}" class="btn-primary">Sign Up Free</a>
                 @endif
             </div>
-
-            <button class="hamburger" aria-label="Toggle menu">
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-        </nav>
-        <div class="mobile-menu">
-            <a href="{{ route('login') }}" class="mobile-nav-link">Log in</a>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#features" class="mobile-nav-link">Features</a>
+            <a href="#about" class="mobile-nav-link">About</a>
+            <a href="{{ route('login') }}" class="mobile-nav-link">Log In</a>
             @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="mobile-nav-link">Sign up</a>
+                <a href="{{ route('register') }}" class="mobile-nav-link">Sign Up Free</a>
             @endif
         </div>
     </header>
 
     <!-- Main Content -->
-    <main>
-        <div class="hero-section">
-            <h1 class="display-font hero-title">
-                <span>Find Your</span>
-                <span>Perfect Opportunity</span>
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">✨ Trusted by 10,000+ professionals</div>
+            <h1 class="hero-title">
+                Find Your <span>Dream Job</span><br>
+                Faster Than Ever
             </h1>
             <p class="hero-subtitle">
-                JobEase matches qualified professionals with meaningful opportunities
-                using intelligent algorithms designed for your success.
+                Join thousands of professionals who found their perfect career match through JobEase's intelligent matching platform.
             </p>
-            <div class="cta-buttons">
-                <a href="{{ route('register') }}" class="btn btn-primary">Get Started Free</a>
-                <a href="{{ route('login') }}" class="btn btn-secondary">Have an account?</a>
+            <div class="hero-buttons">
+                <a href="{{ route('register') }}" class="btn-primary btn-large">Get Started Free</a>
+                <a href="#features" class="btn-outline btn-large">Learn More</a>
             </div>
-            <div class="scroll-indicator" onclick="scrollToFeatures()">
-                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                </svg>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div>
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Active Jobs</div>
+            </div>
+            <div>
+                <div class="stat-number">5K+</div>
+                <div class="stat-label">Companies</div>
+            </div>
+            <div>
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Happy Professionals</div>
+            </div>
+            <div>
+                <div class="stat-number">95%</div>
+                <div class="stat-label">Success Rate</div>
             </div>
         </div>
 
-        <div class="divider"></div>
-
-        <section class="feature-grid">
-            <div class="features-container">
-                <!-- Feature 1: Smart Matching -->
+        <!-- Features Section -->
+        <div class="features" id="features">
+            <h2 class="section-title">Why Choose JobEase?</h2>
+            <p class="section-subtitle">Powerful features designed to accelerate your career growth</p>
+            
+            <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <script src="https://cdn.lordicon.com/lordicon.js"></script>
-                        <lord-icon src="https://cdn.lordicon.com/weqkkuwt.json" trigger="hover" stroke="bold"
-                            state="hover-enlarge" colors="primary:#2563eb,secondary:#7c3aed"
-                            style="width:80px;height:80px">
-                        </lord-icon>
-                    </div>
+                    <div class="feature-icon">🎯</div>
                     <h3 class="feature-title">Smart Matching</h3>
-                    <p class="feature-desc">Get personalized job recommendations based on your skills, experience, and
-                        career goals</p>
+                    <p class="feature-desc">AI-powered job recommendations tailored to your skills, experience, and career aspirations.</p>
                 </div>
-
-                <!-- Feature 2: Quick Apply -->
+                
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <lord-icon src="https://cdn.lordicon.com/evxithfv.json" trigger="hover" stroke="bold"
-                            colors="primary:#2563eb,secondary:#7c3aed" style="width:80px;height:80px">
-                        </lord-icon>
-                    </div>
+                    <div class="feature-icon">⚡</div>
                     <h3 class="feature-title">Quick Apply</h3>
-                    <p class="feature-desc">Submit applications instantly with one click. Get real-time notifications
-                        and faster responses from employers.</p>
+                    <p class="feature-desc">Apply to multiple jobs with one click. Save time and get noticed faster by employers.</p>
                 </div>
-
-                <!-- Feature 3: Career Growth -->
+                
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <lord-icon src="https://cdn.lordicon.com/zkboyyym.json" trigger="hover" stroke="bold"
-                            colors="primary:#2563eb,secondary:#7c3aed" style="width:80px;height:80px">
-                        </lord-icon>
-                    </div>
-                    <h3 class="feature-title">Career Growth</h3>
-                    <p class="feature-desc">Track progress, get insights, and access resources for professional
-                        development</p>
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Career Analytics</h3>
+                    <p class="feature-desc">Track your applications, get insights, and understand your market value.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Secure & Verified</h3>
+                    <p class="feature-desc">All companies and jobs are verified to ensure a safe job search experience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">Direct Messaging</h3>
+                    <p class="feature-desc">Communicate directly with employers and get real-time updates on your applications.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Mobile Friendly</h3>
+                    <p class="feature-desc">Access JobEase anywhere, anytime with our fully responsive platform.</p>
                 </div>
             </div>
-        </section>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Start Your Journey?</h2>
+            <p class="cta-subtitle">Join thousands of professionals who found their dream job through JobEase</p>
+            <a href="{{ route('register') }}" class="btn-cta">Create Free Account →</a>
+        </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; {{ date('Y') }} {{ config('app.name', 'JobEase') }}. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+            <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a> • 
+            <a href="#" style="color: inherit; text-decoration: none;">Terms of Service</a> • 
+            <a href="#" style="color: inherit; text-decoration: none;">Contact Us</a>
+        </p>
+    </footer>
 
     <script>
         // Mobile Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const mobileMenu = document.querySelector('.mobile-menu');
-
-        hamburger.addEventListener('click', () => {
-            mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
-            hamburger.classList.toggle('active');
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            mobileBtn.classList.toggle('active');
         });
-
-        // Close menu on outside click
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileMenu.style.display = 'none';
-                hamburger.classList.remove('active');
-            }
-        });
-
-        // Smooth scroll to features
-        function scrollToFeatures() {
-            document.querySelector('.feature-grid').scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+        
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
             });
+        });
+        
+        // Create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 5 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
         }
-
-        // Preload animations
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '1';
+        
+        createParticles();
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Add intersection observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
         });
     </script>
 </body>
