@@ -333,7 +333,7 @@ Eye Toggle: Mobile Only - FULLY FIXED
             .pw-toggle {
                 display: none !important;
             }
-            
+
             /* Normal padding on desktop since no eye button */
             input {
                 padding-right: clamp(10px, 1.5vw, 14px);
@@ -345,22 +345,23 @@ Eye Toggle: Mobile Only - FULLY FIXED
             .pw-toggle {
                 display: flex;
             }
-            
+
             /* Larger touch targets for mobile */
             .pw-toggle {
                 width: 44px;
                 height: 44px;
                 right: 8px;
             }
-            
+
             .eye-icon {
                 width: 22px;
                 height: 22px;
             }
-            
+
             input {
                 padding-right: 52px;
-                font-size: 16px; /* Prevents zoom on iOS */
+                font-size: 16px;
+                /* Prevents zoom on iOS */
             }
         }
 
@@ -482,6 +483,7 @@ Eye Toggle: Mobile Only - FULLY FIXED
 
         /* MOBILE */
         @media (max-width: 768px) {
+
             html,
             body {
                 overflow: hidden;
@@ -625,12 +627,36 @@ Eye Toggle: Mobile Only - FULLY FIXED
                     @endif
                 </div>
 
-                <!-- Submit -->
                 <button type="submit" class="btn-submit" id="submitBtn">
                     Sign In
                 </button>
 
             </form>
+
+            <!-- Google Login -->
+            <div style="margin-top: 16px; text-align: center;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                    <div style="flex: 1; height: 1px; background: var(--input-border);"></div>
+                    <span style="font-size: 12px; color: var(--sub-color); font-weight: 600;">OR</span>
+                    <div style="flex: 1; height: 1px; background: var(--input-border);"></div>
+                </div>
+                <a href="{{ route('google.login') }}"
+                    style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 11px 14px; border: 1.5px solid var(--input-border); border-radius: 10px; background: var(--input-bg); color: var(--label-color); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; transition: box-shadow 0.2s, transform 0.2s;"
+                    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.1)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow=''">
+                    <svg width="18" height="18" viewBox="0 0 48 48">
+                        <path fill="#4285F4"
+                            d="M44.5 20H24v8.5h11.7C34.2 33.6 29.7 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l6.1-6.1C34.4 6.1 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.2-4z" />
+                        <path fill="#34A853"
+                            d="M6.3 14.7l7 5.1C15 16.1 19.1 13 24 13c3 0 5.7 1.1 7.8 2.9l6.1-6.1C34.4 6.1 29.5 4 24 4 16.2 4 9.5 8.4 6.3 14.7z" />
+                        <path fill="#FBBC05"
+                            d="M24 44c5.4 0 10.2-1.8 13.9-4.8l-6.4-5.3C29.6 35.6 27 36.5 24 36.5c-5.6 0-10.4-3.8-12.1-9l-7 5.4C8.3 39.7 15.5 44 24 44z" />
+                        <path fill="#EA4335"
+                            d="M43.6 20H24v8.5h11.3c-.8 2.8-2.6 5.1-5 6.6l6.4 5.3C41.1 36.7 44 30.8 44 24c0-1.4-.1-2.7-.4-4z" />
+                    </svg>
+                    Continue with Google
+                </a>
+            </div>
 
             <div class="footer">
                 Don't have an account?
@@ -651,23 +677,23 @@ Eye Toggle: Mobile Only - FULLY FIXED
             function attachToggleListener() {
                 const toggleBtn = document.getElementById('togglePw');
                 const passwordField = document.getElementById('password');
-                
+
                 if (!toggleBtn || !passwordField) return false;
-                
+
                 // Remove existing listener if any
                 if (currentToggleListener) {
                     toggleBtn.removeEventListener('click', currentToggleListener);
                 }
-                
+
                 // Create new listener
-                const handler = function(e) {
+                const handler = function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordField.setAttribute('type', type);
                     toggleBtn.classList.toggle('active');
-                    
+
                     // Change eye icon style when active
                     if (type === 'text') {
                         toggleBtn.style.color = '#2563eb';
@@ -675,10 +701,10 @@ Eye Toggle: Mobile Only - FULLY FIXED
                         toggleBtn.style.color = '';
                     }
                 };
-                
+
                 toggleBtn.addEventListener('click', handler);
                 currentToggleListener = handler;
-                
+
                 // Also handle keyboard events
                 toggleBtn.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -686,7 +712,7 @@ Eye Toggle: Mobile Only - FULLY FIXED
                         handler(e);
                     }
                 });
-                
+
                 return true;
             }
 
@@ -694,9 +720,9 @@ Eye Toggle: Mobile Only - FULLY FIXED
             function updateToggleState() {
                 const toggleBtn = document.getElementById('togglePw');
                 if (!toggleBtn) return;
-                
+
                 const isMobile = window.innerWidth <= 768;
-                
+
                 if (isMobile) {
                     // Ensure toggle is visible and has listener
                     toggleBtn.style.display = 'flex';
@@ -731,15 +757,15 @@ Eye Toggle: Mobile Only - FULLY FIXED
 
             /* ── Listen for resize events with debounce ── */
             let resizeTimeout;
-            window.addEventListener('resize', function() {
+            window.addEventListener('resize', function () {
                 clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(function() {
+                resizeTimeout = setTimeout(function () {
                     updateToggleState();
                 }, 150);
             });
 
             /* ── Also listen for orientation changes on mobile ── */
-            window.addEventListener('orientationchange', function() {
+            window.addEventListener('orientationchange', function () {
                 setTimeout(updateToggleState, 100);
             });
 

@@ -3,13 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\InterviewSessionController;
 use App\Http\Controllers\ApplicationController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\EmployerRegisterController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB; // Add this line
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,10 @@ Route::get('/', function () {
 // Terms and Privacy (public, no login required)
 Route::view('/terms', 'legal.terms')->name('terms');
 Route::view('/privacy', 'legal.privacy')->name('privacy');
+
+// ==================== GOOGLE OAUTH ROUTES ====================
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 // ==================== REGISTRATION ROUTES ====================
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -104,17 +109,11 @@ Route::middleware(['auth'])->group(function () {
         ->prefix('jobseeker')
         ->name('jobseeker.')
         ->group(function () {
-            // Job Seeker dashboard
             Route::get('/dashboard', function () {
                 return view('jobseeker.dashboard');
             })->name('dashboard');
 
-            // Interview routes
             Route::get('/interviews', [InterviewSessionController::class, 'jobSeekerIndex'])->name('interviews');
-
-            // Add other job seeker routes here
-            // Route::get('/jobs', [JobController::class, 'browse'])->name('jobs');
-            // Route::get('/applications', [ApplicationController::class, 'myApplications'])->name('applications');
         });
 
     // ==================== SHARED AUTHENTICATED ROUTES ====================
@@ -140,12 +139,10 @@ Route::fallback(function () {
 
 // ==================== DEBUG ROUTES ====================
 
-// Debug 1: Check queue jobs
 Route::get('/debug/queue', function () {
     try {
         $jobsCount = DB::table('jobs')->count();
         $failedJobsCount = DB::table('failed_jobs')->count();
-
         return [
             'status' => 'success',
             'queue_connection' => config('queue.default'),
@@ -158,21 +155,14 @@ Route::get('/debug/queue', function () {
     }
 });
 
-// Debug 2: Test email sending
 Route::get('/debug/email/{email}', function ($email) {
     try {
         $user = User::where('email', $email)->first();
-
         if (!$user) {
             return ['status' => 'error', 'message' => "User with email {$email} not found"];
         }
-
-        // Check if user implements MustVerifyEmail
         $implements = in_array('Illuminate\Contracts\Auth\MustVerifyEmail', class_implements($user));
-
-        // Send verification email
         $user->sendEmailVerificationNotification();
-
         return [
             'status' => 'success',
             'email' => $user->email,
@@ -186,7 +176,6 @@ Route::get('/debug/email/{email}', function ($email) {
     }
 });
 
-// Debug 3: Check mail configuration
 Route::get('/debug/mail', function () {
     return [
         'default_mailer' => config('mail.default'),
@@ -197,7 +186,31 @@ Route::get('/debug/mail', function () {
     ];
 });
 
-// Original test route
+Route::get('/debug/resend-key', function () {
+    return [
+        'has_key' => !empty(env('RESEND_API_KEY')),
+        'key_preview' => env('RESEND_API_KEY') ? substr(env('RESEND_API_KEY'), 0, 10) . '...' : 'not set',
+        'mailer_config' => config('mail.mailers.resend'),
+        'services_resend' => config('services.resend'),
+    ];
+});
+
+Route::get('/clear-cache', function () {
+    try {
+        \Artisan::call('config:clear');
+        \Artisan::call('cache:clear');
+        \Artisan::call('view:clear');
+        return [
+            'status' => 'success',
+            'message' => 'Cache cleared successfully!',
+            'config_cleared' => true,
+            'cache_cleared' => true,
+        ];
+    } catch (\Exception $e) {
+        return ['status' => 'error', 'message' => $e->getMessage()];
+    }
+});
+
 Route::get('/create-log', function () {
     try {
         DB::table('activity_log')->insert([
@@ -211,22 +224,5 @@ Route::get('/create-log', function () {
         return '✅ Log created successfully! <a href="/admin/dashboard">Go to Admin Dashboard</a>';
     } catch (Exception $e) {
         return '❌ Error: ' . $e->getMessage();
-    }
-});
-// Debug 5: Clear cache
-Route::get('/clear-cache', function () {
-    try {
-        \Artisan::call('config:clear');
-        \Artisan::call('cache:clear');
-        \Artisan::call('view:clear');
-
-        return [
-            'status' => 'success',
-            'message' => 'Cache cleared successfully!',
-            'config_cleared' => true,
-            'cache_cleared' => true,
-        ];
-    } catch (\Exception $e) {
-        return ['status' => 'error', 'message' => $e->getMessage()];
     }
 });
