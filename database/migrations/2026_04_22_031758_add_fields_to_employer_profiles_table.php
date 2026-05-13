@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('phone')->nullable();
             $table->string('website')->nullable();
             $table->text('description')->nullable();
-            $table->string('business_permit')->nullable();
+            $table->string('business_permit_path')->nullable();
         });
     }
 

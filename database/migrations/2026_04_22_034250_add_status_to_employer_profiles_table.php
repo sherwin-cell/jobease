@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('employer_profiles', function (Blueprint $table) {
-            $table->enum('approval_status', ['pending', 'approved', 'rejected'])->default('pending')->after('business_permit');
+            $table->enum('approval_status', ['pending', 'approved', 'rejected'])->default('pending')->after('business_permit_path');
             $table->text('rejection_reason')->nullable()->after('approval_status');
             $table->timestamp('approved_at')->nullable()->after('rejection_reason');
             $table->unsignedBigInteger('approved_by')->nullable()->after('approved_at');

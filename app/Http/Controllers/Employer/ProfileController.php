@@ -27,7 +27,7 @@ class ProfileController extends Controller
             'phone' => 'required|string|max:20',
             'website' => 'nullable|url|max:255',
             'description' => 'required|string',
-            'business_permit' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'business_permit_path' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', // Changed to match database
         ]);
 
         $profile = $user->employerProfile;
@@ -45,15 +45,15 @@ class ProfileController extends Controller
         $profile->website = $validated['website'] ?? null;
         $profile->description = $validated['description'];
 
-        // ✅ Use 'business_permit_path' to match your database
-        if ($request->hasFile('business_permit')) {
+        // Handle business permit upload - using 'business_permit_path'
+        if ($request->hasFile('business_permit_path')) { // Changed to match form input
             // Delete old file if exists
             if ($profile->business_permit_path) {
                 Storage::disk('public')->delete($profile->business_permit_path);
             }
             
-            $path = $request->file('business_permit')->store('business_permits', 'public');
-            $profile->business_permit_path = $path;  // ← Using 'business_permit_path'
+            $path = $request->file('business_permit_path')->store('business_permits', 'public'); // Changed to match
+            $profile->business_permit_path = $path;
         }
 
         // Only set pending if NOT already approved

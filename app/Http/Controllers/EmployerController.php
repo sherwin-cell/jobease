@@ -26,7 +26,7 @@ class EmployerController extends Controller
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'business_permit_path' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'business_permit_path' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', // Changed to match database column
         ]);
 
         $user = auth()->user();
@@ -45,18 +45,15 @@ class EmployerController extends Controller
         $profile->phone = $request->phone;
         
         // Handle business permit upload
-        if ($request->hasFile('business_permit')) {
+        if ($request->hasFile('business_permit_path')) { // Changed to match database column
             // Delete old file if exists
-            if ($profile->business_permit) {
-                Storage::disk('public')->delete($profile->business_permit);
+            if ($profile->business_permit_path) {
+                Storage::disk('public')->delete($profile->business_permit_path);
             }
             
-            $path = $request->file('business_permit')->store('business_permits', 'public');
-            $profile->business_permit = $path;
+            $path = $request->file('business_permit_path')->store('business_permits', 'public'); // Changed to match database column
+            $profile->business_permit_path = $path;
         }
-        
-        // REMOVE THIS LINE - it's causing the error
-        // $profile->is_complete = true;
         
         $profile->approval_status = 'pending';
         $profile->save();
