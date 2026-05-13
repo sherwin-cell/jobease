@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Notifications\QueuedVerifyEmail; // 👈 changed
 
 use App\Models\Role;
 use App\Models\Application;
@@ -60,7 +60,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(EmployerProfile::class, 'user_id');
     }
 
-
     // -----------------------------
     // APPLICATIONS / JOBS
     // -----------------------------
@@ -73,10 +72,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Job::class, 'employer_id');
     }
-    // In User model
+
     public function getSkillsAttribute()
     {
-        // Parse skills from profile or return empty array
         return $this->profile->skills ?? [];
     }
 
@@ -110,9 +108,12 @@ class User extends Authenticatable implements MustVerifyEmail
             default => '/',
         };
     }
+
+    // -----------------------------
+    // EMAIL VERIFICATION (QUEUED)
+    // -----------------------------
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new VerifyEmail);
+        $this->notify(new QueuedVerifyEmail); // 👈 changed
     }
-
 }
