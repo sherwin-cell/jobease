@@ -16,7 +16,8 @@ class EmployerProfile extends Model
         'location',
         'phone',
         'website',
-        'business_permit',
+        'business_permit_path',  // ✅ Correct column name
+        'is_verified',
         'approval_status',
         'rejection_reason',
         'approved_at',
@@ -25,6 +26,7 @@ class EmployerProfile extends Model
 
     protected $casts = [
         'approved_at' => 'datetime',
+        'is_verified' => 'boolean',
     ];
 
     /**
@@ -43,15 +45,8 @@ class EmployerProfile extends Model
         return $this->company_name
             && $this->description
             && $this->location
-            && $this->phone;
-    }
-
-    /**
-     * Check if employer profile is fully complete (including business permit)
-     */
-    public function isFullyComplete()
-    {
-        return $this->is_complete && $this->business_permit;
+            && $this->phone
+            && $this->business_permit_path;  // ✅ Using correct column
     }
 
     /**

@@ -4,7 +4,9 @@
 
 @section('content')
     <style>
-        /* ===== PAGE CONTAINER ===== */
+        /* ============================================================
+           PAGE CONTAINER
+        ============================================================ */
         .full-page-container {
             min-height: 100vh;
             background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
@@ -17,17 +19,9 @@
             padding: 0 1.5rem;
         }
 
-        @media (max-width: 640px) {
-            .content-wrapper {
-                padding: 0 1rem;
-            }
-
-            .full-page-container {
-                padding: 1rem 0;
-            }
-        }
-
-        /* ===== PAGE HEADER ===== */
+        /* ============================================================
+           PAGE HEADER
+        ============================================================ */
         .page-header {
             margin-bottom: 24px;
         }
@@ -46,7 +40,9 @@
             margin: 0;
         }
 
-        /* ===== BUTTONS ===== */
+        /* ============================================================
+           BUTTONS
+        ============================================================ */
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -112,7 +108,9 @@
             background: #eff6ff;
         }
 
-        /* ===== FORM CARD ===== */
+        /* ============================================================
+           FORM CARD
+        ============================================================ */
         .form-card {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -137,6 +135,11 @@
             gap: 8px;
         }
 
+        .card-title svg {
+            width: 20px;
+            height: 20px;
+        }
+
         .card-body {
             padding: 28px;
         }
@@ -147,7 +150,9 @@
             border-top: 1px solid #e5e7eb;
         }
 
-        /* ===== FORM STYLES ===== */
+        /* ============================================================
+           FORM STYLES
+        ============================================================ */
         .form-group {
             margin-bottom: 24px;
         }
@@ -210,8 +215,69 @@
             gap: 20px;
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+
+        /* Tablet (768px and below) */
+        @media (max-width: 768px) {
+            .full-page-container {
+                padding: 1rem 0;
+            }
+
+            .content-wrapper {
+                padding: 0 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .page-sub {
+                font-size: 0.75rem;
+            }
+
+            .card-header {
+                padding: 16px 20px;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .card-footer {
+                padding: 16px 20px;
+            }
+        }
+
+        /* Mobile (640px and below) */
         @media (max-width: 640px) {
+            .full-page-container {
+                padding: 0.75rem 0;
+            }
+
+            .content-wrapper {
+                padding: 0 0.75rem;
+            }
+
+            .page-title {
+                font-size: 1.125rem;
+            }
+
+            .page-sub {
+                font-size: 0.7rem;
+            }
+
+            .btn-back {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+                margin-bottom: 16px;
+            }
+
+            .btn-back svg {
+                width: 14px;
+                height: 14px;
+            }
 
             .card-header,
             .card-body,
@@ -219,13 +285,110 @@
                 padding: 16px;
             }
 
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .card-title svg {
+                width: 18px;
+                height: 18px;
+            }
+
             .row {
                 grid-template-columns: 1fr;
                 gap: 16px;
             }
 
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-label {
+                font-size: 0.8rem;
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: 8px 12px;
+                font-size: 0.8125rem;
+            }
+
+            .form-textarea {
+                min-height: 100px;
+            }
+
+            .form-hint {
+                font-size: 0.65rem;
+            }
+
             .btn-primary {
-                padding: 12px 20px;
+                padding: 10px 16px;
+                font-size: 0.8125rem;
+            }
+
+            .btn-primary svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        /* Very Small Phones (480px and below) */
+        @media (max-width: 480px) {
+            .full-page-container {
+                padding: 0.5rem 0;
+            }
+
+            .content-wrapper {
+                padding: 0 0.5rem;
+            }
+
+            .page-title {
+                font-size: 1rem;
+            }
+
+            .page-sub {
+                font-size: 0.65rem;
+            }
+
+            .card-header,
+            .card-body,
+            .card-footer {
+                padding: 12px;
+            }
+
+            .card-title {
+                font-size: 0.9375rem;
+            }
+
+            .card-title svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .form-label {
+                font-size: 0.75rem;
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: 7px 10px;
+                font-size: 0.75rem;
+            }
+
+            .form-hint {
+                font-size: 0.6rem;
+            }
+
+            .btn-primary {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+
+            .btn-primary svg {
+                width: 12px;
+                height: 12px;
             }
         }
     </style>
@@ -245,13 +408,13 @@
                 <div class="card-header">
                     <h2 class="card-title">
                         @if(isset($job))
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                             </svg>
                             Edit Job Posting
                         @else
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
                             Create New Job Posting
@@ -328,7 +491,6 @@
                             @enderror
                         </div>
 
-                        <!-- Required Skills -->
                         <!-- Required Skills -->
                         <div class="form-group">
                             <label class="form-label">Required Skills <span>*</span></label>

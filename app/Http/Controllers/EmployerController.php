@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EmployerController extends Controller
 {
@@ -25,31 +26,42 @@ class EmployerController extends Controller
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'business_permit' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'business_permit_path' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
-        $data = [
-            'company_name' => $request->company_name,
-            'website' => $request->website,
-            'description' => $request->description,
-            'location' => $request->location,
-            'phone' => $request->phone,
-        ];
-
+        $user = auth()->user();
+        $profile = $user->employerProfile;
+        
+        if (!$profile) {
+            $profile = new \App\Models\EmployerProfile();
+            $profile->user_id = $user->id;
+        }
+        
+        // Update basic info
+        $profile->company_name = $request->company_name;
+        $profile->website = $request->website;
+        $profile->description = $request->description;
+        $profile->location = $request->location;
+        $profile->phone = $request->phone;
+        
+        // Handle business permit upload
         if ($request->hasFile('business_permit')) {
-            $data['business_permit'] = $request->file('business_permit')->store('business_permits', 'public');
+            // Delete old file if exists
+            if ($profile->business_permit) {
+                Storage::disk('public')->delete($profile->business_permit);
+            }
+            
+            $path = $request->file('business_permit')->store('business_permits', 'public');
+            $profile->business_permit = $path;
         }
+        
+        // REMOVE THIS LINE - it's causing the error
+        // $profile->is_complete = true;
+        
+        $profile->approval_status = 'pending';
+        $profile->save();
 
-        $profile = auth()->user()->employerProfile()->updateOrCreate(
-            ['user_id' => auth()->id()],
-            $data
-        );
-
-        if ($profile->is_complete) {
-            return redirect()->route('employer.dashboard')
-                ->with('success', 'Profile completed successfully!');
-        }
-
-        return redirect()->back()->with('info', 'Please complete all required fields to access the dashboard.');
+        return redirect()->route('employer.profile-pending')
+            ->with('success', 'Profile submitted successfully! Waiting for admin approval.');
     }
 }

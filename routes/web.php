@@ -98,25 +98,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 // ==================== AUTHENTICATED ROUTES ====================
 Route::middleware(['auth'])->group(function () {
-
-    // ==================== EMPLOYER ROUTES ====================
-    Route::middleware(['role:employer', 'employer.profile.complete'])
-        ->prefix('employer')
-        ->name('employer.')
-        ->group(function () {
-            // Employer dashboard
-            Route::get('/dashboard', function () {
-                return view('employer.dashboard');
-            })->name('dashboard');
-
-            // Interview routes
-            Route::get('/interviews', [InterviewSessionController::class, 'employerIndex'])->name('interviews');
-
-            // Add other employer routes here
-            // Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
-            // Route::get('/applications', [ApplicationController::class, 'index'])->name('applications');
-        });
-
     // ==================== JOB SEEKER ROUTES ====================
     Route::middleware(['role:job_seeker'])
         ->prefix('jobseeker')

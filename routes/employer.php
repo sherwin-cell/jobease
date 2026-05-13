@@ -6,41 +6,59 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\Employer\DashboardController;
 
+/*
+|--------------------------------------------------------------------------
+| Employer Routes
+|--------------------------------------------------------------------------
+*/
+
+// ==================== PROFILE ROUTES (Accessible even if profile incomplete) ====================
 Route::middleware(['auth', 'role:employer', 'verified'])
     ->prefix('employer')
     ->name('employer.')
     ->group(function () {
 
-        // Profile completion (accessible even if profile incomplete)
+        // Profile completion page
         Route::get('/profile/complete', function () {
             $user = auth()->user();
-            // If profile exists and is complete, redirect to dashboard
             if ($user->employerProfile && $user->employerProfile->is_complete) {
-                return redirect()->route('employer.dashboard');
+                if ($user->employerProfile->approval_status === 'pending') {
+                    return redirect()->route('employer.profile-pending');
+                }
+                if ($user->employerProfile->approval_status === 'approved') {
+                    return redirect()->route('employer.dashboard');
+                }
+                if ($user->employerProfile->approval_status === 'rejected') {
+                    $company = $user->employerProfile;
+                    return view('employer.complete-profile', compact('company'))
+                        ->with('error', 'Your profile was rejected. Please update and resubmit.');
+                }
             }
             $company = $user->employerProfile ?? new \App\Models\EmployerProfile(['user_id' => $user->id]);
             return view('employer.complete-profile', compact('company'));
         })->name('complete-profile');
 
-        // Profile edit (accessible even if profile incomplete)
+        // Profile edit
         Route::get('/profile/edit', [EmployerController::class, 'editProfile'])->name('profile.edit');
         Route::put('/profile', [EmployerController::class, 'updateProfile'])->name('profile.update');
 
-        // Profile pending approval (accessible even if profile not approved)
+        // Profile pending approval page
         Route::get('/profile/pending', function () {
             return view('employer.profile-pending');
         })->name('profile-pending');
     });
 
+// ==================== FULL ACCESS ROUTES (Requires complete & approved profile) ====================
+// REMOVED 'employer.profile.approved' - it's already handled by 'employer.profile.complete'
 Route::middleware(['auth', 'role:employer', 'verified', 'employer.profile.complete'])
     ->prefix('employer')
     ->name('employer.')
     ->group(function () {
 
-        // Dashboard (NOW FULLY PROTECTED)
+        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Jobs
+        // Jobs Management
         Route::get('/jobs', [JobController::class, 'employerIndex'])->name('jobs.index');
         Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
         Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
@@ -49,12 +67,13 @@ Route::middleware(['auth', 'role:employer', 'verified', 'employer.profile.comple
         Route::put('/jobs/{job}', [JobController::class, 'update'])->name('jobs.update');
         Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
 
-        // Applications
-        // Applications
+        // Applications Management
         Route::get('/applications', [ApplicationController::class, 'employerIndex'])->name('applications.index');
         Route::get('/applications/{application}', [ApplicationController::class, 'employerShow'])->name('applications.show');
-        Route::put('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus'); // Changed POST to PUT
-        Route::put('/applications/{application}/skill-review', [ApplicationController::class, 'updateSkillReview'])->name('applications.updateSkillReview'); // ADD THIS LINE
+        Route::put('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+        Route::put('/applications/{application}/skill-review', [ApplicationController::class, 'updateSkillReview'])->name('applications.updateSkillReview');
+
+        // Interview Management
         Route::post('/applications/{application}/schedule-interview', [ApplicationController::class, 'scheduleInterview'])->name('interviews.schedule');
         Route::get('/applications/{application}/schedule-interview-form', [ApplicationController::class, 'showScheduleInterviewForm'])->name('interviews.schedule.form');
     });

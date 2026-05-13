@@ -4,7 +4,9 @@
 
 @section('content')
     <style>
-        /* ===== PAGE CONTAINER ===== */
+        /* ============================================================
+           PAGE CONTAINER
+        ============================================================ */
         .full-page-container {
             min-height: 100vh;
             background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
@@ -17,24 +19,21 @@
             padding: 0 1.5rem;
         }
 
-        @media (max-width: 640px) {
-            .content-wrapper {
-                padding: 0 1rem;
-            }
-
-            .full-page-container {
-                padding: 1rem 0;
-            }
-        }
-
-        /* ===== PAGE HEADER ===== */
+        /* ============================================================
+           PAGE HEADER
+        ============================================================ */
         .page-header {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             gap: 16px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             margin-bottom: 24px;
+        }
+
+        .page-header > div:first-child {
+            flex: 1;
+            min-width: 0;
         }
 
         .page-title {
@@ -51,7 +50,9 @@
             margin: 0;
         }
 
-        /* ===== BUTTONS ===== */
+        /* ============================================================
+           BUTTONS
+        ============================================================ */
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -110,13 +111,16 @@
             border: 1px solid #e5e7eb;
             text-decoration: none;
             transition: background 0.15s;
+            flex-shrink: 0;
         }
 
         .btn-outline:hover {
             background: #f9fafb;
         }
 
-        /* ===== FORM CARD ===== */
+        /* ============================================================
+           FORM CARD
+        ============================================================ */
         .form-card {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -181,7 +185,18 @@
             margin-top: 4px;
         }
 
-        /* ===== QA SECTION ===== */
+        /* ============================================================
+           GRID
+        ============================================================ */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        /* ============================================================
+           QA SECTION
+        ============================================================ */
         .qa-section {
             background: #f9fafb;
             border: 1px solid #e5e7eb;
@@ -255,7 +270,9 @@
             transform: translateX(16px);
         }
 
-        /* ===== SLOT ROW ===== */
+        /* ============================================================
+           SLOT ROW
+        ============================================================ */
         .slot-row {
             display: grid;
             grid-template-columns: 1fr 1fr auto;
@@ -303,7 +320,9 @@
             border-color: #bfdbfe;
         }
 
-        /* ===== ACTION BUTTONS ===== */
+        /* ============================================================
+           ACTION BUTTONS
+        ============================================================ */
         .action-buttons {
             display: flex;
             justify-content: center;
@@ -313,33 +332,257 @@
             border-top: 1px solid #e5e7eb;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 640px) {
-            .form-card {
-                padding: 16px;
+        /* ============================================================
+           RESPONSIVE DESIGN
+        ============================================================ */
+
+        /* Tablet (768px and below) */
+        @media (max-width: 768px) {
+            .full-page-container {
+                padding: 1rem 0;
             }
 
+            .content-wrapper {
+                padding: 0 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .page-sub {
+                font-size: 0.75rem;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+        }
+
+        /* Mobile (640px and below) */
+        @media (max-width: 640px) {
+            .full-page-container {
+                padding: 0.75rem 0;
+            }
+
+            .content-wrapper {
+                padding: 0 0.75rem;
+            }
+
+            /* Page Header - Stack on mobile */
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .page-header .btn-outline {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .page-header .btn-outline svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .page-title {
+                font-size: 1.125rem;
+            }
+
+            .page-sub {
+                font-size: 0.7rem;
+            }
+
+            /* Form Card */
+            .form-card {
+                padding: 14px;
+                border-radius: 16px;
+            }
+
+            /* Grid */
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            /* Form Elements */
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-label {
+                font-size: 0.8rem;
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: 8px 12px;
+                font-size: 0.8125rem;
+            }
+
+            .form-textarea {
+                min-height: 100px;
+            }
+
+            /* Slot Row */
             .slot-row {
                 grid-template-columns: 1fr;
                 gap: 8px;
             }
 
-            .qa-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .action-buttons .btn-primary,
-            .action-buttons .btn-outline {
-                justify-content: center;
+            .slot-row input {
+                width: 100%;
             }
 
             .remove-slot {
                 justify-content: center;
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+
+            .remove-slot svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            .add-slot-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 8px 12px;
+                font-size: 0.7rem;
+            }
+
+            .add-slot-btn svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            /* QA Section */
+            .qa-section {
+                padding: 14px;
+                margin-bottom: 16px;
+            }
+
+            .qa-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .qa-title {
+                font-size: 0.9375rem;
+            }
+
+            .qa-desc {
+                font-size: 0.7rem;
+            }
+
+            /* Action Buttons */
+            .action-buttons {
+                flex-direction: column;
+                gap: 12px;
+                margin-top: 20px;
+                padding-top: 12px;
+            }
+
+            .action-buttons .btn-primary,
+            .action-buttons .btn-outline {
+                width: 100%;
+                justify-content: center;
+                padding: 10px 16px;
+                font-size: 0.8125rem;
+            }
+
+            .action-buttons .btn-primary svg,
+            .action-buttons .btn-outline svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        /* Very Small Phones (480px and below) */
+        @media (max-width: 480px) {
+            .full-page-container {
+                padding: 0.5rem 0;
+            }
+
+            .content-wrapper {
+                padding: 0 0.5rem;
+            }
+
+            .page-title {
+                font-size: 1rem;
+            }
+
+            .page-sub {
+                font-size: 0.65rem;
+            }
+
+            .form-card {
+                padding: 12px;
+                border-radius: 14px;
+            }
+
+            .form-label {
+                font-size: 0.75rem;
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: 7px 10px;
+                font-size: 0.75rem;
+            }
+
+            .form-hint {
+                font-size: 0.65rem;
+            }
+
+            .qa-title {
+                font-size: 0.875rem;
+            }
+
+            .toggle-switch {
+                font-size: 0.75rem;
+            }
+
+            .toggle-switch input {
+                width: 32px;
+                height: 18px;
+            }
+
+            .toggle-switch input::before {
+                width: 14px;
+                height: 14px;
+            }
+
+            .toggle-switch input:checked::before {
+                transform: translateX(14px);
+            }
+
+            .action-buttons .btn-primary,
+            .action-buttons .btn-outline {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+
+            .action-buttons .btn-primary svg,
+            .action-buttons .btn-outline svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            .remove-slot {
+                padding: 5px 10px;
+                font-size: 0.65rem;
+            }
+
+            .add-slot-btn {
+                padding: 6px 10px;
+                font-size: 0.65rem;
             }
         }
     </style>
@@ -379,7 +622,7 @@
                     </div>
 
                     <!-- Job Details Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid-2">
                         <!-- Location -->
                         <div class="form-group">
                             <label class="form-label">Location <span>*</span></label>
@@ -395,10 +638,11 @@
                         <div class="form-group">
                             <label class="form-label">Salary</label>
                             <input type="text" name="salary" value="{{ old('salary', $job->salary) }}"
-                                class="form-input @error('salary') error @enderror" placeholder="e.g., $80,000 - $120,000">
+                                class="form-input @error('salary') error @enderror" placeholder="e.g., 80000">
                             @error('salary')
                                 <p class="form-error">{{ $message }}</p>
                             @enderror
+                            <p class="form-hint">Enter annual salary in USD</p>
                         </div>
                     </div>
 
@@ -434,10 +678,10 @@
                     <div class="form-group">
                         <label class="form-label">Skills Required</label>
                         <input type="text" name="skills_required"
-                            value="{{ old('skills_required', is_array($job->skills_required) ? implode(', ', $job->skills_required) : '') }}"
+                            value="{{ old('skills_required', is_array($job->skills_required) ? implode(', ', $job->skills_required) : $job->skills_required) }}"
                             class="form-input @error('skills_required') error @enderror"
                             placeholder="e.g., PHP, Laravel, MySQL, JavaScript">
-                        <p class="form-hint">Separate skills with commas</p>
+                        <p class="form-hint">Separate skills with commas (e.g., PHP, Laravel, MySQL)</p>
                         @error('skills_required')
                             <p class="form-error">{{ $message }}</p>
                         @enderror
