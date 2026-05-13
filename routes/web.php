@@ -108,7 +108,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/dashboard', function () {
                 return view('jobseeker.dashboard');
             })->name('dashboard');
-    
+
             // Interview routes
             Route::get('/interviews', [InterviewSessionController::class, 'jobSeekerIndex'])->name('interviews');
 
@@ -145,7 +145,7 @@ Route::get('/debug/queue', function () {
     try {
         $jobsCount = DB::table('jobs')->count();
         $failedJobsCount = DB::table('failed_jobs')->count();
-        
+
         return [
             'status' => 'success',
             'queue_connection' => config('queue.default'),
@@ -162,17 +162,17 @@ Route::get('/debug/queue', function () {
 Route::get('/debug/email/{email}', function ($email) {
     try {
         $user = User::where('email', $email)->first();
-        
+
         if (!$user) {
             return ['status' => 'error', 'message' => "User with email {$email} not found"];
         }
-        
+
         // Check if user implements MustVerifyEmail
         $implements = in_array('Illuminate\Contracts\Auth\MustVerifyEmail', class_implements($user));
-        
+
         // Send verification email
         $user->sendEmailVerificationNotification();
-        
+
         return [
             'status' => 'success',
             'email' => $user->email,
@@ -211,5 +211,22 @@ Route::get('/create-log', function () {
         return '✅ Log created successfully! <a href="/admin/dashboard">Go to Admin Dashboard</a>';
     } catch (Exception $e) {
         return '❌ Error: ' . $e->getMessage();
+    }
+});
+// Debug 5: Clear cache
+Route::get('/clear-cache', function () {
+    try {
+        \Artisan::call('config:clear');
+        \Artisan::call('cache:clear');
+        \Artisan::call('view:clear');
+
+        return [
+            'status' => 'success',
+            'message' => 'Cache cleared successfully!',
+            'config_cleared' => true,
+            'cache_cleared' => true,
+        ];
+    } catch (\Exception $e) {
+        return ['status' => 'error', 'message' => $e->getMessage()];
     }
 });
