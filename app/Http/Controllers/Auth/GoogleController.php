@@ -13,30 +13,28 @@ class GoogleController extends Controller
 {
     public function redirect()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     public function callback()
     {
-        $googleUser = Socialite::driver('google')->user();
+        $googleUser = Socialite::driver('google')->stateless()->user();
 
         $existingUser = User::where('email', $googleUser->getEmail())->first();
 
         if ($existingUser) {
-            // Already registered, just login
             $existingUser->update([
                 'google_id' => $googleUser->getId(),
-                'avatar'    => $googleUser->getAvatar(),
+                'avatar' => $googleUser->getAvatar(),
             ]);
             Auth::login($existingUser);
             return $this->redirectByRole($existingUser);
         }
 
-        // New user - store google data in session and ask for role
         session([
             'google_user' => [
-                'name'   => $googleUser->getName(),
-                'email'  => $googleUser->getEmail(),
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
                 'google_id' => $googleUser->getId(),
                 'avatar' => $googleUser->getAvatar(),
             ]
@@ -69,13 +67,13 @@ class GoogleController extends Controller
         $role = Role::where('name', $request->role)->first();
 
         $user = User::create([
-            'name'              => $googleData['name'],
-            'email'             => $googleData['email'],
-            'google_id'         => $googleData['google_id'],
-            'avatar'            => $googleData['avatar'],
-            'password'          => bcrypt(str()->random(24)),
+            'name' => $googleData['name'],
+            'email' => $googleData['email'],
+            'google_id' => $googleData['google_id'],
+            'avatar' => $googleData['avatar'],
+            'password' => bcrypt(str()->random(24)),
             'email_verified_at' => now(),
-            'role_id'           => $role->id,
+            'role_id' => $role->id,
         ]);
 
         session()->forget('google_user');
