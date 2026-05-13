@@ -1,22 +1,29 @@
 FROM php:8.4-fpm
 
-# Install system dependencies + supervisord + Node.js
+# Install system dependencies + Node.js in one layer
 RUN apt-get update && apt-get install -y \
     nginx \
     supervisor \
     git \
     unzip \
+    zip \
+    curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    zip \
-    curl \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libwebp-dev \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install \
+# Install PHP extensions (gd configured separately for speed)
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
+    && docker-php-ext-install -j$(nproc) \
     pdo_mysql \
     mbstring \
     exif \
@@ -24,7 +31,10 @@ RUN docker-php-ext-install \
     bcmath \
     gd
 
-# Configure Nginx for Laravel
+# Install Composer early (cached layer)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Configure Nginx
 RUN echo 'server { \n\
     listen 80; \n\
     root /var/www/html/public; \n\
@@ -44,27 +54,29 @@ RUN echo 'server { \n\
 # Configure supervisord
 RUN echo '[supervisord]\nnodaemon=true\nlogfile=/dev/null\nlogfile_maxbytes=0\n\n[program:php-fpm]\ncommand=php-fpm\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n\n[program:nginx]\ncommand=nginx -g "daemon off;"\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n\n[program:queue-worker]\ncommand=php /var/www/html/artisan queue:work --tries=3 --sleep=3 --timeout=60\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n' > /etc/supervisor/conf.d/supervisord.conf
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
+# Copy composer files first (better layer caching)
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Copy package files and build frontend
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy rest of app
 COPY . /var/www/html
 
-# Install Node dependencies and build frontend assets
-RUN npm install && npm run build
+# Run composer scripts and build frontend
+RUN composer dump-autoload --optimize \
+    && npm run build
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
-
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html && \
-    chmod -R 777 /var/www/html/storage && \
-    chmod -R 775 /var/www/html/bootstrap/cache && \
-    mkdir -p /var/www/html/storage/logs
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html \
+    && chmod -R 777 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache \
+    && mkdir -p /var/www/html/storage/logs
 
 EXPOSE 80
 
