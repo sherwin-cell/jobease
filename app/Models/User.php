@@ -15,7 +15,7 @@ use App\Models\Job;
 use App\Models\JobseekerProfile;
 use App\Models\EmployerProfile;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes;
 
