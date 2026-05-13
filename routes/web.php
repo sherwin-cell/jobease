@@ -30,6 +30,8 @@ Route::view('/privacy', 'legal.privacy')->name('privacy');
 // ==================== GOOGLE OAUTH ROUTES ====================
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+Route::get('/auth/google/role', [GoogleController::class, 'showRoleSelect'])->name('google.select.role');
+Route::post('/auth/google/role', [GoogleController::class, 'storeRole'])->name('google.store.role');
 
 // ==================== REGISTRATION ROUTES ====================
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
