@@ -62,12 +62,9 @@ RUN composer install --no-dev --optimize-autoloader
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html && \
-    chmod -R 775 /var/www/html/storage && \
+    chmod -R 777 /var/www/html/storage && \
     chmod -R 775 /var/www/html/bootstrap/cache && \
-    chmod -R 777 /var/www/html/storage/logs
-
-RUN mkdir -p /var/www/html/storage/logs && \
-    chown -R www-data:www-data /var/www/html/storage/logs
+    mkdir -p /var/www/html/storage/logs
 
 EXPOSE 80
 
