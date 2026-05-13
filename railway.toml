@@ -1,2 +1,6 @@
 [deploy]
-startCommand = "/entrypoint supervisord"
+startCommand = "/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
