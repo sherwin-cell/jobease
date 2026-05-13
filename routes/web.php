@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\EmployerRegisterController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB; // Add this line
 
 /*
 |--------------------------------------------------------------------------
@@ -137,7 +138,66 @@ Route::fallback(function () {
     return redirect()->route('home');
 });
 
-// ==================== TEST ROUTE (Remove in production) ====================
+// ==================== DEBUG ROUTES ====================
+
+// Debug 1: Check queue jobs
+Route::get('/debug/queue', function () {
+    try {
+        $jobsCount = DB::table('jobs')->count();
+        $failedJobsCount = DB::table('failed_jobs')->count();
+        
+        return [
+            'status' => 'success',
+            'queue_connection' => config('queue.default'),
+            'pending_jobs' => $jobsCount,
+            'failed_jobs' => $failedJobsCount,
+            'message' => $jobsCount > 0 ? "There are {$jobsCount} pending jobs in queue!" : "Queue is empty",
+        ];
+    } catch (\Exception $e) {
+        return ['status' => 'error', 'message' => $e->getMessage()];
+    }
+});
+
+// Debug 2: Test email sending
+Route::get('/debug/email/{email}', function ($email) {
+    try {
+        $user = User::where('email', $email)->first();
+        
+        if (!$user) {
+            return ['status' => 'error', 'message' => "User with email {$email} not found"];
+        }
+        
+        // Check if user implements MustVerifyEmail
+        $implements = in_array('Illuminate\Contracts\Auth\MustVerifyEmail', class_implements($user));
+        
+        // Send verification email
+        $user->sendEmailVerificationNotification();
+        
+        return [
+            'status' => 'success',
+            'email' => $user->email,
+            'user_id' => $user->id,
+            'role' => $user->isJobSeeker() ? 'job_seeker' : ($user->isEmployer() ? 'employer' : 'other'),
+            'implements_must_verify_email' => $implements,
+            'message' => "Verification email sent to {$user->email}"
+        ];
+    } catch (\Exception $e) {
+        return ['status' => 'error', 'message' => $e->getMessage(), 'trace' => $e->getTraceAsString()];
+    }
+});
+
+// Debug 3: Check mail configuration
+Route::get('/debug/mail', function () {
+    return [
+        'default_mailer' => config('mail.default'),
+        'mailers_available' => array_keys(config('mail.mailers', [])),
+        'from_address' => config('mail.from.address'),
+        'from_name' => config('mail.from.name'),
+        'resend_configured' => !empty(env('RESEND_API_KEY')),
+    ];
+});
+
+// Original test route
 Route::get('/create-log', function () {
     try {
         DB::table('activity_log')->insert([
