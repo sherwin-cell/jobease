@@ -868,7 +868,6 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="stat-label">Interviews</div>
                     </div>
                 </div>
             @endif
