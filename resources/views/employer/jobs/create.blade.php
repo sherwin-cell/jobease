@@ -467,9 +467,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Salary</label>
+                                <label class="form-label">Salary <span>*</span></label>
                                 <input type="number" name="salary" value="{{ old('salary', $job->salary ?? '') }}"
-                                    class="form-input @error('salary') error @enderror" placeholder="e.g., 80000">
+                                    class="form-input @error('salary') error @enderror" required
+                                    placeholder="e.g., 80000">
                                 @error('salary')
                                     <p class="form-error">{{ $message }}</p>
                                 @enderror
@@ -479,8 +480,8 @@
 
                         <!-- Experience Level -->
                         <div class="form-group">
-                            <label class="form-label">Experience Level</label>
-                            <select name="experience_level" class="form-select @error('experience_level') error @enderror">
+                            <label class="form-label">Experience Level <span>*</span></label>
+                            <select name="experience_level" class="form-select @error('experience_level') error @enderror" required>
                                 <option value="">-- Select Experience Level --</option>
                                 <option value="entry" {{ old('experience_level', $job->experience_level ?? '') == 'entry' ? 'selected' : '' }}>Entry Level</option>
                                 <option value="mid" {{ old('experience_level', $job->experience_level ?? '') == 'mid' ? 'selected' : '' }}>Mid Level</option>
