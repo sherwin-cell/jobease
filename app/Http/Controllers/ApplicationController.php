@@ -64,10 +64,10 @@ class ApplicationController extends Controller
                     [
                         'folder' => 'jobease/resumes',
                         'resource_type' => 'raw',
-                        'public_id' => 'resume_' . $user->id . '_' . time(),
+                        'public_id' => 'resume_' . $user->id . '_' . time() . '.pdf',
+                        'format' => 'pdf',
                     ]
                 );
-
                 $resumePath = $result['secure_url'];
 
             } catch (\Exception $e) {
