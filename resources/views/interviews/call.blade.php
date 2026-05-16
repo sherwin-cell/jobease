@@ -151,7 +151,7 @@
                 console.log("ZegoUIKitPrebuilt available:", typeof ZegoUIKitPrebuilt);
 
                 // Use the pre-generated token from Laravel backend
-                const kitToken = "04AAAAAGoJuSMADN8SpDjqMqpCjITPOwCr/xcg0/Op1276db0FvOxsKS1Dl+PXHAZZzEqvLjuIrnncRwk5qbYDXJYGJ4Le1lkMuU5DU8oCKU7cJpOWfUz9xvwTpFr2wUdcGCu6cM/v6FqWx+gwouV7LOYHI1/YsB1kQNxv9aP9MUmsuozdKIwaM33QoU/oV4iFbho3uvGPepnyCeG/U8adH+1h1V5qBNdI3DAKL8DxByGzYJFbcvFKGrRQvVREIAbL6qh0AQ==";
+                const kitToken = "{{ $kitToken }}";
                 const roomID = "{{ $roomID }}";
 
                 if (!kitToken || kitToken === "") {
