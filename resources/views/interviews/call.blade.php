@@ -6,57 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Video Interview - Jobease</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden; position: fixed;
+            top: 0; left: 0;
         }
 
-        /* Full screen container */
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        /* Main container - full viewport */
         #root {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
             background: #1a1a1a;
         }
 
-        /* Ensure Zego UI fills container properly */
-        .zego-container {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        /* Optional: Add loading indicator */
         .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
             background: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             z-index: 9999;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .loading-spinner {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border: 4px solid #333;
             border-top-color: #4CAF50;
             border-radius: 50%;
@@ -64,117 +38,96 @@
             margin-bottom: 20px;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .loading-text {
-            color: white;
-            font-size: 16px;
-            margin-top: 20px;
-        }
+        .loading-text { color: white; font-size: 16px; margin-top: 20px; }
 
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .loading-text {
-                font-size: 14px;
-            }
-        }
-
-        /* Landscape mode on mobile */
-        @media (orientation: landscape) and (max-height: 600px) {
-            .loading-screen {
-                padding: 10px;
-            }
-
-            .loading-spinner {
-                width: 40px;
-                height: 40px;
-            }
-        }
+        @media (max-width: 768px) { .loading-text { font-size: 14px; } }
     </style>
 </head>
 
 <body>
     <div id="root"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@zegocloud/zego-uikit-prebuilt@2.6.0/dist/index.js"></script>
-
-    <script>
-        // Show loading indicator
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'loading-screen';
-        loadingDiv.innerHTML = `
+    <div class="loading-screen" id="loadingDiv">
         <div style="text-align: center;">
             <div class="loading-spinner"></div>
-            <div class="loading-text">Initializing video call...</div>
+            <div class="loading-text">Loading video library...</div>
         </div>
-    `;
-        document.body.appendChild(loadingDiv);
+    </div>
 
-        // Track if library loaded
-        let libraryLoadAttempts = 0;
-        const maxAttempts = 30; // 30 attempts = 6 seconds (200ms each)
+    <script>
+        const loadingDiv = document.getElementById('loadingDiv');
 
-        function checkLibraryLoaded() {
-            if (typeof ZegoUIKitPrebuilt !== 'undefined' && ZegoUIKitPrebuilt) {
-                console.log("ZegoUIKitPrebuilt loaded successfully");
-                initZego();
-                return true;
-            }
-
-            libraryLoadAttempts++;
-            if (libraryLoadAttempts >= maxAttempts) {
-                console.error("Failed to load ZegoUIKitPrebuilt library");
-                loadingDiv.innerHTML = `
+        function showError(title, message) {
+            loadingDiv.innerHTML = `
                 <div style="text-align: center; padding: 20px;">
                     <div style="color: #ff6b6b; font-size: 48px; margin-bottom: 20px;">❌</div>
-                    <div class="loading-text" style="color: #ff6b6b;">Failed to load video library</div>
-                    <div style="color: #ccc; margin-top: 10px; font-size: 14px;">Please check your internet connection</div>
-                    <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    <div class="loading-text" style="color: #ff6b6b;">${title}</div>
+                    <div style="color: #ccc; margin-top: 10px; font-size: 14px;">${message}</div>
+                    <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
                         Retry
                     </button>
                 </div>
             `;
-                return false;
-            }
+        }
 
-            setTimeout(checkLibraryLoaded, 200);
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        async function loadZegoLibrary() {
+            const cdnUrls = [
+                'https://unpkg.com/@zegocloud/zego-uikit-prebuilt@2.6.0/dist/index.js',
+                'https://cdn.jsdelivr.net/npm/@zegocloud/zego-uikit-prebuilt@2.6.0/dist/index.js',
+                'https://cdn.jsdelivr.net/npm/@zegocloud/zego-uikit-prebuilt/dist/index.js',
+            ];
+
+            for (const url of cdnUrls) {
+                try {
+                    loadingDiv.querySelector('.loading-text').textContent = 'Loading video library...';
+                    await loadScript(url);
+                    console.log('ZegoCloud loaded from:', url);
+                    return true;
+                } catch (e) {
+                    console.warn('Failed CDN:', url);
+                }
+            }
             return false;
         }
 
         function initZego() {
             try {
-                console.log("Initializing video call...");
-                console.log("ZegoUIKitPrebuilt available:", typeof ZegoUIKitPrebuilt);
-
-                // Use the pre-generated token from Laravel backend
                 const kitToken = "{{ $kitToken }}";
-                const roomID = "{{ $roomID }}";
+                const roomID   = "{{ $roomID }}";
 
-                if (!kitToken || kitToken === "") {
-                    throw new Error("Kit token is empty");
+                if (!kitToken) {
+                    showError('Token Error', 'Kit token is missing. Please try again.');
+                    return;
                 }
 
-                // Create instance directly with the pre-generated token
+                loadingDiv.querySelector('.loading-text').textContent = 'Connecting to room...';
+
                 const zp = ZegoUIKitPrebuilt.create(kitToken);
 
                 if (!zp) {
-                    throw new Error("Failed to create ZegoUIKitPrebuilt instance");
+                    showError('Connection Failed', 'Could not create video instance.');
+                    return;
                 }
 
-                // Remove loading screen
                 loadingDiv.style.opacity = '0';
+                loadingDiv.style.transition = 'opacity 0.5s';
                 setTimeout(() => loadingDiv.remove(), 500);
 
-                // Join room with responsive config
                 zp.joinRoom({
-                    container: document.getElementById("root"),
-                    scenario: {
-                        mode: ZegoUIKitPrebuilt.VideoConference,
-                    },
+                    container: document.getElementById('root'),
+                    scenario: { mode: ZegoUIKitPrebuilt.VideoConference },
                     layout: 'Auto',
                     showPreJoinView: true,
                     turnOnMicrophoneWhenJoining: true,
@@ -191,26 +144,22 @@
                     audioQuality: 3,
                 });
 
-                console.log("Video call started!");
+                console.log('Video call started!');
 
             } catch (error) {
-                console.error("Error in initZego:", error);
-                loadingDiv.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="color: #ff6b6b; font-size: 48px; margin-bottom: 20px;">❌</div>
-                    <div class="loading-text" style="color: #ff6b6b;">Failed to start video call</div>
-                    <div style="color: #ccc; margin-top: 10px; font-size: 14px;">${error.message}</div>
-                    <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                        Retry
-                    </button>
-                </div>
-            `;
+                console.error('initZego error:', error);
+                showError('Failed to start video call', error.message);
             }
         }
 
-        // Start checking for library
-        checkLibraryLoaded();
+        // Load library then init
+        loadZegoLibrary().then(loaded => {
+            if (loaded) {
+                initZego();
+            } else {
+                showError('Failed to load video library', 'All CDN sources failed. Please check your internet connection.');
+            }
+        });
     </script>
 </body>
-
 </html>
