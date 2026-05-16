@@ -56,6 +56,8 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+
     <script>
         const loadingDiv = document.getElementById('loadingDiv');
 
@@ -65,61 +67,31 @@
                     <div style="color: #ff6b6b; font-size: 48px; margin-bottom: 20px;">❌</div>
                     <div class="loading-text" style="color: #ff6b6b;">${title}</div>
                     <div style="color: #ccc; margin-top: 10px; font-size: 14px;">${message}</div>
-                    <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                    <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
                         Retry
                     </button>
                 </div>
             `;
         }
 
-        function loadScript(src) {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = src;
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-        }
-
-        async function loadZegoLibrary() {
-            const cdnUrls = [
-                'https://unpkg.com/@zegocloud/zego-uikit-prebuilt@2.6.0/dist/index.js',
-                'https://cdn.jsdelivr.net/npm/@zegocloud/zego-uikit-prebuilt@2.6.0/dist/index.js',
-                'https://cdn.jsdelivr.net/npm/@zegocloud/zego-uikit-prebuilt/dist/index.js',
-            ];
-
-            for (const url of cdnUrls) {
-                try {
-                    loadingDiv.querySelector('.loading-text').textContent = 'Loading video library...';
-                    await loadScript(url);
-                    console.log('ZegoCloud loaded from:', url);
-                    return true;
-                } catch (e) {
-                    console.warn('Failed CDN:', url);
-                }
-            }
-            return false;
-        }
-
         function initZego() {
             try {
-                const kitToken = "{{ $kitToken }}";
-                const roomID   = "{{ $roomID }}";
+                const appID      = {{ $appID }};
+                const serverSecret = "{{ $serverSecret ?? env('ZEGO_SERVER_SECRET') }}";
+                const roomID     = "{{ $roomID }}";
+                const userID     = "{{ $userID }}";
+                const userName   = "{{ $userName }}";
 
-                if (!kitToken) {
-                    showError('Token Error', 'Kit token is missing. Please try again.');
-                    return;
-                }
-
-                loadingDiv.querySelector('.loading-text').textContent = 'Connecting to room...';
+                // Generate token directly in browser (test mode)
+                const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+                    appID,
+                    serverSecret,
+                    roomID,
+                    userID,
+                    userName
+                );
 
                 const zp = ZegoUIKitPrebuilt.create(kitToken);
-
-                if (!zp) {
-                    showError('Connection Failed', 'Could not create video instance.');
-                    return;
-                }
 
                 loadingDiv.style.opacity = '0';
                 loadingDiv.style.transition = 'opacity 0.5s';
@@ -128,7 +100,6 @@
                 zp.joinRoom({
                     container: document.getElementById('root'),
                     scenario: { mode: ZegoUIKitPrebuilt.VideoConference },
-                    layout: 'Auto',
                     showPreJoinView: true,
                     turnOnMicrophoneWhenJoining: true,
                     turnOnCameraWhenJoining: true,
@@ -138,13 +109,8 @@
                     showScreenSharingButton: true,
                     showTextChat: true,
                     showUserList: true,
-                    showRemoveUserButton: false,
                     maxUsers: 2,
-                    videoQuality: 3,
-                    audioQuality: 3,
                 });
-
-                console.log('Video call started!');
 
             } catch (error) {
                 console.error('initZego error:', error);
@@ -152,12 +118,12 @@
             }
         }
 
-        // Load library then init
-        loadZegoLibrary().then(loaded => {
-            if (loaded) {
+        // Wait for script to load
+        window.addEventListener('load', function() {
+            if (typeof ZegoUIKitPrebuilt !== 'undefined') {
                 initZego();
             } else {
-                showError('Failed to load video library', 'All CDN sources failed. Please check your internet connection.');
+                showError('Failed to load video library', 'Please check your internet connection.');
             }
         });
     </script>

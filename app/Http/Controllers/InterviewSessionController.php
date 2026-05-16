@@ -93,10 +93,13 @@ class InterviewSessionController extends Controller
             $userName
         );
 
+        $serverSecret = env('ZEGO_SERVER_SECRET');
+
         return view('interviews.call', compact(
             'session',
             'kitToken',
             'appID',
+            'serverSecret',
             'userID',
             'userName',
             'roomID'
