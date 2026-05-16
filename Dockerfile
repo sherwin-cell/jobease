@@ -35,6 +35,7 @@ RUN docker-php-ext-configure gd \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Configure Nginx
+# Configure Nginx
 RUN echo 'server { \n\
     listen 80; \n\
     root /var/www/html/public; \n\
@@ -44,8 +45,9 @@ RUN echo 'server { \n\
     location / { \n\
         try_files $uri $uri/ /index.php?$query_string; \n\
     } \n\
-    location ~ \.php$ { \n\
+    location ~ \\.php$ { \n\
         fastcgi_pass 127.0.0.1:9000; \n\
+        fastcgi_read_timeout 300; \n\
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name; \n\
         include fastcgi_params; \n\
     } \n\
