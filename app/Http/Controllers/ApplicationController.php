@@ -66,6 +66,8 @@ class ApplicationController extends Controller
                         'resource_type' => 'raw',
                         'public_id' => 'resume_' . $user->id . '_' . time() . '.pdf',
                         'format' => 'pdf',
+                        'type' => 'upload',
+                        'access_mode' => 'public',
                     ]
                 );
                 $resumePath = $result['secure_url'];
