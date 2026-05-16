@@ -100,7 +100,7 @@
 <body>
     <div id="root"></div>
 
-    <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zegocloud/zego-uikit-prebuilt@2.6.0/dist/index.js"></script>
 
     <script>
         // Show loading indicator
