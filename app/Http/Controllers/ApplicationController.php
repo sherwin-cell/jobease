@@ -10,7 +10,7 @@ use App\Models\InterviewSession;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InterviewScheduledMail;
 use Illuminate\Support\Str;
-
+use Cloudinary\Cloudinary;
 class ApplicationController extends Controller
 {
     // Show apply form
@@ -42,22 +42,38 @@ class ApplicationController extends Controller
 
         $validated = $request->validate($rules);
 
-        // Upload resume if provided
         // Upload resume to Cloudinary
         $resumePath = null;
         if ($request->hasFile('resume')) {
-            $uploadedFile = cloudinary()->uploadFile(
-                $request->file('resume')->getRealPath(),
-                [
-                    'folder' => 'jobease/resumes',
-                    'resource_type' => 'raw',
-                    'public_id' => 'resume_' . $user->id . '_' . time(),
-                ]
-            )->getSecurePath();
+            try {
+                $file = $request->file('resume');
 
-            $resumePath = $uploadedFile;
+                $cloudinary = new \Cloudinary\Cloudinary([
+                    'cloud' => [
+                        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                        'api_key' => env('CLOUDINARY_API_KEY'),
+                        'api_secret' => env('CLOUDINARY_API_SECRET'),
+                    ],
+                    'url' => [
+                        'secure' => true
+                    ]
+                ]);
+
+                $result = $cloudinary->uploadApi()->upload(
+                    $file->getRealPath(),
+                    [
+                        'folder' => 'jobease/resumes',
+                        'resource_type' => 'raw',
+                        'public_id' => 'resume_' . $user->id . '_' . time(),
+                    ]
+                );
+
+                $resumePath = $result['secure_url'];
+
+            } catch (\Exception $e) {
+                return back()->with('error', 'Resume upload failed: ' . $e->getMessage());
+            }
         }
-
         // Create application
         $application = $user->applications()->create([
             'job_id' => $job->id,
