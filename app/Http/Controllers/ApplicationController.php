@@ -43,9 +43,19 @@ class ApplicationController extends Controller
         $validated = $request->validate($rules);
 
         // Upload resume if provided
+        // Upload resume to Cloudinary
         $resumePath = null;
         if ($request->hasFile('resume')) {
-            $resumePath = $request->file('resume')->store('resumes', 'public');
+            $uploadedFile = cloudinary()->uploadFile(
+                $request->file('resume')->getRealPath(),
+                [
+                    'folder' => 'jobease/resumes',
+                    'resource_type' => 'raw',
+                    'public_id' => 'resume_' . $user->id . '_' . time(),
+                ]
+            )->getSecurePath();
+
+            $resumePath = $uploadedFile;
         }
 
         // Create application
