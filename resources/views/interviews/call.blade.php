@@ -116,7 +116,7 @@
             
             try {
                 const appID = {{ $appID }};
-                const serverSecret = "ce03ae3dcd79230ca20ec00a5faa7ec2";
+                const serverSecret = "b7f3e23b833f0bf805c2f45e3208bd2a";
                 const roomID = "{{ $roomID }}";
                 const userID = "{{ $userID }}";
                 const userName = "{{ $userName }}";
