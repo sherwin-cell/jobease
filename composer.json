@@ -14,8 +14,10 @@
         "laravel/socialite": "^5.27",
         "laravel/tinker": "^2.10.1",
         "lcobucci/jwt": "*",
+        "mailjet/laravel-mailjet": "^3.1",
         "pusher/pusher-php-server": "^7.2",
-        "resend/resend-laravel": "^1.4"
+        "resend/resend-laravel": "^1.4",
+        "thedoctor0/laravel-mailjet-driver": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

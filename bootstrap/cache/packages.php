@@ -38,6 +38,17 @@
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
+  'mailjet/laravel-mailjet' => 
+  array (
+    'aliases' => 
+    array (
+      'Mailjet' => 'Mailjet\\LaravelMailjet\\Facades\\Mailjet',
+    ),
+    'providers' => 
+    array (
+      0 => 'Mailjet\\LaravelMailjet\\MailjetServiceProvider',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 
@@ -64,6 +75,17 @@
     'providers' => 
     array (
       0 => 'Resend\\Laravel\\ResendServiceProvider',
+    ),
+  ),
+  'thedoctor0/laravel-mailjet-driver' => 
+  array (
+    'aliases' => 
+    array (
+      'Mailjet' => 'Mailjet\\LaravelMailjet\\Facades\\Mailjet',
+    ),
+    'providers' => 
+    array (
+      0 => 'Mailjet\\LaravelMailjet\\MailjetServiceProvider',
     ),
   ),
 );
