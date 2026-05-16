@@ -72,10 +72,8 @@ class InterviewSessionController extends Controller
     // Call method for ZEGOCLOUD
     public function call(InterviewSession $session)
     {
-
-        //$session = InterviewSession::findOrFail($session->id);
-
-        $appID = 948409277;
+        // ✅ FIXED: Use environment variable instead of hardcoded old App ID
+        $appID = env('ZEGO_APP_ID', 233433656);
         $serverSecret = env('ZEGO_SERVER_SECRET');
 
         if (!$serverSecret) {

@@ -115,20 +115,13 @@
             }
             
             try {
-                const appID = {{ $appID }};
-                const serverSecret = "b7f3e23b833f0bf805c2f45e3208bd2a";
+                // ✅ UPDATED: Use pre-generated token from Laravel backend
+                const kitToken = "{{ $kitToken }}";
                 const roomID = "{{ $roomID }}";
-                const userID = "{{ $userID }}";
-                const userName = "{{ $userName }}";
                 
-                console.log("Initializing video call...");
+                console.log("Initializing video call with server-generated token...");
                 
-                // Generate token
-                const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-                    appID, serverSecret, roomID, userID, userName
-                );
-                
-                // Create instance
+                // Create instance directly with the pre-generated token
                 const zp = ZegoUIKitPrebuilt.create(kitToken);
                 
                 // Remove loading screen
@@ -153,6 +146,7 @@
                     showTextChat: true,
                     showUserList: true,
                     showRemoveUserButton: false,
+                    maxUsers: 2,
                     // Optimize for mobile
                     videoQuality: 'auto',
                     audioQuality: 'auto',
