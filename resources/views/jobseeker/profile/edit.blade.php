@@ -1333,37 +1333,81 @@
 
 <script>
     function handleResumeUpload(input) {
-        const file = input.files[0];
-        if (file) {
-            const validExtensions = ['.pdf', '.doc', '.docx', '.txt'];
-            const fileName = file.name.toLowerCase();
-            const isValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
-            
-            if (isValidExtension) {
-                if (file.size <= 5 * 1024 * 1024) {
-                    const placeholder = document.getElementById('resumePlaceholder');
-                    const currentResume = document.getElementById('currentResume');
-                    if (placeholder) placeholder.style.display = 'none';
-                    if (currentResume) currentResume.style.display = 'none';
-                    
+    const file = input.files[0];
+    if (file) {
+        const validExtensions = ['.pdf', '.doc', '.docx', '.txt'];
+        const fileName = file.name.toLowerCase();
+        const isValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+        
+        if (isValidExtension) {
+            if (file.size <= 500 * 1024) { // 500KB limit (was incorrectly 5MB before)
+                // Hide placeholder and old resume display
+                const placeholder = document.getElementById('resumePlaceholder');
+                const currentResume = document.getElementById('currentResume');
+                if (placeholder) placeholder.style.display = 'none';
+                if (currentResume) currentResume.style.display = 'none';
+
+                // Show persistent file card
+                let persistentCard = document.getElementById('newResumeCard');
+                if (!persistentCard) {
+                    persistentCard = document.createElement('div');
+                    persistentCard.id = 'newResumeCard';
+                    persistentCard.className = 'current-file';
                     const successMsg = document.getElementById('uploadSuccessMessage');
-                    const successText = document.getElementById('uploadSuccessText');
-                    successText.textContent = `✓ "${file.name}" (${(file.size / 1024).toFixed(2)} KB) uploaded successfully! Don't forget to save your changes.`;
-                    successMsg.style.display = 'flex';
-                    
-                    setTimeout(() => {
-                        successMsg.style.display = 'none';
-                    }, 5000);
-                } else {
-                    alert('File size must be less than 500kb');
-                    input.value = '';
+                    successMsg.parentNode.insertBefore(persistentCard, successMsg);
                 }
+                persistentCard.innerHTML = `
+                    <div class="file-info">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;color:#059669">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                            <p class="file-name" style="font-weight:600">${file.name}</p>
+                            <p class="file-size">${(file.size / 1024).toFixed(2)} KB — Ready to save</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="clearNewResume()" style="font-size:0.75rem;color:#ef4444;background:none;border:none;cursor:pointer;">Remove</button>
+                `;
+                persistentCard.style.display = 'flex';
+
+                // Show brief toast, then hide only the toast
+                const successMsg = document.getElementById('uploadSuccessMessage');
+                const successText = document.getElementById('uploadSuccessText');
+                successText.textContent = `File selected! Click "Save Changes" to upload.`;
+                successMsg.style.display = 'flex';
+
             } else {
-                alert('Please upload PDF, DOC, DOCX, or TXT files only');
+                alert('File size must be less than 500KB');
                 input.value = '';
             }
+        } else {
+            alert('Please upload PDF, DOC, DOCX, or TXT files only');
+            input.value = '';
         }
     }
+}
+
+function clearNewResume() {
+    document.getElementById('resume').value = '';
+
+    const card = document.getElementById('newResumeCard');
+    if (card) card.remove();
+
+    // If there's an existing saved resume, restore it; otherwise show the "no resume" placeholder
+    const currentResume = document.getElementById('currentResume');
+    const placeholder = document.getElementById('resumePlaceholder');
+
+    if (currentResume) {
+        currentResume.style.display = 'flex';
+    } else if (placeholder) {
+        placeholder.style.display = 'flex';
+    }
+
+    // Also hide the toast if still visible
+    const successMsg = document.getElementById('uploadSuccessMessage');
+    const successMsg = document.getElementById('uploadSuccessMessage');
+    if (successMsg) successMsg.style.display = 'none';
+}
 
     let skills = @json($profile->skills ?? []);
     function updateSkillsInput() { document.getElementById('skills-input').value = JSON.stringify(skills); }
