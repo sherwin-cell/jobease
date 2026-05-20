@@ -536,7 +536,7 @@
                     <input type="file" name="resume"
                         class="file-input @error('resume') error @enderror"
                         accept=".pdf,.doc,.docx">
-                    <p class="form-hint">Accepted formats: PDF, DOC, DOCX (Max 5MB)</p>
+                    <p class="form-hint">Accepted formats: PDF, DOC, DOCX (Max 500kb)</p>
                     @error('resume')
                         <p class="form-error">{{ $message }}</p>
                     @enderror

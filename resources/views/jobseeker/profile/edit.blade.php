@@ -1233,7 +1233,7 @@
                                 </svg>
                                 {{ $profile->resume_path ? 'Upload New Resume' : 'Upload Resume' }}
                             </button>
-                            <p class="form-hint mt-2">PDF, DOC, DOCX, or TXT format (Max 5MB)</p>
+                            <p class="form-hint mt-2">PDF, DOC, DOCX, or TXT format (Max 500kb)</p>
                         </div>
                     </div>
 
@@ -1355,7 +1355,7 @@
                         successMsg.style.display = 'none';
                     }, 5000);
                 } else {
-                    alert('File size must be less than 5MB');
+                    alert('File size must be less than 500kb');
                     input.value = '';
                 }
             } else {

@@ -705,7 +705,7 @@
                 </div>
                 <div class="resume-upload-text">
                     <strong>Click to upload</strong> or drag and drop<br>
-                    <span style="font-size: 0.75rem;">PDF, DOC, DOCX, TXT (Max 5MB)</span>
+                    <span style="font-size: 0.75rem;">PDF, DOC, DOCX, TXT (Max 500kb)</span>
                 </div>
             </div>
 
@@ -982,7 +982,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (file.size <= 5 * 1024 * 1024) {
                     updateFileDisplay(file);
                 } else {
-                    alert('File size must be less than 5MB');
+                    alert('File size must be less than 500kb');
                     resetUploadArea();
                 }
             } else {
@@ -1022,7 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     resumeFileInput.files = dataTransfer.files;
                     updateFileDisplay(file);
                 } else {
-                    alert('File size must be less than 5MB');
+                    alert('File size must be less than 500kb');
                 }
             } else {
                 alert('Please upload PDF, DOC, DOCX, or TXT files only');

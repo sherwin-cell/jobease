@@ -706,7 +706,7 @@
                         </svg>
                         <div class="file-upload-text">
                             <strong>Click to upload</strong> or drag and drop<br>
-                            <span style="font-size: 0.7rem;">JPG, PNG, or PDF (Max 5MB)</span>
+                            <span style="font-size: 0.7rem;">JPG, PNG, or PDF (Max 589kb)</span>
                         </div>
                     </div>
 
@@ -823,7 +823,7 @@
                     fileInput.files = dataTransfer.files;
                     updateFileDisplay(file);
                 } else {
-                    alert('File size must be less than 5MB');
+                    alert('File size must be less than 500kb');
                 }
             } else {
                 alert('Please upload JPG, PNG, or PDF files only');

@@ -762,7 +762,7 @@
                             <div class="form-group">
                                 <label class="form-label">Business Permit (Optional)</label>
                                 <input type="file" name="business_permit_path" class="form-input" accept=".jpg,.jpeg,.png,.pdf">
-                                <p class="permit-note">Upload new business permit (JPG, PNG, or PDF. Max 5MB). Leave empty to
+                                <p class="permit-note">Upload new business permit (JPG, PNG, or PDF. Max 500kb). Leave empty to
                                     keep current file.</p>
                                 @if($company->business_permit_path ?? false)
                                     <div class="current-file" style="margin-top: 12px;">
